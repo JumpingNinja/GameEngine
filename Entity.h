@@ -36,6 +36,7 @@ protected:
 public:
     virtual ~Entity();
     Entity();
+    Entity(short);
     
     ///@brief Détruit tous les objets manuellement (Déallocation manuelle). Normalement tout est géré automatiquement
     static void DestroyAll();

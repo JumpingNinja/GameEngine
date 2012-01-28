@@ -66,7 +66,7 @@ void Entity::DrawAll(sf::RenderTarget &window)
 {
     sf::Clock clock;
     clock.Restart();
-	for(it = list.begin(); it != list.end; it++)
+	for(it = list.begin(); it != list.end(); it++)
 		if ((*it)->myIsVisible) window.Draw(**it), std::cout << "Drawn depth: " << (*it)->myDepth << std::endl;
 	/*
     unsigned int nDrawn(0);

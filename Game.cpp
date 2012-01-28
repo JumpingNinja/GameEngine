@@ -29,7 +29,7 @@ void Game::Start(void)
     
     for (int i=0; i<100; i++)
     {
-        p=new Entity(static_cast<short> i);
+        p=new Entity(static_cast<short>(i));
         //p->SetDepth(i);
     }
     

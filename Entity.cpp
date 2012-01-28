@@ -20,7 +20,27 @@ short Entity::maxDepth(0), Entity::minDepth(0);
 
 Entity::Entity() :myIsVisible(1), myDepth(0)
 {
-    list.push_back(this);
+	it = list.begin();
+	while((it != list.end())&&((*it)->myDepth < myDepth))
+	{
+		it++;
+	}
+	list.insert(it, this);
+	
+    //list.push_back(this);
+    //std::cout<<this<<" added to the Entity List\n";
+}
+
+Entity::Entity(short aDepth) :myIsVisible(1), myDepth(aDepth)
+{
+	it = list.begin();
+	while((it != list.end())&&((*it)->myDepth < myDepth))
+	{
+		it++;
+	}
+	list.insert(it, this);
+	
+    //list.push_back(this);
     //std::cout<<this<<" added to the Entity List\n";
 }
 
@@ -46,6 +66,9 @@ void Entity::DrawAll(sf::RenderTarget &window)
 {
     sf::Clock clock;
     clock.Restart();
+	for(it = list.begin(); it != list.end; it++)
+		if ((*it)->myIsVisible) window.Draw(**it), std::cout << "Drawn depth: " << (*it)->myDepth << std::endl;
+	/*
     unsigned int nDrawn(0);
     short currentDepth(maxDepth), nextDepth(maxDepth);
     while (nDrawn<list.size())
@@ -65,6 +88,7 @@ void Entity::DrawAll(sf::RenderTarget &window)
         }
         //std::cout<<"Drawn depth: "<<currentDepth<<std::endl;
     }
+	*/
     std::cout<<"Time to draw: "<<clock.GetElapsedTime().AsMicroseconds()<<" millisenconds\n";
 }
 

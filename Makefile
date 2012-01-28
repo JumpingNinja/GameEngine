@@ -11,5 +11,5 @@ all : $(EXE)
 $(EXE) : $(O)
 	$(CPP) $^ -o $@ $(LIBS)
 
-%.o : %.c %.h
+%.o : %.cpp %.h
 	$(CPP) $(OPTION) -c $^ -o $@

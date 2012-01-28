@@ -8,12 +8,6 @@
 
 #include "SplashScreen.h"
 
-#ifdef SFML_SYSTEM_MACOS
-#include "ResourcePath.hpp"
-#else
-#define ResourcePath()+
-#endif
-
 void SplashScreen::Show(sf::RenderWindow & renderWindow)
 {
     renderWindow.Clear();
@@ -39,6 +33,6 @@ void SplashScreen::Show(sf::RenderWindow & renderWindow)
 SplashScreen::SplashScreen()
 {
     //Load the textures needed
-    myTxBack.LoadFromFile(ResourcePath()+"img/SplashScreen.png");
+    myTxBack.LoadFromFile("img/SplashScreen.png");
     mySprBack.SetTexture(myTxBack);
 }

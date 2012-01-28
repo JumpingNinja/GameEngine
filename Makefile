@@ -45,4 +45,4 @@ clean:
 
 git:
 	git commit -a -m '[Commit depuis le MakeFile]' ; \
-	git push -u origin master git@github.com:JumpingNinja/GameEngine.git
+	git push -u git@github.com:JumpingNinja/GameEngine.git

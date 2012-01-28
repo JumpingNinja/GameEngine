@@ -65,7 +65,7 @@ void Entity::DrawAll(sf::RenderTarget &window)
         }
         //std::cout<<"Drawn depth: "<<currentDepth<<std::endl;
     }
-    std::cout<<"Time to draw: "<<clock.GetElapsedTime().AsMicroseconds()<<" microsenconds\n";
+    std::cout<<"Time to draw: "<<clock.GetElapsedTime().AsMicroseconds()<<" millisenconds\n";
 }
 
 void Entity::SetDepth(short aDepth)

@@ -25,7 +25,7 @@ void Game::Start(void)
     //Show a splashscreen usefull for loading ressources (go edit SplashScreen.cpp)
     myGameState=ShowingSplash;
     
-    Entity a, b, c, *p;
+    Entity *p;
     
     for (int i=0; i<100; i++)
     {
@@ -38,6 +38,7 @@ void Game::Start(void)
         GameLoop();
     }
     
+    Entity::DestroyAll(); //à cause des new
     myMainWindow.Close();
 }
 

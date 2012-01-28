@@ -33,10 +33,10 @@ protected:
     bool myIsVisible;
     short myDepth;
     
-    //virtual void Draw(sf::RenderTarget &window);
 public:
     virtual ~Entity();
     Entity();
+    
     ///@brief Détruit tous les objets manuellement (Déallocation manuelle). Normalement tout est géré automatiquement
     static void DestroyAll();
     

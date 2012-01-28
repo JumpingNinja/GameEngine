@@ -21,7 +21,7 @@
 /**
  @brief Class pour gérer une entité
  
- Cette classe est abstraite, il faut l'hériter pour l'utiliser et redéfinir le constructeur et destructeur obligatoirement. Elle à une liste static à reimplementer chaque fois si nécessaire (ex pour grouper des objets comme les objets de physiques, les bullets, les ennemis etc) d'appliquer une action a un groupe d'objets
+ Cette classe est abstraite, il faut l'hériter pour l'utiliser et redéfinir le constructeur et destructeur obligatoirement. Elle a une liste static à reimplementer chaque fois si nécessaire (ex pour grouper des objets comme les objets de physiques, les bullets, les ennemis etc) d'appliquer une action a un groupe d'objets
 **/
 
 class Entity : public sf::Sprite {
@@ -34,7 +34,7 @@ protected:
     short myDepth;
     
 public:
-    virtual ~Entity();
+    virtual ~Entity(); //=0; pou abstraite
     Entity();
     Entity(short);
     

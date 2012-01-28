@@ -1,4 +1,10 @@
-CPP = g++.exe
+ifeq ($(SHELL), sh.exe) 
+	OS := Win
+else
+	OS := $(shell uname)
+endif
+
+CPP = g++
 EXE = SFML_Test.exe
 C = $(wildcard *.cpp)
 O = $(C:.cpp=.o)
@@ -12,4 +18,7 @@ $(EXE) : $(O)
 	$(CPP) $^ -o $@ $(LIBS)
 
 %.o : %.cpp %.h
-	$(CPP) $(OPTION) -c $^ -o $@
+	$(CPP) $(OPTION) -c $< -o $@
+	
+os:
+	echo $(OS)

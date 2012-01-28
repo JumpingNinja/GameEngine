@@ -35,8 +35,9 @@ protected:
     
 public:
     virtual ~Entity(); //=0; pou abstraite
+    ///@brief Contructeur, UTILISER PLUTOT new Entity
     Entity();
-    Entity(short);
+    Entity(short aDepth);
     
     ///@brief Détruit tous les objets manuellement (Déallocation manuelle). Normalement tout est géré automatiquement
     static void DestroyAll();

@@ -20,7 +20,7 @@ void Game::Start(void)
         return;
     
     myMainWindow.Create(sf::VideoMode(1024,768,32),"Pang!");
-    myMainWindow.SetFramerateLimit(100.f);
+    myMainWindow.SetFramerateLimit(60.f);
     
     //Show a splashscreen usefull for loading ressources (go edit SplashScreen.cpp)
     myGameState=ShowingSplash;
@@ -29,7 +29,9 @@ void Game::Start(void)
     
     for (int i=0; i<100; i++)
     {
-        p=new Entity(static_cast<short>(i));
+        p=new Entity(static_cast<short>(i%10));
+        if (i<30 && i>=20)
+            p->SetDepth(-2);
         //p->SetDepth(i);
     }
     

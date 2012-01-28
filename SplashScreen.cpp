@@ -7,7 +7,12 @@
 //
 
 #include "SplashScreen.h"
+
+#ifndef SFML_SYSTEM_MACOS
 #include "ResourcePath.hpp"
+#else
+#define ResourcePath()+
+#endif
 
 void SplashScreen::Show(sf::RenderWindow & renderWindow)
 {

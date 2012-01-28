@@ -8,7 +8,7 @@
 
 #include "SplashScreen.h"
 
-#ifndef SFML_SYSTEM_MACOS
+#ifdef SFML_SYSTEM_MACOS
 #include "ResourcePath.hpp"
 #else
 #define ResourcePath()+

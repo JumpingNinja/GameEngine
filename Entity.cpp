@@ -67,7 +67,7 @@ void Entity::DrawAll(sf::RenderTarget &window)
     clock.Restart();
 	for(it = list.begin(); it != list.end(); it++)
 		if ((*it)->myIsVisible)
-            window.Draw(**it), std::cout << "Drawn depth: " << (*it)->myDepth << std::endl;
+            window.Draw(**it);// std::cout << "Drawn depth: " << (*it)->myDepth << std::endl;
 	/*
     unsigned int nDrawn(0);
     short currentDepth(maxDepth), nextDepth(maxDepth);
@@ -89,7 +89,7 @@ void Entity::DrawAll(sf::RenderTarget &window)
         //std::cout<<"Drawn depth: "<<currentDepth<<std::endl;
     }
 	*/
-    std::cout<<"Time to draw: "<<clock.GetElapsedTime().AsMicroseconds()<<" millisenconds\n";
+    //std::cout<<"Time to draw: "<<clock.GetElapsedTime().AsMicroseconds()<<" millisenconds\n";
 }
 
 void Entity::SetDepth(short aDepth)
@@ -103,7 +103,7 @@ void Entity::SetDepth(short aDepth)
     
     //On l'enlève de la liste
     it = list.begin();
-	while((*it) != this)
+	while((*it) != this) //ICI ON SUPPOSE QUE L'élement est déjà dans la liste!!
 		it++;
     list.erase(it);
     

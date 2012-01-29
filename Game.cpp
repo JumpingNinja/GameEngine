@@ -27,7 +27,7 @@ void Game::Start(void)
     
     Entity *p;
     
-    for (int i=0; i<100; i++)
+    for (int i=0; i<200; i++)
     {
         p=new Entity(static_cast<short>(i%10));
         if (i<30 && i>=20)

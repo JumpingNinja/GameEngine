@@ -6,6 +6,8 @@ endif
 
 LIBS = -lsfml-graphics -lsfml-window -lsfml-system
 EXE := GameEngine
+OBJ_DIR := obj
+BIN_DIR := bin
 
 ifeq ($(OS), Darwin) #Mac OS X Ici l'ordre est inverse mais je ne suis pas certain si c'est important car en changeant l'ordre tout compile et se lance bien
 	LIBS := -framework sfml-system -framework sfml-window -framework sfml-graphics -framework sfml-audio
@@ -13,36 +15,45 @@ ifeq ($(OS), Darwin) #Mac OS X Ici l'ordre est inverse mais je ne suis pas certa
 	EXE := GameEngine.out
 endif
 
-ifeq ($(OS), Win))
+ifeq ($(OS), Win)
 	LIBS := -lsfml-graphics -lsfml-window -lsfml-system
 	DEL := del
 	EXE := GameEngine.exe
 endif
 
 
-CPP = g++
+CPP := g++
 
-C = $(wildcard *.cpp)
-O = $(C:.cpp=.o)
-H = $(C:.cpp=.h)
-OPTION = -Wall -pedantic
+C := $(wildcard *.cpp)
+_O := $(C:.cpp=.o)
+O := $(patsubst %,$(OBJ_DIR)/%,$(_O)) #Ça permet de mettre les .o dans le dossier obj/
+H := $(C:.cpp=.h)
+OPTION := -Wall -pedantic
 
-all : $(EXE)
-	$(DEL) *.o
-	./$(EXE)
+all : dirs $(EXE)
+#$(DEL) *.o
+	./$(BIN_DIR)/$(EXE)
+	
+dirs: #Permet de creer des dossiers pour mettre les obj et les bin. L'option -p permet de créer les dossier que s'ils n'existent pas (elle crée aussi tous les dossier intermediaires). Le @ sert à ne pas afficher l'appel de la commande
+	@mkdir -p obj
+	@mkdir -p bin
 
 $(EXE) : $(O)
-	$(CPP) $^ -o $@ $(LIBS)
+	$(CPP) $^ -o $(BIN_DIR)/$@ $(LIBS)
 
-%.o : %.cpp %.h
+$(OBJ_DIR)/%.o : %.cpp %.h
+	$(CPP) $(OPTION) -c $< -o $@
+	
+#On a besoin de spécifier manuellement pour main.o (sinon erreur)
+$(OBJ_DIR)/main.o : main.cpp
 	$(CPP) $(OPTION) -c $< -o $@
 	
 os:
-	echo $(OS)
+	@echo $(OS)
 
 clean:
-	$(DEL) *.o $(EXE)
+	$(DEL) $(OBJ_DIR)/*.o $(BIN_DIR)/$(EXE)
 
-git:
+git: #À utiliser le moins souvent possible car pas de description du commit :(
 	git commit -a -m '[Commit depuis le MakeFile]' ; \
 	git push -u git@github.com:JumpingNinja/GameEngine.git

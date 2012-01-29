@@ -9,10 +9,15 @@
 
 #include "Entity.h"
 
+///@brief Exemple de classe (qui forme un groupe) hérité d'entité
+
 class MyClass : public Entity {
+    ///@brief Vector où sont stockés des pointeurs sur les instances
     static std::vector<MyClass*> list;
     static std::vector<MyClass*>::iterator it;
 public:
+    ///@brief Constructeur avec Depth
+    ///@param Depth profondeur
     MyClass(short Depth);
     MyClass();
     virtual ~MyClass();

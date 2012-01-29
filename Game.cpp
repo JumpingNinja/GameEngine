@@ -8,6 +8,7 @@
 
 #include "Game.h"
 #include "Entity.h"
+#include "MyClass.h"
 
 //Initialization des membres statiques
 Game::GameState Game::myGameState = Uninitialized;
@@ -29,10 +30,12 @@ void Game::Start(void)
     
     for (int i=0; i<200; i++)
     {
-        p=new Entity(static_cast<short>(i%10));
-        if (i<30 && i>=20)
-            p->SetDepth(-2);
-        //p->SetDepth(i);
+        if (i>180)
+            p=new MyClass(-10);
+        else
+            p=new Entity(i);
+        if (i<30 && i>=20) p->SetDepth(-2);
+        p->SetDepth(i);
     }
     
     while(!IsExiting())

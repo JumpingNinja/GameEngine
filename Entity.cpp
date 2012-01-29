@@ -20,54 +20,53 @@ short Entity::maxDepth(0), Entity::minDepth(0);
 
 Entity::Entity() :myIsVisible(1), myDepth(0)
 {
-	it = list.begin();
-	while(it != list.end() && myDepth<(*it)->myDepth)
-		it++;
+	Entity::it = Entity::list.begin();
+	while(Entity::it != Entity::list.end() && myDepth<(*Entity::it)->myDepth)
+		Entity::it++;
     
-	list.insert(it, this);
-    //std::cout<<this<<" added to the Entity List\n";
+	Entity::list.insert(Entity::it, this);
 }
 
-Entity::Entity(short aDepth) :myIsVisible(1), myDepth(aDepth)
+Entity::Entity(short Depth) :myIsVisible(1), myDepth(Depth)
 {
-    if (aDepth<minDepth)
-        minDepth=aDepth;
-    if (aDepth>maxDepth)
-        maxDepth=aDepth;
+    if (Depth<minDepth)
+        minDepth=Depth;
+    if (Depth>maxDepth)
+        maxDepth=Depth;
     
-	it = list.begin();
-	while(it != list.end() && myDepth<(*it)->myDepth)
-		it++;
+	Entity::it = Entity::list.begin();
+	while(Entity::it != Entity::list.end() && myDepth<(*Entity::it)->myDepth)
+		Entity::it++;
 
-	list.insert(it, this);
-    //std::cout<<this<<" added to the Entity List\n";
+	Entity::list.insert(Entity::it, this);
 }
 
 Entity::~Entity()
 {
-    for (it=list.begin(); it!=list.end(); it++)
+    for (Entity::it=Entity::list.begin(); Entity::it!=Entity::list.end(); Entity::it++)
     {
-        if ((*it)==this)
+        if ((*Entity::it)==this)
             break;
     }
     
-    list.erase(it);
-    //std::cout<<(*it)<<" erased from the Entity List. Now list size is :"<<list.size()<<"\n";
+    if ((*Entity::it)==this)
+        Entity::list.erase(Entity::it);
+
 }
 
 void Entity::DestroyAll()
 {
-    while (list.size()>0)
-        delete list[0];
+    while (Entity::list.size()>0)
+        delete Entity::list[0];
 }
 
 void Entity::DrawAll(sf::RenderTarget &window)
 {
     sf::Clock clock;
     clock.Restart();
-	for(it = list.begin(); it != list.end(); it++)
-		if ((*it)->myIsVisible)
-            window.Draw(**it);// std::cout << "Drawn depth: " << (*it)->myDepth << std::endl;
+	for(Entity::it = Entity::list.begin(); Entity::it != Entity::list.end(); Entity::it++)
+		if ((*Entity::it)->myIsVisible)
+            window.Draw(**Entity::it);// std::cout << "Drawn depth: " << (*it)->myDepth << std::endl;
 	/*
     unsigned int nDrawn(0);
     short currentDepth(maxDepth), nextDepth(maxDepth);
@@ -92,27 +91,27 @@ void Entity::DrawAll(sf::RenderTarget &window)
     //std::cout<<"Time to draw: "<<clock.GetElapsedTime().AsMicroseconds()<<" millisenconds\n";
 }
 
-void Entity::SetDepth(short aDepth)
+void Entity::SetDepth(short Depth)
 {
-    if (aDepth<minDepth)
-        minDepth=aDepth;
-    if (aDepth>maxDepth)
-        maxDepth=aDepth;
+    if (Depth<minDepth)
+        minDepth=Depth;
+    if (Depth>maxDepth)
+        maxDepth=Depth;
     
-    myDepth=aDepth;
+    myDepth=Depth;
     
     //On l'enlève de la liste
-    it = list.begin();
-	while((*it) != this) //ICI ON SUPPOSE QUE L'élement est déjà dans la liste!!
-		it++;
-    list.erase(it);
+    Entity::it = Entity::list.begin();
+	while((*Entity::it) != this) //ICI ON SUPPOSE QUE L'élement est déjà dans la liste!!
+		Entity::it++;
+    Entity::list.erase(Entity::it);
     
     //Et on le replace
-	it = list.begin();
-	while(it != list.end() && myDepth<(*it)->myDepth)
-		it++;
+	Entity::it = Entity::list.begin();
+	while(Entity::it != Entity::list.end() && myDepth<(*Entity::it)->myDepth)
+		Entity::it++;
     
-	list.insert(it, this);
+	Entity::list.insert(Entity::it, this);
 }
 
 short Entity::GetDepth() const
@@ -120,3 +119,12 @@ short Entity::GetDepth() const
     return myDepth;
 }
 
+void Entity::SetVisible(bool Visible)
+{
+    myIsVisible=Visible;
+}
+
+bool Entity::GetVisible() const
+{
+    return myIsVisible;
+}

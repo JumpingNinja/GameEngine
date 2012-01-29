@@ -26,7 +26,7 @@ CPP := g++
 
 C := $(wildcard *.cpp)
 _O := $(C:.cpp=.o)
-O := $(patsubst %,$(OBJ_DIR)/%,$(_O)) #Ça permet de mettre les .o dans le dossier obj/
+O := $(patsubst %,$(OBJ_DIR)/%,$(_O)) #√áa permet de mettre les .o dans le dossier obj/
 H := $(C:.cpp=.h)
 OPTION := -Wall -pedantic
 
@@ -34,7 +34,7 @@ all : dirs $(EXE)
 #$(DEL) *.o
 	./$(BIN_DIR)/$(EXE)
 	
-dirs: #Permet de creer des dossiers pour mettre les obj et les bin. L'option -p permet de créer les dossier que s'ils n'existent pas (elle crée aussi tous les dossier intermediaires). Le @ sert à ne pas afficher l'appel de la commande
+dirs: #Permet de creer des dossiers pour mettre les obj et les bin. L'option -p permet de cr√©er les dossier que s'ils n'existent pas (elle cr√©e aussi tous les dossier intermediaires). Le @ sert √† ne pas afficher l'appel de la commande
 	@mkdir -p obj
 	@mkdir -p bin
 
@@ -44,16 +44,16 @@ $(EXE) : $(O)
 $(OBJ_DIR)/%.o : %.cpp %.h
 	$(CPP) $(OPTION) -c $< -o $@
 	
-#On a besoin de spécifier manuellement pour main.o (sinon erreur)
+#On a besoin de sp√©cifier manuellement pour main.o (sinon erreur)
 $(OBJ_DIR)/main.o : main.cpp
 	$(CPP) $(OPTION) -c $< -o $@
 	
-os:
+os:#Permet de savoir l'OS
 	@echo $(OS)
 
 clean:
 	$(DEL) $(OBJ_DIR)/*.o $(BIN_DIR)/$(EXE)
 
-git: #À utiliser le moins souvent possible car pas de description du commit :(
+git: #√Ä utiliser le moins souvent possible car pas de description du commit :(
 	git commit -a -m '[Commit depuis le MakeFile]' ; \
 	git push -u git@github.com:JumpingNinja/GameEngine.git

@@ -8,6 +8,7 @@
 #pragma once
 #include <SFML/Graphics.hpp>
 #include <vector>
+#include <iostream>
 
 /**
  L'idée du depth: la profondeur où se trouve lobjet deétermine quand il est dessiné. Plus la profondeur est petite avant il est dessiné.
@@ -92,6 +93,17 @@ public:
      @param aDepth Profondeur. D'abord sont dessinés les entités ayant une profondeur haute, puis par dessus sont dessinés es entités avec une plus petite densité
      **/
     Entity(short Depth);
+    /**
+     @brief Contructeur avec texture
+     @param Texture Texture à appliquer.
+     **/
+    Entity(sf::Texture Texture);
+    /**
+     @brief Contructeur avec texture et profondeur
+     @param Texture Texture à appliquer.
+     @param aDepth Profondeur. D'abord sont dessinés les entités ayant une profondeur haute, puis par dessus sont dessinés es entités avec une plus petite densité
+     **/
+    Entity(sf::Texture Texture, short aDepth);
     
     ///@brief Détruit tous les objets manuellement (Déallocation manuelle). Normalement tout est géré automatiquement
     static void DestroyAll();

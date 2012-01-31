@@ -8,6 +8,7 @@
 
 #include "Game.h"
 #include "Entity.h"
+#include "Mob.h"
 #include "MyClass.h"
 
 //Initialization des membres statiques
@@ -37,7 +38,11 @@ void Game::Start(void)
         if (i<30 && i>=20) p->SetDepth(-2);
         p->SetDepth(i);
     }
-    
+	
+	sf::Texture texture;
+    texture.LoadFromFile("img/ryu.png", sf::IntRect(12, 6, 16, 31));
+	Mob* mob = new Mob(texture, 150);
+	
     while(!IsExiting())
     {
         GameLoop();

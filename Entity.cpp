@@ -41,12 +41,12 @@ Entity::Entity(short Depth) :myIsVisible(1), myDepth(Depth)
 	Entity::list.insert(Entity::it, this);
 }
 
-Entity::Entity(sf::Texture Texture) : Sprite(Texture)
+Entity::Entity(sf::Texture &Texture) : Sprite(Texture)
 {
 	Entity();
 }
 
-Entity::Entity(sf::Texture Texture, short aDepth) : Sprite(Texture), myIsVisible(1), myDepth(aDepth)
+Entity::Entity(sf::Texture &Texture, short aDepth) : Sprite(Texture), myIsVisible(1), myDepth(aDepth)
 {
     if (aDepth<minDepth)
         minDepth=aDepth;

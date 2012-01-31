@@ -26,12 +26,12 @@ Mob::Mob(short aDepth) : Entity(aDepth)
 	Mob();
 }
 
-Mob::Mob(sf::Texture Texture) : Entity(Texture)
+Mob::Mob(sf::Texture &Texture) : Entity(Texture)
 {
 	Mob();
 }
 
-Mob::Mob(sf::Texture Texture, short aDepth) : Entity(Texture, aDepth)
+Mob::Mob(sf::Texture &Texture, short aDepth) : Entity(Texture, aDepth)
 {
 	Mob();
 }

@@ -97,13 +97,13 @@ public:
      @brief Contructeur avec texture
      @param Texture Texture à appliquer.
      **/
-    Entity(sf::Texture Texture);
+    Entity(sf::Texture &Texture);
     /**
      @brief Contructeur avec texture et profondeur
      @param Texture Texture à appliquer.
      @param aDepth Profondeur. D'abord sont dessinés les entités ayant une profondeur haute, puis par dessus sont dessinés es entités avec une plus petite densité
      **/
-    Entity(sf::Texture Texture, short aDepth);
+    Entity(sf::Texture &Texture, short aDepth);
     
     ///@brief Détruit tous les objets manuellement (Déallocation manuelle). Normalement tout est géré automatiquement
     static void DestroyAll();

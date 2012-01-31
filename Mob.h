@@ -38,11 +38,11 @@ class Mob : public Entity
 	/** @brief Constructeur avec texture.
 	* @param aTexture Texture
 	**/
-	Mob(sf::Texture aTexture);
+	Mob(sf::Texture &aTexture);
 	/** @brief Constructeur avec texture et profondeur.
 	* @param aTexture Texture
 	**/
-	Mob(sf::Texture aTexture, short aDepth);
+	Mob(sf::Texture &aTexture, short aDepth);
 	
 	/** @brief Accesseur de la vitesse.
 	*

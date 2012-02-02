@@ -38,30 +38,33 @@ void Game::Start(void)
     p->SetTexture(tx);
     p->SetTextureRect(sf::IntRect(0, 0, 20, 700));
     p->Width=20.f, p->Height=700.f;
-    std::cout<<"rectangle position:"<<p->Left<<", "<<p->Top<<" ("<<p->Width<<", "<<p->Height<<")\n";
     
     p=new CollisionEntity(1);
     p->SetPosition(1014.f, 20.f);
     p->SetTexture(tx);
     p->SetTextureRect(sf::IntRect(0, 0, 20, 700));
     p->Width=20.f, p->Height=700.f;
-    std::cout<<"rectangle position:"<<p->Left<<", "<<p->Top<<" ("<<p->Width<<", "<<p->Height<<")\n";
     
     p=new CollisionEntity(1);
     p->SetPosition(10.f, 720.f);
     p->SetTexture(tx);
     p->SetTextureRect(sf::IntRect(0, 0, 1024, 20));
     p->Width=1024.f, p->Height=20.f;
-    std::cout<<"rectangle position:"<<p->Left<<", "<<p->Top<<" ("<<p->Width<<", "<<p->Height<<")\n";
+    
+    p=new CollisionEntity(1);
+    p->SetPosition(10.f, 10.f);
+    p->SetTexture(tx);
+    p->SetTextureRect(sf::IntRect(0, 0, 1024, 20));
+    p->Width=1024.f, p->Height=20.f;
+
     
     p=new CollisionEntity(0);
     p->SetDepth(-1);
-    p->SetPosition(400.f, 10.f);
+    p->SetPosition(30.f, 50.f);
     p->SetTexture(tx);
     p->SetTextureRect(sf::IntRect(0, 0, 10, 10));
     p->SetColor(sf::Color::Green);
     p->Width=10.f, p->Height=10.f;
-    std::cout<<"rectangle position:"<<p->Left<<", "<<p->Top<<" ("<<p->Width<<", "<<p->Height<<")\n";
     
     //sf::Clock clock; unsigned int counter(0);
     while(!IsExiting())

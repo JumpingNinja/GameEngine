@@ -55,6 +55,10 @@ public:
     virtual void SetPosition(const float &x, const float &y);
     ///@brief Change la position
     virtual void SetPosition(const sf::Vector2f &vec);
+    /** @brief Modificateur de la vitesse.
+     * @param aSpeed Nouvelle vitesse.
+     **/
+	void SetSpeed(const sf::Vector2f& aSpeed);
     
     ///@brief Step sur tous les dynamiques
     static void Step();

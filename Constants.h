@@ -20,13 +20,13 @@ template <class T> const T& min ( const T& a, const T& b ) {
 }
 
 template <class T> const T& abs ( const T& a ) {
-    return (a<static_cast<T>(0))?-a:a;
+    return (a < static_cast<T>(0))?-a:a;
 }
 
 template <class T> const bool& isPositive ( const T& a ) {
-    return (a<static_cast<T>(0))?false:true;
+    return (a < static_cast<T>(0))?false:true;
 }
 
 template <class T> const bool& sign ( const T& a ) {
-    return (a<static_cast<T>(0))?false:true;
+    return (a < static_cast<T>(0))?false:true;
 }

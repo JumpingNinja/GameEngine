@@ -1,7 +1,7 @@
 #include "Mob.h"
 
-std::vector<Mob*> Mob::list;
-std::vector<Mob*>::iterator Mob::it;
+std::list<Mob*> Mob::list;
+std::list<Mob*>::iterator Mob::it;
 float Mob::maxSpeed = 10; // A définir !
 
 /// @brief Renvoi la norme de Vect (fonction temporaire ?)
@@ -12,11 +12,7 @@ float Norm(sf::Vector2f Vect)
 
 Mob::Mob()
 {
-	Mob::it = Mob::list.begin();
-	while(Mob::it != Mob::list.end() && myDepth<(*Mob::it)->myDepth)
-		Mob::it++;
-    
-	Mob::list.insert(Mob::it, this);
+    Mob::list.push_back(this);
 	
 	myMaxSpeed = Mob::maxSpeed;
 }
@@ -26,14 +22,28 @@ Mob::Mob(short aDepth) : Entity(aDepth)
 	Mob();
 }
 
-Mob::Mob(sf::Texture &Texture) : Entity(Texture)
+Mob::Mob(sf::Texture &Texture) : Entity()
 {
 	Mob();
+    SetTexture(Texture);
 }
 
-Mob::Mob(sf::Texture &Texture, short aDepth) : Entity(Texture, aDepth)
+Mob::Mob(sf::Texture &Texture, short aDepth) : Entity(aDepth)
 {
 	Mob();
+    SetTexture(Texture);
+}
+
+Mob::~Mob()
+{
+    for ( Mob::it=Mob::list.begin(); Mob::it!=Mob::list.end(); Mob::it++)
+    {
+        if ((*Mob::it)==this)
+            break;
+    }
+    
+    if ((*Mob::it)==this)
+        Mob::list.erase(Mob::it);
 }
 
 void Mob::SetSpeed(sf::Vector2f aSpeed)

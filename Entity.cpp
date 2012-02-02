@@ -13,21 +13,21 @@ template <class T> const T& max ( const T& a, const T& b ) {
     return (a<b)?b:a;     // or: return comp(a,b)?b:a; for the comp version
 }
 
-std::vector<Entity*> Entity::list;
-std::vector<Entity*>::iterator Entity::it;
+std::list<Entity*> Entity::list;
+std::list<Entity*>::iterator Entity::it;
 short Entity::maxDepth(0), Entity::minDepth(0);
 
 
-Entity::Entity() :myIsVisible(1), myDepth(0)
+Entity::Entity() : sf::Sprite(), myIsVisible(1), myDepth(0)
 {
 	Entity::it = Entity::list.begin();
 	while(Entity::it != Entity::list.end() && myDepth<(*Entity::it)->myDepth)
 		Entity::it++;
-	
+    
 	Entity::list.insert(Entity::it, this);
 }
 
-Entity::Entity(short Depth) :myIsVisible(1), myDepth(Depth)
+Entity::Entity(short Depth) : sf::Sprite(), myIsVisible(1), myDepth(Depth)
 {
     if (Depth<minDepth)
         minDepth=Depth;
@@ -38,25 +38,6 @@ Entity::Entity(short Depth) :myIsVisible(1), myDepth(Depth)
 	while(Entity::it != Entity::list.end() && myDepth<(*Entity::it)->myDepth)
 		Entity::it++;
 
-	Entity::list.insert(Entity::it, this);
-}
-
-Entity::Entity(sf::Texture &Texture) : Sprite(Texture)
-{
-	Entity();
-}
-
-Entity::Entity(sf::Texture &Texture, short aDepth) : Sprite(Texture), myIsVisible(1), myDepth(aDepth)
-{
-    if (aDepth<minDepth)
-        minDepth=aDepth;
-    if (aDepth>maxDepth)
-        maxDepth=aDepth;
-
-	Entity::it = Entity::list.begin();
-	while(Entity::it != Entity::list.end() && myDepth<(*Entity::it)->myDepth)
-		Entity::it++;
-		
 	Entity::list.insert(Entity::it, this);
 }
 
@@ -76,7 +57,7 @@ Entity::~Entity()
 void Entity::DestroyAll()
 {
     while (Entity::list.size()>0)
-        delete Entity::list[0];
+        delete (list.front());
 }
 
 void Entity::DrawAll(sf::RenderTarget &window)

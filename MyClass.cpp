@@ -8,8 +8,8 @@
 
 #include "MyClass.h"
 
-std::vector<MyClass*> MyClass::list;
-std::vector<MyClass*>::iterator MyClass::it;
+std::list<MyClass*> MyClass::list;
+std::list<MyClass*>::iterator MyClass::it;
 
 MyClass::MyClass(short Depth) : Entity::Entity(Depth)
 { 

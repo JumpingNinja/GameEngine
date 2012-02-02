@@ -7,3 +7,17 @@
 //
 
 #include "CollisionEntity.h"
+
+
+bool CollisionEntity::IsSolid()
+{
+    return mySolid;
+}
+
+CollisionEntity::CollisionEntity(const bool &solid) : Entity::Entity(), PolygonShape::PolygonShape(), mySolid(solid)
+{}
+
+bool CollisionEntity::IsColliding(CollisionEntity &other)
+{
+    return PolygonShape::IsColliding(other, *this, other);
+}

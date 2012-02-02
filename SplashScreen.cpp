@@ -7,6 +7,7 @@
 //
 
 #include "SplashScreen.h"
+#include "ResourcePath.hpp"
 
 void SplashScreen::Show(sf::RenderWindow & renderWindow)
 {
@@ -33,6 +34,6 @@ void SplashScreen::Show(sf::RenderWindow & renderWindow)
 SplashScreen::SplashScreen()
 {
     //Load the textures needed
-    myTxBack.LoadFromFile("img/SplashScreen.png");
+    myTxBack.LoadFromFile(ResourcePath()+"img/SplashScreen.png");
     mySprBack.SetTexture(myTxBack);
 }

@@ -7,8 +7,16 @@
 //
 #pragma once
 #include <SFML/Graphics.hpp>
-#include <vector>
-#include <iostream>
+#include <list>
+
+/**
+ @brief Permet de savoir quel type d'entité est une instance et ainsi savoir quoi faire lors des collisions
+ **/
+enum EntityKind {
+    kENK_Any, ///< Valeur par défaut. Acune propriété
+    kENK_Platform, ///< Permet de définir des platformes
+    kENK_Physics ///< Permet de définir des objets simples de physique
+};
 
 /**
  L'idée du depth: la profondeur où se trouve lobjet deétermine quand il est dessiné. Plus la profondeur est petite avant il est dessiné.
@@ -31,8 +39,8 @@
  #include "Entity.h"
  
  class MyClass : public Entity {
-    static std::vector<MyClass*> list;
-    static std::vector<MyClass*>::iterator it;
+    static std::list<MyClass*> list;
+    static std::list<MyClass*>::iterator it;
 public:
     MyClass(short Depth);
     MyClass();
@@ -43,8 +51,8 @@ public:
 
 #include "MyClass.h"
 
-std::vector<MyClass*> MyClass::list;
-std::vector<MyClass*>::iterator MyClass::it;
+std::list<MyClass*> MyClass::list;
+std::list<MyClass*>::iterator MyClass::it;
 
 MyClass::MyClass(short Depth) : Entity::Entity(Depth)
 { 
@@ -77,15 +85,18 @@ MyClass::~MyClass()
 
 class Entity : public sf::Sprite {
 private:
-    static std::vector<Entity*> list;
-    static std::vector<Entity*>::iterator it;
+    static std::list<Entity*> list;
+    static std::list<Entity*>::iterator it;
     static short maxDepth, minDepth;
 protected:
     bool myIsVisible;
     short myDepth;
+    EntityKind myKind;
     
 public:
-    virtual ~Entity();//=0; pou abstraite
+    
+    
+    virtual ~Entity()=0; //pou abstraite
     ///@brief Contructeur, UTILISER PLUTOT new Entity
     Entity();
     /**
@@ -93,17 +104,6 @@ public:
      @param aDepth Profondeur. D'abord sont dessinés les entités ayant une profondeur haute, puis par dessus sont dessinés es entités avec une plus petite densité
      **/
     Entity(short Depth);
-    /**
-     @brief Contructeur avec texture
-     @param Texture Texture à appliquer.
-     **/
-    Entity(sf::Texture &Texture);
-    /**
-     @brief Contructeur avec texture et profondeur
-     @param Texture Texture à appliquer.
-     @param aDepth Profondeur. D'abord sont dessinés les entités ayant une profondeur haute, puis par dessus sont dessinés es entités avec une plus petite densité
-     **/
-    Entity(sf::Texture &Texture, short aDepth);
     
     ///@brief Détruit tous les objets manuellement (Déallocation manuelle). Normalement tout est géré automatiquement
     static void DestroyAll();

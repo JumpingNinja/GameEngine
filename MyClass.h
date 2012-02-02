@@ -13,8 +13,8 @@
 
 class MyClass : public Entity {
     ///@brief Vector où sont stockés des pointeurs sur les instances
-    static std::vector<MyClass*> list;
-    static std::vector<MyClass*>::iterator it;
+    static std::list<MyClass*> list;
+    static std::list<MyClass*>::iterator it;
 public:
     ///@brief Constructeur avec Depth
     ///@param Depth profondeur

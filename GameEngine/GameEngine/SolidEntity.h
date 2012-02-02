@@ -7,3 +7,16 @@
 //
 #pragma once
 
+#include "CollisionEntity.h"
+
+///@brief Objet solide qui est censé pas bouger
+
+
+class SolidEntity : public CollisionEntity {
+    
+public:
+    ///@brief constructeur simple
+    SolidEntity();
+    
+    virtual void Update();
+};

@@ -7,3 +7,14 @@
 //
 
 #include "SolidEntity.h"
+
+SolidEntity::SolidEntity() : CollisionEntity(1)
+{
+    
+}
+
+void SolidEntity::Update()
+{
+    PolygonShape::Update();
+    CollisionGrid::AssignCells(this, 0);
+}

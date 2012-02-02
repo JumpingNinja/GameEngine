@@ -1,25 +1,24 @@
 #ifndef MOB_H
 #define MOB_H
 
-#include <math.h>
-#include <SFML/System.hpp>
+#include <cmath>
 #include <SFML/Graphics.hpp>
 
 #include "Entity.h"
 
 /** @class Classe gérant les objets mobiles
-* Hérite d'Entity, donc affichable.
+* Hrite d'Entity, donc affichable.
 **/
 class Mob : public Entity
 {
-    /**@brief Vector où sont stockés les pointeurs vers les instances des objets mobiles.
+    /**@brief Vector o sont stocks les pointeurs vers les instances des objets mobiles.
 	*
 	**/
-    static std::vector<Mob*> list;
+    static std::list<Mob*> list;
     /**@brief Itérateur de Mob::list
 	*
 	**/
-    static std::vector<Mob*>::iterator it;
+    static std::list<Mob*>::iterator it;
     /**@brief Vitesse limite générale.
 	*
 	**/
@@ -43,7 +42,10 @@ class Mob : public Entity
 	* @param aTexture Texture
 	**/
 	Mob(sf::Texture &aTexture, short aDepth);
-	
+    /** @brief Destructeur
+    *
+    **/
+    ~Mob();
 	/** @brief Accesseur de la vitesse.
 	*
 	**/	

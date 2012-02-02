@@ -23,7 +23,7 @@ Entity::Entity() :myIsVisible(1), myDepth(0)
 	Entity::it = Entity::list.begin();
 	while(Entity::it != Entity::list.end() && myDepth<(*Entity::it)->myDepth)
 		Entity::it++;
-    
+	
 	Entity::list.insert(Entity::it, this);
 }
 
@@ -38,6 +38,25 @@ Entity::Entity(short Depth) :myIsVisible(1), myDepth(Depth)
 	while(Entity::it != Entity::list.end() && myDepth<(*Entity::it)->myDepth)
 		Entity::it++;
 
+	Entity::list.insert(Entity::it, this);
+}
+
+Entity::Entity(sf::Texture &Texture) : Sprite(Texture)
+{
+	Entity();
+}
+
+Entity::Entity(sf::Texture &Texture, short aDepth) : Sprite(Texture), myIsVisible(1), myDepth(aDepth)
+{
+    if (aDepth<minDepth)
+        minDepth=aDepth;
+    if (aDepth>maxDepth)
+        maxDepth=aDepth;
+
+	Entity::it = Entity::list.begin();
+	while(Entity::it != Entity::list.end() && myDepth<(*Entity::it)->myDepth)
+		Entity::it++;
+		
 	Entity::list.insert(Entity::it, this);
 }
 

@@ -9,9 +9,6 @@
 #include "Entity.h"
 #include <iostream>
 
-template <class T> const T& max ( const T& a, const T& b ) {
-    return (a<b)?b:a;     // or: return comp(a,b)?b:a; for the comp version
-}
 
 std::list<Entity*> Entity::list;
 std::list<Entity*>::iterator Entity::it;

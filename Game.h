@@ -11,6 +11,7 @@
 #include "SFML/Graphics.hpp"
 #include "SplashScreen.h"
 
+const unsigned int fpsLimit(30);
 
 class Game
 {

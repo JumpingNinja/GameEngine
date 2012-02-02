@@ -9,6 +9,7 @@
 #include "Game.h"
 #include "Entity.h"
 #include "MyClass.h"
+#include "CollisionEntity.h"
 #include <iostream>
 
 //Initialization des membres statiques
@@ -22,29 +23,53 @@ void Game::Start(void)
         return;
     
     myMainWindow.Create(sf::VideoMode(1024,768,32),"Pang!");
-    myMainWindow.SetFramerateLimit(15.f);
+    myMainWindow.SetFramerateLimit(60.f);
     
     //Show a splashscreen usefull for loading ressources (go edit SplashScreen.cpp)
     myGameState=ShowingSplash;
     
+    //fake texture
+    sf::Texture tx;
     
-    Entity *p;
+    //Manually reate some walls
+    CollisionEntity* p;
+    p=new CollisionEntity(1);
+    p->SetPosition(10.f, 20.f);
+    p->SetTexture(tx);
+    p->SetTextureRect(sf::IntRect(0, 0, 20, 700));
+    p->Width=20.f, p->Height=700.f;
+    std::cout<<"rectangle position:"<<p->Left<<", "<<p->Top<<" ("<<p->Width<<", "<<p->Height<<")\n";
     
-    for (int i=0; i<200; i++)
-    {
-            p=new MyClass(-10);
-
-        if (i<30 && i>=20) p->SetDepth(-2);
-        p->SetDepth(i);
-    }
+    p=new CollisionEntity(1);
+    p->SetPosition(1014.f, 20.f);
+    p->SetTexture(tx);
+    p->SetTextureRect(sf::IntRect(0, 0, 20, 700));
+    p->Width=20.f, p->Height=700.f;
+    std::cout<<"rectangle position:"<<p->Left<<", "<<p->Top<<" ("<<p->Width<<", "<<p->Height<<")\n";
     
-    sf::Clock clock; unsigned int counter(0);
+    p=new CollisionEntity(1);
+    p->SetPosition(10.f, 720.f);
+    p->SetTexture(tx);
+    p->SetTextureRect(sf::IntRect(0, 0, 1024, 20));
+    p->Width=1024.f, p->Height=20.f;
+    std::cout<<"rectangle position:"<<p->Left<<", "<<p->Top<<" ("<<p->Width<<", "<<p->Height<<")\n";
+    
+    p=new CollisionEntity(0);
+    p->SetDepth(-1);
+    p->SetPosition(400.f, 10.f);
+    p->SetTexture(tx);
+    p->SetTextureRect(sf::IntRect(0, 0, 10, 10));
+    p->SetColor(sf::Color::Green);
+    p->Width=10.f, p->Height=10.f;
+    std::cout<<"rectangle position:"<<p->Left<<", "<<p->Top<<" ("<<p->Width<<", "<<p->Height<<")\n";
+    
+    //sf::Clock clock; unsigned int counter(0);
     while(!IsExiting())
     {
-        counter++;
+        //counter++;
         GameLoop();
-        if (clock.GetElapsedTime().AsSeconds()>=1.0f)
-        std::cout<<"Frametime: "<<counter/clock.GetElapsedTime().AsSeconds()<<std::endl, counter=0, clock.Restart();
+        //if (clock.GetElapsedTime().AsSeconds()>=1.0f)
+        //std::cout<<"Frametime: "<<1.f/clock.GetElapsedTime().AsSeconds()<<std::endl, counter=0, clock.Restart();
     }
     
     Entity::DestroyAll(); //à cause des new
@@ -68,6 +93,7 @@ void Game::GameLoop()
         case Game::Playing:
         {
             //Step
+            CollisionEntity::Step();
             
             //drawing
             myMainWindow.Clear(sf::Color(55,0,0));

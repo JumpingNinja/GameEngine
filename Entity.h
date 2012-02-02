@@ -8,6 +8,7 @@
 #pragma once
 #include <SFML/Graphics.hpp>
 #include <list>
+#include "Constants.h"
 
 /**
  @brief Permet de savoir quel type d'entité est une instance et ainsi savoir quoi faire lors des collisions

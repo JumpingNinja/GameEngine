@@ -9,9 +9,6 @@
 #include "Game.h"
 #include "Entity.h"
 #include "MyClass.h"
-#include "SolidEntity.h"
-#include "DynamicEntity.h"
-#include "CollisionGrid.h"
 #include <iostream>
 
 //Initialization des membres statiques
@@ -41,35 +38,7 @@ void Game::Start(void)
         p->SetDepth(i);
     }
     
-    CollisionGrid::CreateGrid(1000.f, 800.f);
-    sf::Texture texture; //Fake texture
-    SolidEntity *p2;
-    p2=new SolidEntity;
-    p2->SetDepth(-2);
-    p2->SetTexture(texture);
-    p2->SetTextureRect(sf::IntRect(0,0,800,8));
-    p2->SetOrigin(400.f, 4.f);
-    p2->SetPosition(50.f, 600.f);
-    p2->SetPointCount(4);
-    p2->SetPoint(0, sf::Vector2f()); p2->SetPoint(1, sf::Vector2f(800.f, 0.f)); p2->SetPoint(2, sf::Vector2f(800.f, 8.f)); p2->SetPoint(1, sf::Vector2f(0.f, 8.f));
-    p2->SetRotation(30.f);
-    p2->SetNewRotation(30.f);
-    
-    CollisionGrid::AssignCells(p2, 0);
-    
-    //p2->Update();
-    
-    DynamicEntity* p3;
-    p3=new DynamicEntity;
-    p3->SetDepth(-2);
-    p3->SetTexture(texture);
-    p3->SetTextureRect(sf::IntRect(0,0,8,8));
-    p3->SetPosition(100.f, 400.f);
-    p3->SetPointCount(4);
-    p3->SetPoint(0, sf::Vector2f()); p3->SetPoint(1, sf::Vector2f(8.f, 0.f)); p3->SetPoint(2, sf::Vector2f(8.f, 8.f)); p3->SetPoint(1, sf::Vector2f(0.f, 8.f));
-    p3->Update();
-    
-    sf::Clock clock; int counter(0);
+    sf::Clock clock; unsigned int counter(0);
     while(!IsExiting())
     {
         counter++;
@@ -78,7 +47,6 @@ void Game::Start(void)
         std::cout<<"Frametime: "<<counter/clock.GetElapsedTime().AsSeconds()<<std::endl, counter=0, clock.Restart();
     }
     
-    CollisionGrid::DestroyGrid();
     Entity::DestroyAll(); //à cause des new
     myMainWindow.Close();
 }
@@ -100,7 +68,6 @@ void Game::GameLoop()
         case Game::Playing:
         {
             //Step
-            DynamicEntity::Step();
             
             //drawing
             myMainWindow.Clear(sf::Color(55,0,0));

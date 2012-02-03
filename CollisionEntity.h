@@ -22,10 +22,11 @@ class CollisionEntity : public Entity, public sf::FloatRect {
 private:
     static std::list<CollisionEntity*> list;
     static std::list<CollisionEntity*>::iterator it;
+    //static float maxSpeed;
 protected:
     bool mySolid; //Solid object don't move
-    float myFriction, myBounce, myGravity;
-    sf::Vector2f myAirFriction, mySpeed, myMaxSpeed;
+    float myFriction, myBounce, myGravity, myMass;
+    sf::Vector2f myAirFriction, mySpeed, myStepSpeed, myMaxSpeed;
     ///@brief update collision rectangle
     void UpdateRect();
 public:
@@ -75,9 +76,20 @@ public:
      ** @return rebondissement de l'objet
      **/
     float GetBounce();
+    /** @brief Change la masse
+     ** @param mass nouvelle masse
+     **/
+    void SetMass(const float &mass);
+    /** @brief Donne la masse
+     ** @return masse de l'objet
+     **/
+    float GetMass();
     
     
     
     ///@brief Step sur tous les dynamiques
     static void Step();
+    ///@brief Obtient la plus grande vitesse pour simuler tout correctement
+    ///@return la plus garnde vitesse
+    static float GetMaxStep();
 };

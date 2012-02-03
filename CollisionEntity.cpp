@@ -17,7 +17,7 @@ bool CollisionEntity::IsSolid()
     return mySolid;
 }
 
-CollisionEntity::CollisionEntity(const bool &solid) : Entity::Entity(), sf::FloatRect(), mySolid(solid), myFriction(0.5f), myBounce(0.5f), myAirFriction(sf::Vector2f()), mySpeed(sf::Vector2f()), myGravity(0.3f), myMaxSpeed(sf::Vector2f(3000.f, 12.f))
+CollisionEntity::CollisionEntity(const bool &solid) : Entity::Entity(), sf::FloatRect(), mySolid(solid), myFriction(0.5f), myBounce(0.5f), myAirFriction(sf::Vector2f()), mySpeed(sf::Vector2f()), myStepSpeed(sf::Vector2f()), myGravity(0.3f), myMaxSpeed(sf::Vector2f(3000.f, 12.f)), myMass(1.f)
 {
     CollisionEntity::list.push_back(this);
 }
@@ -36,6 +36,8 @@ CollisionEntity::~CollisionEntity()
 
 bool CollisionEntity::IsColliding(CollisionEntity &other)
 {
+    //std::cout<<"rectangle position:"<<Left<<", "<<Top<<" ("<<Width<<", "<<Height<<")\n";
+    //std::cout<<"other rectangle position:"<<other.Left<<", "<<other.Top<<" ("<<other.Width<<", "<<other.Height<<")\n";
     return Intersects(other);
 }
 
@@ -50,14 +52,14 @@ RelativePosition CollisionEntity::GetRelativePosition(CollisionEntity &other)
         if (!isPositive(relPos.y)) //on est en bas
         {
             //on regarde la penetration horizontale et verticale dans le rectangle
-            if (abs(relPos.x)+other.Width<abs(relPos.y)+other.Height)
+            if (relPos.x+other.Width<relPos.y+other.Height)
                 return kLeft;
             else
                 return kTop;
         }
         else
         {
-            if (abs(relPos.x)+other.Width<abs(relPos.y)+other.Height)
+            if (relPos.x+other.Width<abs(relPos.y-other.Height))
                 return kLeft;
             else
                 return kBottom;
@@ -65,17 +67,17 @@ RelativePosition CollisionEntity::GetRelativePosition(CollisionEntity &other)
     }
     else //on est sur la gauche
     {
-        if (isPositive(relPos.y)) //on est en bas
+        if (!isPositive(relPos.y)) //on est en bas
         {
             //on calcule aussi la penetration
-            if (abs(relPos.x)+Width<abs(relPos.y)+Height)
+            if (Width-relPos.x<relPos.y+other.Height)
                 return kRight;
             else
                 return kTop;
         }
         else
         {
-            if (abs(relPos.x)+Width<abs(relPos.y)+Height) //on est en haut :)
+            if (Width-relPos.x<abs(relPos.y-other.Height)) //on est en haut :)
                 return kRight;
             else
                 return kBottom;
@@ -108,19 +110,25 @@ void CollisionEntity::TakeAStep()
     //Move(mySpeed);
     
     float maxSpeed(max(static_cast<float>(abs(mySpeed.x)), static_cast<float>(abs(mySpeed.y)))), tmpStep(1.f), tmpSpeed(maxSpeed);
+    //Cette vitesse temporelle permet de gérer les collisions entre objets dynamiques
+    myStepSpeed=mySpeed;
     //if (!isPositive(maxSpeed)) tmpStep*=-1.f;
     //std::cout<<"Max: "<<max(static_cast<float>(abs(5.f)), static_cast<float>(abs(12.f)))<<std::endl;
     
-    while (tmpSpeed>0.01f)
+    while (tmpSpeed>0.0001f)
     {
-        Move(gb::timerate*mySpeed.x/maxSpeed, gb::timerate*mySpeed.y/maxSpeed);
+        if (tmpSpeed>=1.f)
+            Move(gb::timerate*mySpeed.x/maxSpeed, gb::timerate*mySpeed.y/maxSpeed);
+        else
+            Move(gb::timerate*tmpSpeed*mySpeed.x/maxSpeed, gb::timerate*tmpSpeed*mySpeed.y/maxSpeed);
+        
         if (Collide())
             tmpSpeed=0.f;
         else
             tmpSpeed-=tmpStep;
     }
     
-    //std::cout<<"mySpeed: "<<mySpeed.x<<", "<<mySpeed.y<<std::endl;
+    //std::cout<<this<<": mySpeed: "<<mySpeed.x<<", "<<mySpeed.y<<" myStepSpeed: "<<myStepSpeed.x<<", "<<myStepSpeed.y<<std::endl;
 }
 
 void CollisionEntity::Step()
@@ -142,7 +150,6 @@ bool CollisionEntity::Collide()
     for (std::list<CollisionEntity*>::iterator ite=list.begin(); ite!=list.end(); ite++)
     {
         //Collisionner avec tout sauf soit même
-        //std::cout<<"Collision Check!\n";
         //La collision d'un solid est différente à celle d'un non solide
         if ((*ite)!=this)
         {
@@ -150,18 +157,15 @@ bool CollisionEntity::Collide()
             {
                 if (IsColliding(**ite))
                 {
-                    //RelativePosition relPos(GetRelativePosition(**it));
                     switch (GetRelativePosition(**ite)) {
                         case kLeft:
                         case kRight:
-                            //std::cout<<"Sides\n";
                             mySpeed.x=-mySpeed.x*myBounce;
                             mySpeed.y=mySpeed.y*(1.f-myFriction);
                             finish=1;
                             break;
                         case kBottom:
                         case kTop:
-                            //std::cout<<"Top or bottom\n";
                             mySpeed.x=mySpeed.x*(1.f-myFriction);
                             mySpeed.y=-mySpeed.y*myBounce;
                             finish=1;
@@ -173,10 +177,48 @@ bool CollisionEntity::Collide()
                     
                 }
             }
+            else
+            {
+                if (IsColliding(**ite))
+                {
+                    float off(0.f);
+                    //std::cout<<"Dynamic collision\n";
+                    switch (GetRelativePosition(**ite)) {
+                        case kLeft:
+                            //Move(off, 0.f);
+                        case kRight:
+                            //Move(-off, 0.f);
+                            //std::cout<<"Sides\n";
+                            //mySpeed.x=-mySpeed.x*myBounce;
+                            //mySpeed.y=mySpeed.y*(1.f-myFriction);
+                            mySpeed.x=(-mySpeed.x/((myMass+(*ite)->myMass)/myMass)+(*ite)->myStepSpeed.x/((myMass+(*ite)->myMass)/(*ite)->myMass))*myBounce;
+                            mySpeed.y=(mySpeed.y/((myMass+(*ite)->myMass)/myMass)+(*ite)->myStepSpeed.y/((myMass+(*ite)->myMass)/(*ite)->myMass))*(1.f-myFriction);
+                            (*ite)->mySpeed.x=(-(*ite)->mySpeed.x/((myMass+(*ite)->myMass)/(*ite)->myMass)+myStepSpeed.x/((myMass+(*ite)->myMass)/myMass))*(*ite)->myBounce;
+                            (*ite)->mySpeed.y=((*ite)->mySpeed.y/((myMass+(*ite)->myMass)/(*ite)->myMass)+myStepSpeed.y/((myMass+(*ite)->myMass)/myMass))*(1.f-(*ite)->myFriction);
+                            finish=1;
+                            break;
+                        case kBottom:
+                            //Move(0.f, -off);
+                        case kTop:
+                            //Move(0.f, off);
+                            //std::cout<<"Top or bottom\n";
+                            //mySpeed.x=mySpeed.x*(1.f-myFriction);
+                            //mySpeed.y=-mySpeed.y*myBounce;
+                            mySpeed.x=(mySpeed.x/((myMass+(*ite)->myMass)/myMass)+(*ite)->myStepSpeed.x/((myMass+(*ite)->myMass)/(*ite)->myMass))*(1.f-myFriction);
+                            mySpeed.y=(-mySpeed.y/((myMass+(*ite)->myMass)/myMass)+(*ite)->myStepSpeed.y/((myMass+(*ite)->myMass)/(*ite)->myMass))*myBounce;
+                            (*ite)->mySpeed.x=((*ite)->mySpeed.x/((myMass+(*ite)->myMass)/(*ite)->myMass)+myStepSpeed.x/((myMass+(*ite)->myMass)/myMass))*(1.f-(*ite)->myFriction);
+                            (*ite)->mySpeed.y=(-(*ite)->mySpeed.y/((myMass+(*ite)->myMass)/(*ite)->myMass)+myStepSpeed.y/((myMass+(*ite)->myMass)/myMass))*(*ite)->myBounce;
+                            finish=1;
+                            break;
+                            
+                        default:
+                            break;
+                    }
+                }
+            }
             
             if (finish)
                 return 1;
-
         }
     }
     return 0;
@@ -237,3 +279,23 @@ float CollisionEntity::GetBounce()
 {
     return myBounce;
 }
+
+float CollisionEntity::GetMass()
+{
+    return myMass;
+}
+
+void CollisionEntity::SetMass(const float &mass)
+{
+    myMass=mass;
+}
+
+/*float CollisionEntity::GetMaxStep()
+{
+    float maxStepSpeed(0.f);
+    for (it=list.begin(); it!=list.end(); it++)
+    {
+        maxStepSpeed=max(maxStepSpeed, max(static_cast<float>(abs((*it)->mySpeed.x)), static_cast<float>(abs((*it)->mySpeed.y))));
+    }
+    return maxStepSpeed;
+}*/

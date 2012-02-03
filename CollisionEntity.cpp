@@ -91,7 +91,8 @@ void CollisionEntity::TakeAStep()
     if (mySolid) return;
     //std::cout<<"Step staken\n";
     if (!CheckGround(1.f+Height))
-        mySpeed.y+=myGravity;
+        mySpeed.y+=myGravity*gb::timerate;
+    //std::cout<<"grav:"<<myGravity*gb::timerate<<std::endl;
     
     //On limite la vitesse
     mySpeed.y=min(mySpeed.y, myMaxSpeed.y);
@@ -101,8 +102,8 @@ void CollisionEntity::TakeAStep()
         mySpeed.x=min(mySpeed.x, myMaxSpeed.x);
     
     //Stoppe quand la vitesse est très petite, il faut prendre la valeur de myGravity pour y!
-    if (abs(mySpeed.x)<0.2f) mySpeed.x=0.f;
-    if (abs(mySpeed.y)<0.3f) mySpeed.y=0.f;
+    if (abs(mySpeed.x)<0.2f*gb::timerate) mySpeed.x=0.f;
+    if (abs(mySpeed.y)<0.3f*gb::timerate) mySpeed.y=0.f;
     
     //Move(mySpeed);
     
@@ -112,7 +113,7 @@ void CollisionEntity::TakeAStep()
     
     while (tmpSpeed>0.01f)
     {
-        Move(mySpeed.x/maxSpeed, mySpeed.y/maxSpeed);
+        Move(gb::timerate*mySpeed.x/maxSpeed, gb::timerate*mySpeed.y/maxSpeed);
         if (Collide())
             tmpSpeed=0.f;
         else

@@ -16,3 +16,5 @@ template <class T> const T& min ( const T& a, const T& b ) {
     return (a>b)?b:a;     // or: return comp(a,b)?b:a; for the comp version
 }
 */
+
+float gb::timerate(1.f);

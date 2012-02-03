@@ -30,3 +30,10 @@ template <class T> const bool& isPositive ( const T& a ) {
 template <class T> const bool& sign ( const T& a ) {
     return (a < static_cast<T>(0))?false:true;
 }
+
+///@brief Classe d'accès global
+
+class gb {
+public:
+    static float timerate;
+};

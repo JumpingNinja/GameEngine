@@ -71,6 +71,9 @@ void Game::Start(void)
     p->SetBounce(1.f);
     p->SetSpeed(sf::Vector2f(8.f,-3.f));
     
+    //On ralentie le temps
+    gb::timerate=0.2f;
+    
     //sf::Clock clock; unsigned int counter(0);
     while(!IsExiting())
     {

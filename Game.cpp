@@ -69,18 +69,17 @@ void Game::Start(void)
         p->Width=10.f, p->Height=10.f;
         
         //Quelques paramètres por un objet qui ne s'arrete jamais de bouger ^^
-        p->SetFriction(0.2f);
-        p->SetBounce(0.90f);
+        //p->SetFriction(0.0f), p->SetBounce(1.0f);
         p->SetSpeed(sf::Vector2f(5.f, 3.f));
         if (i==0)
-            p->SetSpeed(sf::Vector2f(8.f,-3.f)), p->SetColor(sf::Color::Blue), p->SetMass(3.f);
+            p->SetSpeed(sf::Vector2f(180.f,-3.f)), p->SetColor(sf::Color::Blue), p->SetMass(2.f), p->SetDepth(-2);
         if (i==1)
-            p->SetSpeed(sf::Vector2f(-8.f, -3.f));
+            p->SetSpeed(sf::Vector2f(-180.f, -3.f));
     }
     
     
     //On ralentie le temps
-    //gb::timerate=0.2f;
+    gb::timerate=0.2f;
     
     //sf::Clock clock; unsigned int counter(0);
     while(!IsExiting())
@@ -99,7 +98,7 @@ bool Game::IsExiting()
 {
     if(myGameState == Game::Exiting) 
         return true;
-    else 
+    else
         return false;
 }
 

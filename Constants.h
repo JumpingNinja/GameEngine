@@ -22,11 +22,11 @@ template <class T> const T abs ( const T& a ) {
     return (a < static_cast<T>(0))?-a:a;
 }
 
-template <class T> const bool isPositive ( const T& a ) {
+template <class T> bool isPositive ( const T& a ) {
     return (a >= static_cast<T>(0));
 }
 
-template <class T> const bool sign ( const T& a ) {
+template <class T> bool sign ( const T& a ) {
     return (a >= static_cast<T>(0));
 }
 

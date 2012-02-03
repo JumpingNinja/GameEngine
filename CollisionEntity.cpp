@@ -94,6 +94,7 @@ void CollisionEntity::TakeAStep()
     //std::cout<<"Step staken\n";
     if (!CheckGround(1.f+Height))
         mySpeed.y+=myGravity*gb::timerate;
+    else if (mySpeed.x>0.2f && mySpeed.y>0.3f) MoveOutside();
     //std::cout<<"grav:"<<myGravity*gb::timerate<<std::endl;
     
     //On limite la vitesse
@@ -181,13 +182,13 @@ bool CollisionEntity::Collide()
             {
                 if (IsColliding(**ite))
                 {
-                    //float off(0.f);
+                    float off(0.5f);
                     //std::cout<<"Dynamic collision\n";
                     switch (GetRelativePosition(**ite)) {
                         case kLeft:
-                            //Move(off, 0.f);
+                            Move(off, 0.f);
                         case kRight:
-                            //Move(-off, 0.f);
+                            Move(-off, 0.f);
                             //std::cout<<"Sides\n";
                             //mySpeed.x=-mySpeed.x*myBounce;
                             //mySpeed.y=mySpeed.y*(1.f-myFriction);
@@ -198,9 +199,9 @@ bool CollisionEntity::Collide()
                             finish=1;
                             break;
                         case kBottom:
-                            //Move(0.f, -off);
+                            Move(0.f, -off);
                         case kTop:
-                            //Move(0.f, off);
+                            Move(0.f, off);
                             //std::cout<<"Top or bottom\n";
                             //mySpeed.x=mySpeed.x*(1.f-myFriction);
                             //mySpeed.y=-mySpeed.y*myBounce;
@@ -228,10 +229,13 @@ bool CollisionEntity::CheckGround(const float &offsetY)
 {
     for (std::list<CollisionEntity*>::iterator ite=list.begin(); ite!=list.end(); ite++)
     {
-        if ((*ite)!=this && (*ite)->IsSolid())
+        if ((*ite)!=this)// && (*ite)->IsSolid())
         {
             if ((*ite)->Contains(GetPosition().x, GetPosition().y+offsetY))
+            {
+                //MoveOutside(sf::Vector2f(0.f, -1.f), 5);
                 return 1;
+            }
         }
     }
     return 0;
@@ -288,6 +292,47 @@ float CollisionEntity::GetMass()
 void CollisionEntity::SetMass(const float &mass)
 {
     myMass=mass;
+}
+
+
+void CollisionEntity::MoveOutside(sf::Vector2f const &dirVec, const unsigned int maxSteps)
+{
+    bool turn(1); unsigned int times(0);
+    while (turn && times<maxSteps)
+    {
+        turn=0;
+        times++;
+        for (std::list<CollisionEntity*>::iterator ite=list.begin(); ite!=list.end(); ite++)
+            if (IsColliding(**ite))
+                Move(dirVec), turn=1, UpdateRect();
+    }
+}
+
+void CollisionEntity::MoveOutside()
+{
+    sf::Vector2f mVec; float off(0.5f);
+    for (std::list<CollisionEntity*>::iterator ite=list.begin(); ite!=list.end(); ite++)
+        if ((*ite)->Contains(Left-off, Top+Height/2.f))
+        {
+            mVec.x=off;
+            break;
+        }
+    
+    if (abs(mVec.x)<0.1f)
+    for (std::list<CollisionEntity*>::iterator ite=list.begin(); ite!=list.end(); ite++)
+        if ((*ite)->Contains(Left+Width+off, Top+Height/2.f))
+        {
+            mVec.x=-off;
+            break;
+        }
+    
+    for (std::list<CollisionEntity*>::iterator ite=list.begin(); ite!=list.end(); ite++)
+        if ((*ite)->Contains(Left+Width/2.f, Top+Height+off))
+        {
+            mVec.y=-off;
+            break;
+        }
+    Move(mVec);
 }
 
 /*float CollisionEntity::GetMaxStep()

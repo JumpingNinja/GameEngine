@@ -84,6 +84,12 @@ public:
      ** @return masse de l'objet
      **/
     float GetMass();
+    ///@brief Bouge l'objet jusqu'à que celui-ci se trouve sans collisions
+    ///@param dirVec Direction vers où bouger et pas à faire
+    ///@param maxStep maximum de boucle à faire
+    void MoveOutside(const sf::Vector2f &dirVec, const unsigned int maxSteps);
+    ///@brief Bouge selon ses cotes et le bas por ne pas rentrer dans autres objets
+    void MoveOutside();
     
     
     

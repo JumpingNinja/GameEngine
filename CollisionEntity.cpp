@@ -181,7 +181,7 @@ bool CollisionEntity::Collide()
             {
                 if (IsColliding(**ite))
                 {
-                    float off(0.f);
+                    //float off(0.f);
                     //std::cout<<"Dynamic collision\n";
                     switch (GetRelativePosition(**ite)) {
                         case kLeft:

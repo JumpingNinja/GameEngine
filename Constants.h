@@ -28,7 +28,6 @@ template <class T> const bool isPositive ( const T& a ) {
 
 template <class T> const bool sign ( const T& a ) {
     return (a >= static_cast<T>(0));
->>>>>>> e72c09c5c64273863a3dfca7245254ba1fb3f678
 }
 
 ///@brief Classe d'accès global

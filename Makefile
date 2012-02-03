@@ -40,7 +40,11 @@ O := $(patsubst %,$(OBJ_DIR)/%,$(_O)) #Ça permet de mettre les .o dans le dossi
 H := $(C:.cpp=.h)
 OPTION := -Wall -pedantic
 
+ifeq ($(OS), Win)
+all : $(EXE)
+else
 all : dirs $(EXE)
+endif
 #$(DEL) *.o
 	./$(BIN_DIR)/$(EXE)
 	

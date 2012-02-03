@@ -18,17 +18,17 @@ template <class T> const T& max ( const T& a, const T& b ) {
 template <class T> const T& min ( const T& a, const T& b ) {
     return (a>b)?b:a;     // or: return comp(a,b)?b:a; for the comp version
 }
-
-template <class T> T abs ( const T& a ) {
+template <class T> const T abs ( const T& a ) {
     return (a < static_cast<T>(0))?-a:a;
 }
 
-template <class T>  bool isPositive ( const T& a ) {
-    return (a < static_cast<T>(0))?false:true;
+template <class T> const bool isPositive ( const T& a ) {
+    return (a >= static_cast<T>(0));
 }
 
-template <class T> bool sign ( const T& a ) {
-    return (a < static_cast<T>(0))?false:true;
+template <class T> const bool sign ( const T& a ) {
+    return (a >= static_cast<T>(0));
+>>>>>>> e72c09c5c64273863a3dfca7245254ba1fb3f678
 }
 
 ///@brief Classe d'accès global

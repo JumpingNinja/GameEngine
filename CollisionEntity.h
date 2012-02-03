@@ -59,6 +59,24 @@ public:
      * @param aSpeed Nouvelle vitesse.
      **/
 	void SetSpeed(const sf::Vector2f& aSpeed);
+    /** @brief Change la friction
+     ** @param friction nouvelle friction
+    **/
+    void SetFriction(const float &friction);
+    /** @brief Change le rebondissement
+     ** @param bounce nouvel rebondissement
+     **/
+    void SetBounce(const float &bounce);
+    /** @brief Donne la friction
+     ** @return friction de l'objet
+     **/
+    float GetFriction();
+    /** @brief Donne le rebondissement
+     ** @return rebondissement de l'objet
+     **/
+    float GetBounce();
+    
+    
     
     ///@brief Step sur tous les dynamiques
     static void Step();

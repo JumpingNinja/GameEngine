@@ -20,7 +20,6 @@ bool CollisionEntity::IsSolid()
 CollisionEntity::CollisionEntity(const bool &solid) : Entity::Entity(), sf::FloatRect(), mySolid(solid), myFriction(0.5f), myBounce(0.5f), myAirFriction(sf::Vector2f()), mySpeed(sf::Vector2f()), myGravity(0.3f), myMaxSpeed(sf::Vector2f(3000.f, 12.f))
 {
     CollisionEntity::list.push_back(this);
-    mySpeed=sf::Vector2f(20.f,-30.f);
 }
 
 CollisionEntity::~CollisionEntity()
@@ -44,7 +43,7 @@ RelativePosition CollisionEntity::GetRelativePosition(CollisionEntity &other)
 {
     //Top et Left donnent déjà la position
     sf::Vector2f relPos(other.Left-Left, other.Top-Top);
-    std::cout<<"vect: "<<relPos.x<<", "<<relPos.y<<std::endl;
+    //std::cout<<"vect: "<<relPos.x<<", "<<relPos.y<<std::endl;
     
     if (!isPositive(relPos.x)) //on est sur la droite
     {
@@ -83,27 +82,6 @@ RelativePosition CollisionEntity::GetRelativePosition(CollisionEntity &other)
         }
     }
     
-    /*if (!sign(relPos.x)) //positif
-            return kTop;
-        else
-            return kLeft;   
-    
-    
-    if ((Top >= other.Top && Top <= other.Height+other.Top) || (Top+Height >= other.Top && Top+Height <= other.Height+other.Top) || (Top <= other.Top && Top+Height >= other.Top+other.Height))
-    {
-        if (Left >= other.Left)
-            return kLeft;
-        else
-            return kRight;
-    }
-    else
-    {
-        if (Top >= other.Top)
-            return kTop;
-        else
-            return kBottom;
-    }
-     */
     
     //On considere que si ce n'es pas l'une c'est l'autre car cette fonction doit être utilisée lorsqu'il y a collision
 }
@@ -122,7 +100,8 @@ void CollisionEntity::TakeAStep()
     else
         mySpeed.x=min(mySpeed.x, myMaxSpeed.x);
     
-    if (abs(mySpeed.x)<0.3f) mySpeed.x=0.f;
+    //Stoppe quand la vitesse est très petite, il faut prendre la valeur de myGravity pour y!
+    if (abs(mySpeed.x)<0.2f) mySpeed.x=0.f;
     if (abs(mySpeed.y)<0.3f) mySpeed.y=0.f;
     
     //Move(mySpeed);
@@ -140,7 +119,7 @@ void CollisionEntity::TakeAStep()
             tmpSpeed-=tmpStep;
     }
     
-    std::cout<<"mySpeed: "<<mySpeed.x<<", "<<mySpeed.y<<std::endl;
+    //std::cout<<"mySpeed: "<<mySpeed.x<<", "<<mySpeed.y<<std::endl;
 }
 
 void CollisionEntity::Step()
@@ -148,11 +127,9 @@ void CollisionEntity::Step()
     //std::cout<<"Starting global step\n";
     //list.back()->SetPosition(sf::Mouse::GetPosition().x, sf::Mouse::GetPosition().y);
     //list.back()->Collide();
-    list.back()->TakeAStep();
-    /*for (it=list.begin(); it!=list.end(); it++)
-    {
-            (*it)->TakeAStep();
-    }*/
+    //list.back()->TakeAStep();
+    for (it=list.begin(); it!=list.end(); it++)
+        (*it)->TakeAStep();
         
 }
 
@@ -161,29 +138,29 @@ bool CollisionEntity::Collide()
     UpdateRect();
     bool finish(0);
     //On teste les collisions
-    for (it=list.begin(); it!=list.end(); it++)
+    for (std::list<CollisionEntity*>::iterator ite=list.begin(); ite!=list.end(); ite++)
     {
         //Collisionner avec tout sauf soit même
         //std::cout<<"Collision Check!\n";
         //La collision d'un solid est différente à celle d'un non solide
-        if ((*it)!=this)
+        if ((*ite)!=this)
         {
-            if ((*it)->IsSolid())
+            if ((*ite)->IsSolid())
             {
-                if (IsColliding(**it))
+                if (IsColliding(**ite))
                 {
                     //RelativePosition relPos(GetRelativePosition(**it));
-                    switch (GetRelativePosition(**it)) {
+                    switch (GetRelativePosition(**ite)) {
                         case kLeft:
                         case kRight:
-                            std::cout<<"Sides\n";
+                            //std::cout<<"Sides\n";
                             mySpeed.x=-mySpeed.x*myBounce;
                             mySpeed.y=mySpeed.y*(1.f-myFriction);
                             finish=1;
                             break;
                         case kBottom:
                         case kTop:
-                            std::cout<<"Top or bottom\n";
+                            //std::cout<<"Top or bottom\n";
                             mySpeed.x=mySpeed.x*(1.f-myFriction);
                             mySpeed.y=-mySpeed.y*myBounce;
                             finish=1;
@@ -206,11 +183,11 @@ bool CollisionEntity::Collide()
 
 bool CollisionEntity::CheckGround(const float &offsetY)
 {
-    for (it=list.begin(); it!=list.end(); it++)
+    for (std::list<CollisionEntity*>::iterator ite=list.begin(); ite!=list.end(); ite++)
     {
-        if ((*it)!=this && (*it)->IsSolid())
+        if ((*ite)!=this && (*ite)->IsSolid())
         {
-            if ((*it)->Contains(GetPosition().x, GetPosition().y+offsetY))
+            if ((*ite)->Contains(GetPosition().x, GetPosition().y+offsetY))
                 return 1;
         }
     }
@@ -238,4 +215,24 @@ void CollisionEntity::SetPosition(sf::Vector2f const &vec)
 {
     sf::Transformable::SetPosition(vec);
     UpdateRect();
+}
+
+void CollisionEntity::SetFriction(const float &friction)
+{
+    myFriction=friction;
+}
+
+void CollisionEntity::SetBounce(const float &bounce)
+{
+    myBounce=bounce;
+}
+
+float CollisionEntity::GetFriction()
+{
+    return myFriction;
+}
+
+float CollisionEntity::GetBounce()
+{
+    return myBounce;
 }

@@ -66,6 +66,11 @@ void Game::Start(void)
     p->SetColor(sf::Color::Green);
     p->Width=10.f, p->Height=10.f;
     
+    //Quelques paramètres por un objet qui ne s'arrete jamais de bouger ^^
+    p->SetFriction(0.0f);
+    p->SetBounce(1.f);
+    p->SetSpeed(sf::Vector2f(8.f,-3.f));
+    
     //sf::Clock clock; unsigned int counter(0);
     while(!IsExiting())
     {

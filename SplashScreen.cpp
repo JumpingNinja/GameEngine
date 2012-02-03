@@ -7,7 +7,7 @@
 //
 
 #include "SplashScreen.h"
-#include "ResourcePath.hpp"
+#include "ResourcePath.h"
 
 void SplashScreen::Show(sf::RenderWindow & renderWindow)
 {

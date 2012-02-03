@@ -17,7 +17,7 @@ bool CollisionEntity::IsSolid()
     return mySolid;
 }
 
-CollisionEntity::CollisionEntity(const bool &solid) : Entity::Entity(), sf::FloatRect(), mySolid(solid), myFriction(0.5f), myBounce(0.5f), myAirFriction(sf::Vector2f()), mySpeed(sf::Vector2f()), myStepSpeed(sf::Vector2f()), myGravity(0.3f), myMaxSpeed(sf::Vector2f(3000.f, 12.f)), myMass(1.f)
+CollisionEntity::CollisionEntity(const bool &solid) : Entity::Entity(), mySolid(solid), myFriction(0.5f), myBounce(0.5f), myGravity(0.3f), myMass(1.f), myAirFriction(sf::Vector2f()), mySpeed(sf::Vector2f()), myStepSpeed(sf::Vector2f()), myMaxSpeed(sf::Vector2f(3000.f, 12.f))
 {
     CollisionEntity::list.push_back(this);
 }

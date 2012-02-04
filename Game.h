@@ -18,6 +18,7 @@ class Game
     static SplashScreen mySplash;
 public:
     static void Start();
+    static const sf::Texture& GetTexture(const std::string& key);
     
 private:
     static bool IsExiting();
@@ -28,6 +29,6 @@ private:
     
     static GameState myGameState;
     static sf::RenderWindow myMainWindow;
-    static TxManager mytxManager;
+    static TxManager myTxManager;
 };
 

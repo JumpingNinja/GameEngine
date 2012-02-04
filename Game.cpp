@@ -16,7 +16,7 @@
 Game::GameState Game::myGameState = Uninitialized;
 sf::RenderWindow Game::myMainWindow;
 SplashScreen Game::mySplash;
-TxManager Game::mytxManager;
+TxManager Game::myTxManager;
 
 void Game::Start(void)
 {
@@ -29,7 +29,7 @@ void Game::Start(void)
     //Show a splashscreen usefull for loading ressources (go edit SplashScreen.cpp)
     myGameState=ShowingSplash;
     //Ceci se fait normalement dans ScreenSplash::Show()
-    mytxManager.LoadResources();
+    myTxManager.LoadResources();
     
     //fake texture
     sf::Texture tx;
@@ -75,7 +75,7 @@ void Game::Start(void)
         //p->SetFriction(0.0f), p->SetBounce(1.0f);
         p->SetSpeed(sf::Vector2f(5.f, -3.f));
         if (i==0)
-            p->SetSpeed(sf::Vector2f(-18.f,-3.f)), p->SetColor(sf::Color::White), p->SetMass(2.f), p->SetDepth(-2), p->SetTexture(mytxManager.GetTexture("player"));
+            p->SetSpeed(sf::Vector2f(-18.f,-3.f)), p->SetColor(sf::Color::White), p->SetMass(2.f), p->SetDepth(-2), p->SetTexture(GetTexture("player"));
         if (i==49)
             p->SetSpeed(sf::Vector2f(18.f, -3.f));
     }
@@ -141,4 +141,9 @@ void Game::GameLoop()
             myGameState=Game::Exiting;
         
     }
+}
+
+const sf::Texture& Game::GetTexture(const std::string& key)
+{
+    return myTxManager.GetTexture(key);
 }

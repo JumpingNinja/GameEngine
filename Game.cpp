@@ -16,6 +16,7 @@
 Game::GameState Game::myGameState = Uninitialized;
 sf::RenderWindow Game::myMainWindow;
 SplashScreen Game::mySplash;
+TxManager Game::mytxManager;
 
 void Game::Start(void)
 {
@@ -27,6 +28,8 @@ void Game::Start(void)
     
     //Show a splashscreen usefull for loading ressources (go edit SplashScreen.cpp)
     myGameState=ShowingSplash;
+    //Ceci se fait normalement dans ScreenSplash::Show()
+    mytxManager.LoadResources();
     
     //fake texture
     sf::Texture tx;
@@ -70,16 +73,16 @@ void Game::Start(void)
         
         //Quelques paramètres por un objet qui ne s'arrete jamais de bouger ^^
         //p->SetFriction(0.0f), p->SetBounce(1.0f);
-        p->SetSpeed(sf::Vector2f(5.f, 3.f));
+        p->SetSpeed(sf::Vector2f(5.f, -3.f));
         if (i==0)
-            p->SetSpeed(sf::Vector2f(180.f,-3.f)), p->SetColor(sf::Color::Blue), p->SetMass(2.f), p->SetDepth(-2);
-        if (i==1)
-            p->SetSpeed(sf::Vector2f(-180.f, -3.f));
+            p->SetSpeed(sf::Vector2f(-18.f,-3.f)), p->SetColor(sf::Color::White), p->SetMass(2.f), p->SetDepth(-2), p->SetTexture(mytxManager.GetTexture("player"));
+        if (i==49)
+            p->SetSpeed(sf::Vector2f(18.f, -3.f));
     }
     
     
     //On ralentie le temps
-    //gb::timerate=0.2f;
+    gb::timerate=0.85f;
     
     //sf::Clock clock; unsigned int counter(0);
     while(!IsExiting())
@@ -123,6 +126,7 @@ void Game::GameLoop()
         
         case Game::ShowingSplash:
             mySplash.Show(myMainWindow);
+            //c'est la aussi que mySplash.Show() va faire normalement appel au chargement de resources pour afficher "Loading"
             myGameState=Playing;
             break;
         default:

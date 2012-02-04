@@ -30,6 +30,8 @@ template <class T> bool sign ( const T& a ) {
     return (a >= static_cast<T>(0));
 }
 
+void wobble(float &current_position, float const& target_position, float const& force,float const& friction, float &m_spd);
+
 ///@brief Classe d'accès global
 
 class gb {

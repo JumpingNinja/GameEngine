@@ -7,6 +7,7 @@
 //
 #pragma once
 #include <SFML/Graphics.hpp>
+#include "TxManager.h"
 
 class SplashScreen
 {

@@ -28,5 +28,6 @@ private:
     
     static GameState myGameState;
     static sf::RenderWindow myMainWindow;
+    static TxManager mytxManager;
 };
 

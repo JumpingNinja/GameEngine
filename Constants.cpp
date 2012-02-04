@@ -18,3 +18,9 @@ template <class T> const T& min ( const T& a, const T& b ) {
 */
 
 float gb::timerate(1.f);
+
+void wobble(float &current_position, float const& target_position, float const& force,float const& friction, float &m_spd)
+{
+	m_spd=(m_spd+((target_position-current_position)/2)*force)*(1-friction);
+	current_position+=m_spd;
+}

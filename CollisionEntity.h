@@ -53,9 +53,19 @@ public:
     ///@brief vérifie si on est par terre ou pas
     bool CheckGround(const float &offsetY);
     ///@brief Change la position
+    ///@param x nouvel x
+    ///@param y nouvel y
     virtual void SetPosition(const float &x, const float &y);
     ///@brief Change la position
+    ///@param vec vecteur position
     virtual void SetPosition(const sf::Vector2f &vec);
+    ///@brief bouge l'objet
+    ///@param x mouvement horizontal
+    ///@param y mouvement vertical
+    virtual void Move(const float &x, const float &y);
+    ///@brief Change la position
+    ///@param vec vecteur de mouvement
+    virtual void Move(const sf::Vector2f &vec);
     /** @brief Modificateur de la vitesse.
      * @param aSpeed Nouvelle vitesse.
      **/

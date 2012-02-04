@@ -15,7 +15,7 @@ std::list<Entity*>::iterator Entity::it;
 short Entity::maxDepth(0), Entity::minDepth(0);
 
 
-Entity::Entity() : sf::Sprite(), myIsVisible(1), myDepth(0)
+Entity::Entity() : sf::Sprite(), myIsVisible(1), myDestroy(0), myDepth(0), myKind(kEK_Any)
 {
 	Entity::it = Entity::list.begin();
 	while(Entity::it != Entity::list.end() && myDepth<(*Entity::it)->myDepth)
@@ -24,7 +24,7 @@ Entity::Entity() : sf::Sprite(), myIsVisible(1), myDepth(0)
 	Entity::list.insert(Entity::it, this);
 }
 
-Entity::Entity(short Depth) : sf::Sprite(), myIsVisible(1), myDepth(Depth)
+Entity::Entity(short Depth) : sf::Sprite(),  myIsVisible(1), myDestroy(0), myDepth(0), myKind(kEK_Any)
 {
     if (Depth<minDepth)
         minDepth=Depth;
@@ -62,30 +62,13 @@ void Entity::DrawAll(sf::RenderTarget &window)
     sf::Clock clock;
     clock.Restart();
 	for(Entity::it = Entity::list.begin(); Entity::it != Entity::list.end(); Entity::it++)
-		if ((*Entity::it)->myIsVisible)
-            window.Draw(**Entity::it);// std::cout << "Drawn depth: " << (*it)->myDepth << std::endl;
-	/*
-    unsigned int nDrawn(0);
-    short currentDepth(maxDepth), nextDepth(maxDepth);
-    while (nDrawn<list.size())
     {
-        currentDepth=nextDepth;
-        nextDepth=minDepth; //la plus basse profondeur
-        for (it=list.begin(); it!=list.end(); it++)
-        {
-            if ((*it)->myDepth==currentDepth)
-            {
-                if ((*it)->myIsVisible)
-                    window.Draw(**it);
-                nDrawn++;
-            }
-            if ((*it)->myDepth<currentDepth) //Cette profondeur n'a pas encore été dessinné
-                nextDepth=max(nextDepth, (*it)->myDepth); //On prend la profondeur plus grande non dessinnée
-        }
-        //std::cout<<"Drawn depth: "<<currentDepth<<std::endl;
+        if ((*Entity::it)->myIsVisible)
+            window.Draw(**Entity::it);
+        if ((*Entity::it)->myDestroy)
+            delete (*Entity::it), it--;
+            
     }
-	*/
-    //std::cout<<"Time to draw: "<<clock.GetElapsedTime().AsMicroseconds()<<" millisenconds\n";
 }
 
 void Entity::SetDepth(short Depth)
@@ -124,4 +107,14 @@ void Entity::SetVisible(bool Visible)
 bool Entity::GetVisible() const
 {
     return myIsVisible;
+}
+
+void Entity::SetAlpha(sf::Uint8 const &alpha)
+{
+    SetColor(sf::Color(GetColor().r, GetColor().g, GetColor().b, alpha));
+}
+
+sf::Uint8 Entity::GetAlpha() const
+{
+    return GetColor().a;
 }

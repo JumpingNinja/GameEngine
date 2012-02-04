@@ -14,9 +14,9 @@
  @brief Permet de savoir quel type d'entité est une instance et ainsi savoir quoi faire lors des collisions
  **/
 enum EntityKind {
-    kENK_Any, ///< Valeur par défaut. Acune propriété
-    kENK_Platform, ///< Permet de définir des platformes
-    kENK_Physics ///< Permet de définir des objets simples de physique
+    kEK_Any, ///< Valeur par défaut. Acune propriété
+    kEK_Platform, ///< Permet de définir des platformes
+    kEK_Physics ///< Permet de définir des objets simples de physique
 };
 
 /**
@@ -90,7 +90,7 @@ private:
     static std::list<Entity*>::iterator it;
     static short maxDepth, minDepth;
 protected:
-    bool myIsVisible;
+    bool myIsVisible, myDestroy;
     short myDepth;
     EntityKind myKind;
     
@@ -127,6 +127,11 @@ public:
     ///@brief Retourne la visibilité de l'entité
     ///@return retourne la visibilté de l'entité
     bool GetVisible() const;
-    
+    ///@brief Change l'opacité
+    ///@param alpha nouvelle opacité comprise entre 0 et 255
+    void SetAlpha(const sf::Uint8 &alpha);
+    ///@brief Donne l'opacité
+    ///@return l'opacité
+    sf::Uint8 GetAlpha() const;
 
 };

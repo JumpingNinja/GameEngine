@@ -270,6 +270,18 @@ void CollisionEntity::SetPosition(sf::Vector2f const &vec)
     UpdateRect();
 }
 
+void CollisionEntity::Move(const float &x, const float &y)
+{
+    sf::Transformable::Move(x, y);
+    UpdateRect();
+}
+
+void CollisionEntity::Move(sf::Vector2f const &vec)
+{
+    sf::Transformable::Move(vec);
+    UpdateRect();
+}
+
 void CollisionEntity::SetFriction(const float &friction)
 {
     myFriction=friction;
@@ -310,7 +322,7 @@ void CollisionEntity::MoveOutside(sf::Vector2f const &dirVec, const unsigned int
         times++;
         for (std::list<CollisionEntity*>::iterator ite=list.begin(); ite!=list.end(); ite++)
             if (IsColliding(**ite))
-                Move(dirVec), turn=1, UpdateRect();
+                Move(dirVec), turn=1;
     }
 }
 

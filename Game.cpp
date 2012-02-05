@@ -10,6 +10,7 @@
 #include "Entity.h"
 #include "MyClass.h"
 #include "CollisionEntity.h"
+#include "guyTest.h"
 #include <iostream>
 
 //Initialization des membres statiques
@@ -60,12 +61,15 @@ void Game::Start(void)
     p->SetTextureRect(sf::IntRect(0, 0, 1024, 20));
     p->Width=1024.f, p->Height=20.f;
 
+	guytest *pg;
+    pg=new guytest;
+    pg->SetPosition(100.f, 35.f);
     
     for (int i=0; i<50; i++)
     {
         p=new CollisionEntity(0);
         p->SetDepth(-1);
-        p->SetPosition(300.f+i*10.f, 150.f);
+        p->SetPosition(300.f+i*11.f, 150.f);
         p->SetTexture(tx);
         p->SetTextureRect(sf::IntRect(0, 0, 10, 10));
         p->SetColor(sf::Color::Green);
@@ -82,7 +86,7 @@ void Game::Start(void)
     
     
     //On ralentie le temps
-    gb::timerate=0.85f;
+    //gb::timerate=0.25f;
     
     //sf::Clock clock; unsigned int counter(0);
     while(!IsExiting())
@@ -117,7 +121,7 @@ void Game::GameLoop()
             CollisionEntity::Step();
             
             //drawing
-            myMainWindow.Clear(sf::Color(55,0,0));
+            myMainWindow.Clear(sf::Color(100,100,100));
             Entity::DrawAll(myMainWindow);
             myMainWindow.Display();
             
@@ -146,4 +150,8 @@ void Game::GameLoop()
 const sf::Texture& Game::GetTexture(const std::string& key)
 {
     return myTxManager.GetTexture(key);
+}
+const std::vector<sf::IntRect>& Game::GetAnimation(const std::string &key)
+{
+    return myTxManager.GetAnimation(key);
 }

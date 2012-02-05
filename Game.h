@@ -19,6 +19,7 @@ class Game
 public:
     static void Start();
     static const sf::Texture& GetTexture(const std::string& key);
+    static const std::vector<sf::IntRect>& GetAnimation(const std::string &key);
     
 private:
     static bool IsExiting();

@@ -109,7 +109,7 @@ bool Entity::GetVisible() const
     return myIsVisible;
 }
 
-void Entity::SetAlpha(sf::Uint8 const &alpha)
+void Entity::SetAlpha(sf::Uint8 alpha)
 {
     SetColor(sf::Color(GetColor().r, GetColor().g, GetColor().b, alpha));
 }

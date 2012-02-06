@@ -129,7 +129,7 @@ public:
     bool GetVisible() const;
     ///@brief Change l'opacité
     ///@param alpha nouvelle opacité comprise entre 0 et 255
-    void SetAlpha(const sf::Uint8 &alpha);
+    void SetAlpha(sf::Uint8 alpha);
     ///@brief Donne l'opacité
     ///@return l'opacité
     sf::Uint8 GetAlpha() const;

@@ -28,12 +28,12 @@ class TxManager {
     ///@param frames nombre d'images
     ///@param key clé pour accéder à l'animation
     ///@return faux en cas d'erreur
-    bool AddAnimation(const unsigned int &frames, const std::string &key);
+    bool AddAnimation(unsigned int frames, const std::string &key);
     ///@brief Ajoute un rectangle à une animation en particulier
     ///@param key clée de l'animation
     ///@param i rectangle à modifier
     ///@param Rect rectangle à ajouter
-    void SetAnimRect(const std::string &key, const unsigned int &i, const sf::IntRect & Rect);
+    void SetAnimRect(const std::string &key, unsigned int i, const sf::IntRect & Rect);
     sf::Texture txError;
     std::vector<sf::IntRect> animError;
 public:

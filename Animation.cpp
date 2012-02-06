@@ -14,9 +14,11 @@ Animation::Animation(const sf::Texture& texture, const float &interval, const st
 {
 }
 
-void Animation::Play(const float &timerate, sf::Sprite &sprite)
+void Animation::Play(float timerate, sf::Sprite &sprite)
 {
+    if (myInterval>0.f)
     myFrame+=timerate/myInterval;
+    
     if (myFrame>=static_cast<float>(myRects.size()))
         myFrame=0.f;
     
@@ -24,7 +26,7 @@ void Animation::Play(const float &timerate, sf::Sprite &sprite)
     sprite.SetTextureRect(myRects[static_cast<unsigned int>(floorf(myFrame))]);
 }
 
-void Animation::SetFrame(const float &frame)
+void Animation::SetFrame(float frame)
 {
     myFrame=frame;
 }
@@ -32,4 +34,9 @@ void Animation::SetFrame(const float &frame)
 float Animation::GetFrame() const
 {
     return myFrame;
+}
+
+void Animation::SetRects(const std::vector<sf::IntRect> &Rects)
+{
+    //Non implémentable avec des réferences :S
 }

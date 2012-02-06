@@ -17,7 +17,7 @@ bool CollisionEntity::IsSolid()
     return mySolid;
 }
 
-CollisionEntity::CollisionEntity(const bool &solid) : Entity::Entity(), mySolid(solid), myFriction(0.5f), myBounce(0.5f), myGravity(0.3f), myMass(1.f), myAirFriction(sf::Vector2f()), mySpeed(sf::Vector2f()), myStepSpeed(sf::Vector2f()), myMaxSpeed(sf::Vector2f(3000.f, 12.f))
+CollisionEntity::CollisionEntity(bool solid) : Entity::Entity(), mySolid(solid), myFriction(0.5f), myBounce(0.5f), myGravity(0.3f), myMass(1.f), myAirFriction(sf::Vector2f()), mySpeed(sf::Vector2f()), myStepSpeed(sf::Vector2f()), myMaxSpeed(sf::Vector2f(3000.f, 12.f))
 {
     CollisionEntity::list.push_back(this);
 }
@@ -228,7 +228,7 @@ bool CollisionEntity::Collide()
     return 0;
 }
 
-bool CollisionEntity::CheckGround(const float &offsetY)
+bool CollisionEntity::CheckGround(float offsetY)
 {
     Top+=offsetY; Left+=1.2f; Width-=2.4f;
     for (std::list<CollisionEntity*>::iterator ite=list.begin(); ite!=list.end(); ite++)
@@ -253,7 +253,7 @@ void CollisionEntity::UpdateRect()
     Top=GetPosition().y-GetOrigin().y;
 }
 
-void CollisionEntity::SetPosition(const float &x, const float &y)
+void CollisionEntity::SetPosition(float x, float y)
 {
     sf::Transformable::SetPosition(x, y);
     UpdateRect();
@@ -270,7 +270,7 @@ void CollisionEntity::SetPosition(sf::Vector2f const &vec)
     UpdateRect();
 }
 
-void CollisionEntity::Move(const float &x, const float &y)
+void CollisionEntity::Move(float x, float y)
 {
     sf::Transformable::Move(x, y);
     UpdateRect();
@@ -282,12 +282,12 @@ void CollisionEntity::Move(sf::Vector2f const &vec)
     UpdateRect();
 }
 
-void CollisionEntity::SetFriction(const float &friction)
+void CollisionEntity::SetFriction(float friction)
 {
     myFriction=friction;
 }
 
-void CollisionEntity::SetBounce(const float &bounce)
+void CollisionEntity::SetBounce(float bounce)
 {
     myBounce=bounce;
 }
@@ -307,13 +307,13 @@ float CollisionEntity::GetMass()
     return myMass;
 }
 
-void CollisionEntity::SetMass(const float &mass)
+void CollisionEntity::SetMass(float mass)
 {
     myMass=mass;
 }
 
 
-void CollisionEntity::MoveOutside(sf::Vector2f const &dirVec, const unsigned int maxSteps)
+void CollisionEntity::MoveOutside(sf::Vector2f const &dirVec, unsigned int maxSteps)
 {
     bool turn(1); unsigned int times(0);
     while (turn && times<maxSteps)

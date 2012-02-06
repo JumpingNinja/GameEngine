@@ -35,7 +35,7 @@ public:
     bool IsSolid();
     ///@brief Constructeur par défaut
     ///@param solid défini si l'objet est solide ou pas
-    CollisionEntity(const bool &solid);
+    CollisionEntity(bool solid);
     ///@brief destructeur simple
     ~CollisionEntity();
     ///@brief Donne si deux entites collisionnent
@@ -51,18 +51,18 @@ public:
     ///@brief Collisionne avec le monde
     virtual bool Collide();
     ///@brief vérifie si on est par terre ou pas
-    bool CheckGround(const float &offsetY);
+    bool CheckGround(float offsetY);
     ///@brief Change la position
     ///@param x nouvel x
     ///@param y nouvel y
-    virtual void SetPosition(const float &x, const float &y);
+    virtual void SetPosition(float x, float y);
     ///@brief Change la position
     ///@param vec vecteur position
     virtual void SetPosition(const sf::Vector2f &vec);
     ///@brief bouge l'objet
     ///@param x mouvement horizontal
     ///@param y mouvement vertical
-    virtual void Move(const float &x, const float &y);
+    virtual void Move(float x, float y);
     ///@brief Change la position
     ///@param vec vecteur de mouvement
     virtual void Move(const sf::Vector2f &vec);
@@ -73,11 +73,11 @@ public:
     /** @brief Change la friction
      ** @param friction nouvelle friction
     **/
-    void SetFriction(const float &friction);
+    void SetFriction(float friction);
     /** @brief Change le rebondissement
      ** @param bounce nouvel rebondissement
      **/
-    void SetBounce(const float &bounce);
+    void SetBounce(float bounce);
     /** @brief Donne la friction
      ** @return friction de l'objet
      **/
@@ -89,7 +89,7 @@ public:
     /** @brief Change la masse
      ** @param mass nouvelle masse
      **/
-    void SetMass(const float &mass);
+    void SetMass(float mass);
     /** @brief Donne la masse
      ** @return masse de l'objet
      **/
@@ -97,7 +97,7 @@ public:
     ///@brief Bouge l'objet jusqu'à que celui-ci se trouve sans collisions
     ///@param dirVec Direction vers où bouger et pas à faire
     ///@param maxStep maximum de boucle à faire
-    void MoveOutside(const sf::Vector2f &dirVec, const unsigned int maxSteps);
+    void MoveOutside(const sf::Vector2f &dirVec, unsigned int maxSteps);
     ///@brief Bouge selon ses cotes et le bas por ne pas rentrer dans autres objets
     void MoveOutside();
     

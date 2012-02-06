@@ -46,7 +46,7 @@ bool TxManager::AddTexture(std::string const &location, std::string const &key)
     return 1;
 }
 
-bool TxManager::AddAnimation(const unsigned int &frames, std::string const &key)
+bool TxManager::AddAnimation(unsigned int frames, std::string const &key)
 {
     //On cherche si la clé existe déja
     myAniIt=myAnimations.find(key);
@@ -64,7 +64,7 @@ bool TxManager::AddAnimation(const unsigned int &frames, std::string const &key)
     return 1;
 }
 
-void TxManager::SetAnimRect(std::string const &key, const unsigned int &i, sf::IntRect const &Rect)
+void TxManager::SetAnimRect(std::string const &key, unsigned int i, sf::IntRect const &Rect)
 {
     myAniIt=myAnimations.find(key);
     if (myAniIt==myAnimations.end()) //la clé n'existe pas

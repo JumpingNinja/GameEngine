@@ -26,6 +26,8 @@ public:
     ///@param interval intervalle de l'animation en steps/frames
     ///@param Rects vector des rectangles des images de l'animation
     Animation(const sf::Texture& texture, float interval, const std::vector<sf::IntRect>& Rects);
+    ///@brief destructor
+    virtual ~Animation() { }
     ///@brief Avance l'animation et modifie le sprite avec la texture associée et le rectangle qui correspond au frame actuel
     ///
     ///Faire attention a la recalculation du rectangle de la texture? avec param adiotionnel sur settexture()

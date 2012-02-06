@@ -12,9 +12,9 @@
 
 guytest::guytest() : CollisionEntity(0), Animation(Game::GetTexture("player"), 5.f, Game::GetAnimation("player_walk"))
 {
-    Width=11; Height=17;
+    Width=9.f; Height=17.f;
     SetSpeed(sf::Vector2f(3.f, 4.f));
-    SetFriction(0.f), SetBounce(1.f);
+    SetFriction(0.f), SetBounce(1.0f);
     SetDepth(-2);
     //Selon l'animation cela change
     SetOrigin(4.5f, 8.5f);

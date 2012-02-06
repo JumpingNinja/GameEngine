@@ -38,7 +38,7 @@ C := $(wildcard *.cpp)
 _O := $(C:.cpp=.o)
 O := $(patsubst %,$(OBJ_DIR)/%,$(_O)) #Ça permet de mettre les .o dans le dossier obj/
 H := $(C:.cpp=.h)
-OPTION := -Wall -pedantic
+OPTION := -pedantic -Wall -Wextra -Wold-style-cast -Woverloaded-virtual -Wfloat-equal -Wwrite-strings -Wpointer-arith -Wcast-qual -Wcast-align -Wconversion -Wshadow -Weffc++ -Wredundant-decls -Winit-self -Wswitch-default -Wswitch-enum -Wundef -Winline -O2 -s
 
 ifeq ($(OS), Win)
 all : $(EXE)

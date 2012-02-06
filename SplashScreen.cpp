@@ -31,7 +31,7 @@ void SplashScreen::Show(sf::RenderWindow & renderWindow)
 }
 
 
-SplashScreen::SplashScreen()
+SplashScreen::SplashScreen() : myTxBack(), mySprBack()
 {
     //Load the textures needed
     myTxBack.LoadFromFile(ResourcePath()+"img/SplashScreen.png");

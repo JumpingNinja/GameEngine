@@ -11,7 +11,7 @@
 #include "ResourcePath.h"
 
 
-TxManager::TxManager()
+TxManager::TxManager() : myResourceMap(), myIt(), myAnimations(), myAniIt(), txError(), animError()
 {//Load something for txError
 }
 

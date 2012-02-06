@@ -25,7 +25,7 @@ void Game::Start(void)
         return;
     
     myMainWindow.Create(sf::VideoMode(1024,768,32),"Pang!");
-    myMainWindow.SetFramerateLimit(60.f);
+    myMainWindow.SetFramerateLimit(60);
     
     //Show a splashscreen usefull for loading ressources (go edit SplashScreen.cpp)
     myGameState=ShowingSplash;
@@ -69,7 +69,7 @@ void Game::Start(void)
     pg2->SetPosition(200.f, 45.f);
      
     
-    for (int i=0; i<30; i++)
+    /*for (int i=0; i<30; i++)
     {
         p=new CollisionEntity(0);
         p->SetDepth(-1);
@@ -86,7 +86,7 @@ void Game::Start(void)
             p->SetSpeed(sf::Vector2f(18.f,-3.f)), p->SetColor(sf::Color::Blue), p->SetMass(2.f), p->SetDepth(-2);
         if (i==1)
             p->SetSpeed(sf::Vector2f(-18.f, -3.f));
-    }
+    }*/
      
     
     

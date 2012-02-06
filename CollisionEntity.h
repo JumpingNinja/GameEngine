@@ -14,8 +14,7 @@ enum RelativePosition {
     kLeft,
     kRight,
     kTop,
-    kBottom,
-    kUnknown
+    kBottom
     };
 
 class CollisionEntity : public Entity, public sf::FloatRect {

@@ -15,15 +15,17 @@
 
 class Animation {
     const sf::Texture& myTexture;
-    const std::vector<sf::IntRect>& myRects;
+    const std::vector<sf::IntRect> *myRects;
     ///@brief si myInterval<0.f alors on considère l'animation manuelle (car on n'a pas d'animation inversées)
     float myInterval, myFrame;
+    bool myNeedUpdate;
+    unsigned short myLastframe;
 public:
     ///@brief Constructeur
     ///@param texture texture à partir de la quelle cette animation marche
     ///@param interval intervalle de l'animation en steps/frames
     ///@param Rects vector des rectangles des images de l'animation
-    Animation(const sf::Texture& texture, const float &interval, const std::vector<sf::IntRect>& Rects);
+    Animation(const sf::Texture& texture, float interval, const std::vector<sf::IntRect>& Rects);
     ///@brief Avance l'animation et modifie le sprite avec la texture associée et le rectangle qui correspond au frame actuel
     ///
     ///Faire attention a la recalculation du rectangle de la texture? avec param adiotionnel sur settexture()

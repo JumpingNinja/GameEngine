@@ -64,6 +64,9 @@ void Game::Start(void)
 	guytest *pg;
     pg=new guytest;
     pg->SetPosition(100.f, 35.f);
+	guytest *pg2;
+    pg2=new guytest;
+    pg2->SetPosition(200.f, 35.f);
     
     for (int i=0; i<50; i++)
     {

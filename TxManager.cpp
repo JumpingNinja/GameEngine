@@ -76,6 +76,7 @@ void TxManager::SetAnimRect(std::string const &key, const unsigned int &i, sf::I
 void TxManager::LoadResources()
 {
     AddTexture("img/player.png", "player");
+    AddTexture("img/ryu.png", "ryu");
     
     AddAnimation(5, "player_walk");
     SetAnimRect("player_walk", 0, sf::IntRect(37, 0, 9, 17));
@@ -84,6 +85,11 @@ void TxManager::LoadResources()
     SetAnimRect("player_walk", 3, sf::IntRect(69, 0, 10, 17));
     SetAnimRect("player_walk", 4, sf::IntRect(81, 0, 9, 17));
     
+    AddAnimation(3, "ryu_walk");
+    SetAnimRect("ryu_walk", 0, sf::IntRect(143, 5, 162-143, 37-5));
+    SetAnimRect("ryu_walk", 1, sf::IntRect(171, 5, 190-171, 37-5));
+    SetAnimRect("ryu_walk", 2, sf::IntRect(197, 5, 219-197, 37-5));
+	
     //std::cout<<"size : "<<GetAnimation("player_walk").size()<<" left of first rectangle: "<<GetAnimation("player_walk")[0].Left<<std::endl;
 }
 

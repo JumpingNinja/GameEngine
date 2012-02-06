@@ -10,7 +10,7 @@
 #include "Game.h"
 #include <cmath>
 
-Animation::Animation(const sf::Texture& texture, const float &interval, const std::vector<sf::IntRect>& Rects) : myTexture(texture), myInterval(interval), myFrame(0.f), myRects(Rects)
+Animation::Animation(const sf::Texture& texture, const float &interval, const std::vector<sf::IntRect>& Rects) : myTexture(texture), myRects(Rects), myInterval(interval), myFrame(0.f)
 {
 }
 

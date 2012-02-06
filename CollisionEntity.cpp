@@ -131,9 +131,6 @@ void CollisionEntity::TakeAStep()
         else
             tmpSpeed-=tmpStep;
     }
-	
-	// Tourne le sprite vers sa direction x (Est-ce le meilleur endroit ??)
-	isPositive<float>(mySpeed.x) ? Scale(sf::Vector2f(1.f, 1.f)) : Scale(sf::Vector2f(-1.f, 1.f));
     
     //std::cout<<this<<": mySpeed: "<<mySpeed.x<<", "<<mySpeed.y<<" myStepSpeed: "<<myStepSpeed.x<<", "<<myStepSpeed.y<<std::endl;
 }

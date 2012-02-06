@@ -31,4 +31,9 @@ void guytest::TakeAStep()
 {
     Play(gb::timerate, *this);
     CollisionEntity::TakeAStep();
+    //Il faut le faire dans la classe dérivée car cela est propre à l'objet (je pense) et il faut utiliser SetScale et non pas Scale
+    if (mySpeed.x>=0.f)
+        SetScale(1.f, 1.f);
+    else
+        SetScale(-1.f, 1.f);
 }

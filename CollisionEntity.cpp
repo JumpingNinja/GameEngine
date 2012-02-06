@@ -94,8 +94,8 @@ void CollisionEntity::TakeAStep()
     //std::cout<<"Step staken\n";
     if (!CheckGround(0.75f))
         mySpeed.y+=myGravity*gb::timerate;
-    else if (mySpeed.y>0.f)
-        mySpeed.y=0.f;
+    //else if (mySpeed.y>0.f)
+      //  mySpeed.y=0.f;
         
     //else if (mySpeed.x>0.1f && mySpeed.y<0.1f) MoveOutside();
     //std::cout<<"grav:"<<myGravity*gb::timerate<<std::endl;
@@ -126,9 +126,10 @@ void CollisionEntity::TakeAStep()
         else
             Move(gb::timerate*tmpSpeed*mySpeed.x/maxSpeed, gb::timerate*tmpSpeed*mySpeed.y/maxSpeed);
         
-        if (Collide())
-            tmpSpeed=0.f;
-        else
+        Collide();
+        //if (Collide())
+          //  tmpSpeed=0.f;
+        //else
             tmpSpeed-=tmpStep;
     }
     
@@ -157,19 +158,32 @@ bool CollisionEntity::Collide()
         //La collision d'un solid est différente à celle d'un non solide
         if ((*ite)!=this)
         {
+            float off(0.5f);
             if ((*ite)->IsSolid())
             {
                 if (IsColliding(**ite))
                 {
                     switch (GetRelativePosition(**ite)) {
                         case kLeft:
+                            Move(off, 0.f);
+                            mySpeed.x=-mySpeed.x*myBounce;
+                            mySpeed.y=mySpeed.y*(1.f-myFriction);
+                            finish=1;
+                            break;
                         case kRight:
+                            Move(-off, 0.f);
                             mySpeed.x=-mySpeed.x*myBounce;
                             mySpeed.y=mySpeed.y*(1.f-myFriction);
                             finish=1;
                             break;
                         case kBottom:
+                            Move(0.f, -off);
+                            mySpeed.x=mySpeed.x*(1.f-myFriction);
+                            mySpeed.y=-mySpeed.y*myBounce;
+                            finish=1;
+                            break;
                         case kTop:
+                            Move(0.f, off);
                             mySpeed.x=mySpeed.x*(1.f-myFriction);
                             mySpeed.y=-mySpeed.y*myBounce;
                             finish=1;
@@ -185,11 +199,17 @@ bool CollisionEntity::Collide()
             {
                 if (IsColliding(**ite))
                 {
-                    float off(0.5f);
+                    
                     //std::cout<<"Dynamic collision\n";
                     switch (GetRelativePosition(**ite)) {
                         case kLeft:
                             Move(off, 0.f);
+                            mySpeed.x=(-mySpeed.x/((myMass+(*ite)->myMass)/myMass)+(*ite)->myStepSpeed.x/((myMass+(*ite)->myMass)/(*ite)->myMass))*myBounce;
+                            mySpeed.y=(mySpeed.y/((myMass+(*ite)->myMass)/myMass)+(*ite)->myStepSpeed.y/((myMass+(*ite)->myMass)/(*ite)->myMass))*(1.f-myFriction);
+                            (*ite)->mySpeed.x=(-(*ite)->mySpeed.x/((myMass+(*ite)->myMass)/(*ite)->myMass)+myStepSpeed.x/((myMass+(*ite)->myMass)/myMass))*(*ite)->myBounce;
+                            (*ite)->mySpeed.y=((*ite)->mySpeed.y/((myMass+(*ite)->myMass)/(*ite)->myMass)+myStepSpeed.y/((myMass+(*ite)->myMass)/myMass))*(1.f-(*ite)->myFriction);
+                            finish=1;
+                            break;
                         case kRight:
                             Move(-off, 0.f);
                             //std::cout<<"Sides\n";
@@ -203,6 +223,12 @@ bool CollisionEntity::Collide()
                             break;
                         case kBottom:
                             Move(0.f, -off);
+                            mySpeed.x=(mySpeed.x/((myMass+(*ite)->myMass)/myMass)+(*ite)->myStepSpeed.x/((myMass+(*ite)->myMass)/(*ite)->myMass))*(1.f-myFriction);
+                            mySpeed.y=(-mySpeed.y/((myMass+(*ite)->myMass)/myMass)+(*ite)->myStepSpeed.y/((myMass+(*ite)->myMass)/(*ite)->myMass))*myBounce;
+                            (*ite)->mySpeed.x=((*ite)->mySpeed.x/((myMass+(*ite)->myMass)/(*ite)->myMass)+myStepSpeed.x/((myMass+(*ite)->myMass)/myMass))*(1.f-(*ite)->myFriction);
+                            (*ite)->mySpeed.y=(-(*ite)->mySpeed.y/((myMass+(*ite)->myMass)/(*ite)->myMass)+myStepSpeed.y/((myMass+(*ite)->myMass)/myMass))*(*ite)->myBounce;
+                            finish=1;
+                            break;
                         case kTop:
                             Move(0.f, off);
                             //std::cout<<"Top or bottom\n";

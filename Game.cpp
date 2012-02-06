@@ -63,12 +63,13 @@ void Game::Start(void)
 
 	guytest *pg;
     pg=new guytest;
-    pg->SetPosition(100.f, 35.f);
+    pg->SetPosition(100.f, 45.f);
 	guytest *pg2;
     pg2=new guytest;
-    pg2->SetPosition(200.f, 35.f);
+    pg2->SetPosition(200.f, 45.f);
+     
     
-    for (int i=0; i<50; i++)
+    for (int i=0; i<30; i++)
     {
         p=new CollisionEntity(0);
         p->SetDepth(-1);
@@ -79,13 +80,14 @@ void Game::Start(void)
         p->Width=10.f, p->Height=10.f;
         
         //Quelques paramètres por un objet qui ne s'arrete jamais de bouger ^^
-        //p->SetFriction(0.0f), p->SetBounce(1.0f);
+        p->SetFriction(0.0f), p->SetBounce(1.0f);
         p->SetSpeed(sf::Vector2f(5.f, -3.f));
         if (i==0)
-            p->SetSpeed(sf::Vector2f(-18.f,-3.f)), p->SetColor(sf::Color::White), p->SetMass(2.f), p->SetDepth(-2), p->SetTexture(GetTexture("player"));
-        if (i==49)
-            p->SetSpeed(sf::Vector2f(18.f, -3.f));
+            p->SetSpeed(sf::Vector2f(18.f,-3.f)), p->SetColor(sf::Color::Blue), p->SetMass(2.f), p->SetDepth(-2);
+        if (i==1)
+            p->SetSpeed(sf::Vector2f(-18.f, -3.f));
     }
+     
     
     
     //On ralentie le temps

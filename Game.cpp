@@ -47,39 +47,73 @@ void Game::Start(void)
     //myBack=new Background(300.f, 300.f, 10);
     //fake texture
     sf::Texture tx;
-    
+	
     //Manually reate some walls
+	float friction = 0.5f;
+	
     CollisionEntity* p;
     p=new CollisionEntity(1);
     p->SetPosition(10.f, 20.f);
     p->SetTexture(tx);
     p->SetTextureRect(sf::IntRect(0, 0, 20, 700));
     p->Width=20.f, p->Height=700.f;
+	p->SetFriction(friction);
     
     p=new CollisionEntity(1);
     p->SetPosition(1014.f, 20.f);
     p->SetTexture(tx);
     p->SetTextureRect(sf::IntRect(0, 0, 20, 700));
     p->Width=20.f, p->Height=700.f;
+	p->SetFriction(friction);
     
     p=new CollisionEntity(1);
     p->SetPosition(10.f, 720.f);
     p->SetTexture(tx);
     p->SetTextureRect(sf::IntRect(0, 0, 1024, 20));
     p->Width=1024.f, p->Height=20.f;
-    
+	p->SetFriction(friction);
+	
     p=new CollisionEntity(1);
     p->SetPosition(10.f, 10.f);
     p->SetTexture(tx);
     p->SetTextureRect(sf::IntRect(0, 0, 1024, 20));
     p->Width=1024.f, p->Height=20.f;
+	p->SetFriction(friction);
+	
+    p=new CollisionEntity(1);
+    p->SetPosition(10.f, 700.f);
+    p->SetTexture(tx);
+    p->SetTextureRect(sf::IntRect(0, 0, 100, 20));
+    p->Width=100.f, p->Height=20.f;
+	p->SetFriction(friction);
+	
+    p=new CollisionEntity(1);
+    p->SetPosition(10.f, 680.f);
+    p->SetTexture(tx);
+    p->SetTextureRect(sf::IntRect(0, 0, 50, 20));
+    p->Width=50.f, p->Height=20.f;
+	p->SetFriction(friction);
+	
+    p=new CollisionEntity(1);
+    p->SetPosition(300.f, 640.f);
+    p->SetTexture(tx);
+    p->SetTextureRect(sf::IntRect(0, 0, 50, 20));
+    p->Width=50.f, p->Height=20.f;
+	p->SetFriction(friction);
+	
+    p=new CollisionEntity(1);
+    p->SetPosition(350.f, 660.f);
+    p->SetTexture(tx);
+    p->SetTextureRect(sf::IntRect(0, 0, 50, 20));
+    p->Width=50.f, p->Height=20.f;
+	p->SetFriction(friction);
 
-	guytest *pg;
+	/*guytest *pg;
     pg=new guytest;
     pg->SetPosition(100.f, 45.f);
 	guytest *pg2;
     pg2=new guytest;
-    pg2->SetPosition(200.f, 45.f);
+    pg2->SetPosition(200.f, 45.f);*/
     myFollow=new guytest;
     myFollow->SetPosition(300.f, 50.f);
     
@@ -145,7 +179,8 @@ void Game::GameLoop()
             sf::Vector2f addPos;
             addPos.x=(sf::Keyboard::IsKeyPressed(sf::Keyboard::Right)-sf::Keyboard::IsKeyPressed(sf::Keyboard::Left))*10.f;
             addPos.y=(sf::Keyboard::IsKeyPressed(sf::Keyboard::Down)-sf::Keyboard::IsKeyPressed(sf::Keyboard::Up))*4.f;
-            myView.SetCenter(myView.GetCenter()+addPos);
+            //myView.SetCenter(myView.GetCenter()+addPos);
+            myView.SetCenter(myFollow->GetPosition());
             myView.SetCenter(max(myView.GetSize().x/2.f, myView.GetCenter().x), max(myView.GetSize().y/2.f, myView.GetCenter().y));
             myView.SetCenter(min(myWidth - myView.GetSize().x/2.f, myView.GetCenter().x), min(myHeight - myView.GetSize().y/2.f, myView.GetCenter().y));
             

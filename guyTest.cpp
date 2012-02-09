@@ -14,7 +14,7 @@ guytest::guytest() : CollisionEntity(0), Animation(Game::GetTexture("player"), 5
 {
     Width=9.f; Height=17.f;
     SetSpeed(sf::Vector2f(3.f, 4.f));
-    SetFriction(0.8f), SetBounce(0.6f);
+    SetFriction(0.1f), SetBounce(0.2f);
     SetDepth(-2);
     //Selon l'animation cela change
     SetOrigin(4.5f, 8.5f);
@@ -37,7 +37,7 @@ void guytest::TakeAStep()
 {
     if (sf::Keyboard::IsKeyPressed(sf::Keyboard::Left)) mySpeed.x-=0.5f*gb::timerate;
     if (sf::Keyboard::IsKeyPressed(sf::Keyboard::Right)) mySpeed.x+=0.5f*gb::timerate;
-    if (sf::Keyboard::IsKeyPressed(sf::Keyboard::Up)) mySpeed.y-=0.5f*gb::timerate;
+    if ((sf::Keyboard::IsKeyPressed(sf::Keyboard::Up))&&(CheckGround(1.f))) mySpeed.y-=5*gb::timerate;
     Play(gb::timerate, *this);
     SetOrigin(GetTextureRect().Width/2.f, GetTextureRect().Height/2.f);
     CollisionEntity::TakeAStep();

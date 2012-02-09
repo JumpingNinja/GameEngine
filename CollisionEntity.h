@@ -51,6 +51,8 @@ public:
     virtual bool Collide();
     ///@brief vérifie si on est par terre ou pas
     bool CheckGround(float offsetY);
+    ///@brief Renvoit le myFriction du sol s'il existe, -1 si l'entité n'est pas sur une autre CollisionEntity
+    float GetGroundFriction();
     ///@brief Change la position
     ///@param x nouvel x
     ///@param y nouvel y

@@ -92,8 +92,12 @@ void CollisionEntity::TakeAStep()
 {
     if (mySolid) return;
     //std::cout<<"Step staken\n";
-    if (!CheckGround(0.75f))
+	float GroundFriction = GetGroundFriction();
+	if(GroundFriction == -1)
         mySpeed.y+=myGravity*gb::timerate;
+	else
+		mySpeed.x *= 1.f - myFriction*GroundFriction;
+		
     //else if (mySpeed.y>0.f)
       //  mySpeed.y=0.f;
         
@@ -274,6 +278,25 @@ bool CollisionEntity::CheckGround(float offsetY)
     }
     Top-=offsetY; Left-=1.2f; Width+=2.4f;
     return 0;
+}
+
+float CollisionEntity::GetGroundFriction()
+{
+    Top+=0.75f; Left+=1.2f; Width-=2.4f;
+    for (std::list<CollisionEntity*>::iterator ite=list.begin(); ite!=list.end(); ite++)
+    {
+        if ((*ite)!=this)// && (*ite)->IsSolid())
+        {
+            if (IsColliding(**ite))
+            {
+                Top-=0.75f; Left-=1.2f; Width+=2.4f;
+                //MoveOutside();
+                return (*ite)->GetFriction();
+            }
+        }
+    }
+    Top-=0.75f; Left-=1.2f; Width+=2.4f;
+    return -1.f;
 }
 
 void CollisionEntity::UpdateRect()

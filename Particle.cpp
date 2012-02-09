@@ -52,10 +52,10 @@ void Particle::TakeAStep()
 {
     Move(mySpeed);
     mySpeed+=myInfo.Gravity;
-    mySpeed+=myInfo.IncrSize;
+    mySpeed+=myInfo.IncrSpeed;
     mySize+=myInfo.IncrSize;
-    mySpeed.x+=myInfo.Friction.x;
-    mySpeed.y+=myInfo.Friction.y;
+    mySpeed.x*=myInfo.Friction.x;
+    mySpeed.y*=myInfo.Friction.y;
     
 }
 

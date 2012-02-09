@@ -12,26 +12,39 @@
 #include "CollisionEntity.h"
 #include "guyTest.h"
 #include <iostream>
+#include "Background.h"
 
 //Initialization des membres statiques
 Game::GameState Game::myGameState = Uninitialized;
 sf::RenderWindow Game::myMainWindow;
 SplashScreen Game::mySplash;
 TxManager Game::myTxManager;
+sf::View Game::myView;
+Entity* Game::myFollow(NULL);
+Background* Game::myBack(NULL);
+float Game::myWidth(320.f*5.f), Game::myHeight(200.f*4.f);
+unsigned int Game::myWinWidth(640), Game::myWinHeight(400);
 
 void Game::Start(void)
 {
     if(myGameState != Uninitialized)
         return;
     
-    myMainWindow.Create(sf::VideoMode(1024,768,32),"Pang!");
-    myMainWindow.SetFramerateLimit(60);
+    myMainWindow.Create(sf::VideoMode(myWinWidth , myWinHeight,32),"Pang!");
+    //myMainWindow.SetFramerateLimit(60);
+    myMainWindow.EnableVerticalSync(1);
     
     //Show a splashscreen usefull for loading ressources (go edit SplashScreen.cpp)
     myGameState=ShowingSplash;
     //Ceci se fait normalement dans ScreenSplash::Show()
     myTxManager.LoadResources();
     
+    myView.SetSize(myMainWindow.GetWidth(), myMainWindow.GetHeight());
+    myView.Zoom(1.f/2.f);
+    
+    
+    myBack= new Background(Game::GetTexture("back"), 10);
+    //myBack=new Background(300.f, 300.f, 10);
     //fake texture
     sf::Texture tx;
     
@@ -67,6 +80,10 @@ void Game::Start(void)
 	guytest *pg2;
     pg2=new guytest;
     pg2->SetPosition(200.f, 45.f);
+    myFollow=new guytest;
+    myFollow->SetPosition(300.f, 50.f);
+    
+    
      
     
     /*for (int i=0; i<30; i++)
@@ -122,12 +139,25 @@ void Game::GameLoop()
     {
         case Game::Playing:
         {
+            myMainWindow.SetView(myView);
             //Step
             CollisionEntity::Step();
+            sf::Vector2f addPos;
+            addPos.x=(sf::Keyboard::IsKeyPressed(sf::Keyboard::Right)-sf::Keyboard::IsKeyPressed(sf::Keyboard::Left))*10.f;
+            addPos.y=(sf::Keyboard::IsKeyPressed(sf::Keyboard::Down)-sf::Keyboard::IsKeyPressed(sf::Keyboard::Up))*4.f;
+            myView.SetCenter(myView.GetCenter()+addPos);
+            myView.SetCenter(max(myView.GetSize().x/2.f, myView.GetCenter().x), max(myView.GetSize().y/2.f, myView.GetCenter().y));
+            myView.SetCenter(min(myWidth - myView.GetSize().x/2.f, myView.GetCenter().x), min(myHeight - myView.GetSize().y/2.f, myView.GetCenter().y));
+            
+            myBack->UpdatePosition();
             
             //drawing
-            myMainWindow.Clear(sf::Color(100,100,100));
+            myMainWindow.Clear();
             Entity::DrawAll(myMainWindow);
+            
+            //myMainWindow.Draw(*myBack);
+            
+            //myMainWindow.SetView(myView);
             myMainWindow.Display();
             
             break;
@@ -159,4 +189,18 @@ const sf::Texture& Game::GetTexture(const std::string& key)
 const std::vector<sf::IntRect>& Game::GetAnimation(const std::string &key)
 {
     return myTxManager.GetAnimation(key);
+}
+
+float Game::GetWidth()
+{
+    return myWidth;
+}
+float Game::GetHeight()
+{
+    return myHeight;
+}
+
+const sf::View& Game::GetView()
+{
+    return myView;
 }

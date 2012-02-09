@@ -10,6 +10,8 @@
 #include "SFML/Window.hpp"
 #include "SFML/Graphics.hpp"
 #include "SplashScreen.h"
+class Entity;
+class Background;
 
 const unsigned int fpsLimit(30);
 
@@ -20,6 +22,9 @@ public:
     static void Start();
     static const sf::Texture& GetTexture(const std::string& key);
     static const std::vector<sf::IntRect>& GetAnimation(const std::string &key);
+    static float GetWidth();
+    static float GetHeight();
+    static const sf::View& GetView();
     
 private:
     static bool IsExiting();
@@ -31,5 +36,10 @@ private:
     static GameState myGameState;
     static sf::RenderWindow myMainWindow;
     static TxManager myTxManager;
+    static sf::View myView;
+    static Entity *myFollow;
+    static Background *myBack;
+    static float myWidth, myHeight;
+    static unsigned int myWinWidth, myWinHeight;
 };
 

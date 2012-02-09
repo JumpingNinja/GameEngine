@@ -24,7 +24,7 @@ Entity::Entity() : sf::Sprite(), myIsVisible(1), myDestroy(0), myDepth(0), myKin
 	Entity::list.insert(Entity::it, this);
 }
 
-Entity::Entity(short Depth) : sf::Sprite(),  myIsVisible(1), myDestroy(0), myDepth(0), myKind(kEK_Any)
+Entity::Entity(short Depth) : sf::Sprite(),  myIsVisible(1), myDestroy(0), myDepth(Depth), myKind(kEK_Any)
 {
     if (Depth<minDepth)
         minDepth=Depth;

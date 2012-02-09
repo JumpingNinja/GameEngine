@@ -77,6 +77,7 @@ void TxManager::LoadResources()
 {
     AddTexture("img/player.png", "player");
     AddTexture("img/ryu.png", "ryu");
+    AddTexture("img/back.jpg", "back");
     
     AddAnimation(5, "player_walk");
     SetAnimRect("player_walk", 0, sf::IntRect(37, 0, 9, 17));

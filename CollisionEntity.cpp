@@ -17,7 +17,7 @@ bool CollisionEntity::IsSolid()
     return mySolid;
 }
 
-CollisionEntity::CollisionEntity(bool solid) : Entity::Entity(), mySolid(solid), myFriction(0.5f), myBounce(0.5f), myGravity(0.3f), myMass(1.f), myAirFriction(sf::Vector2f()), mySpeed(sf::Vector2f()), myStepSpeed(sf::Vector2f()), myMaxSpeed(sf::Vector2f(3000.f, 12.f))
+CollisionEntity::CollisionEntity(bool solid) : Entity::Entity(), mySolid(solid), myFriction(0.5f), myBounce(0.5f), myGravity(0.3f), myMass(1.f), myAirFriction(sf::Vector2f(1.f, 1.f)), mySpeed(sf::Vector2f()), myStepSpeed(sf::Vector2f()), myMaxSpeed(sf::Vector2f(3000.f, 12.f))
 {
     CollisionEntity::list.push_back(this);
 }
@@ -110,6 +110,9 @@ void CollisionEntity::TakeAStep()
     //Stoppe quand la vitesse est très petite, il faut prendre la valeur de myGravity pour y!
     if (abs(mySpeed.x)<0.2f*gb::timerate) mySpeed.x=0.f;
     if (abs(mySpeed.y)<0.3f*gb::timerate) mySpeed.y=0.f;
+    
+    mySpeed.x*=myAirFriction.x;
+    mySpeed.y*=myAirFriction.y;
     
     //Move(mySpeed);
     

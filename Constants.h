@@ -36,5 +36,5 @@ void wobble(float &current_position, float target_position, float force,float fr
 
 class gb {
 public:
-    static float timerate;
+    static float timerate, timerate_to, m_spdTR;
 };

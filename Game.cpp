@@ -184,6 +184,16 @@ void Game::GameLoop()
             myView.SetCenter(max(myView.GetSize().x/2.f, myView.GetCenter().x), max(myView.GetSize().y/2.f, myView.GetCenter().y));
             myView.SetCenter(min(myWidth - myView.GetSize().x/2.f, myView.GetCenter().x), min(myHeight - myView.GetSize().y/2.f, myView.GetCenter().y));
             
+            wobble(gb::timerate, gb::timerate_to, 0.5f, 0.5f, gb::m_spdTR);
+            //à implémenter un peux mieux avec un accesseur sur gb::timerate et un set sur gb::timerate_to
+            if (sf::Keyboard::IsKeyPressed(sf::Keyboard::X))
+            {
+                if (gb::timerate_to>0.25f)
+                    gb::timerate_to=0.25f;
+                else
+                    gb::timerate_to=1.f;
+            }
+            
             myBack->UpdatePosition();
             
             //drawing

@@ -37,7 +37,7 @@ void guytest::TakeAStep()
 {
     if (sf::Keyboard::IsKeyPressed(sf::Keyboard::Left)) mySpeed.x-=0.5f*gb::timerate;
     if (sf::Keyboard::IsKeyPressed(sf::Keyboard::Right)) mySpeed.x+=0.5f*gb::timerate;
-    if ((sf::Keyboard::IsKeyPressed(sf::Keyboard::Up))&&(CheckGround(1.f))) mySpeed.y-=5*gb::timerate;
+    if ((sf::Keyboard::IsKeyPressed(sf::Keyboard::Up))&&(CheckGround(1.f))) mySpeed.y=-5.f;
     Play(gb::timerate, *this);
     SetOrigin(GetTextureRect().Width/2.f, GetTextureRect().Height/2.f);
     CollisionEntity::TakeAStep();

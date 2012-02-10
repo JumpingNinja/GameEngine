@@ -17,7 +17,7 @@ template <class T> const T& min ( const T& a, const T& b ) {
 }
 */
 
-float gb::timerate(1.f);
+float gb::timerate(1.f), gb::timerate_to(1.f), gb::m_spdTR(0.f);
 
 void wobble(float &current_position, float target_position, float force,float friction, float &m_spd)
 {

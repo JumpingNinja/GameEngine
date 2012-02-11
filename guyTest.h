@@ -15,5 +15,5 @@ class guytest : public CollisionEntity, private Animation {
 public:
     guytest();
     ~guytest();
-    virtual void TakeAStep();
+    virtual void TakeAStep(bool useFriction=1);
 };

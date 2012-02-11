@@ -71,7 +71,7 @@ void Game::Start(void)
     p->SetTexture(tx);
     p->SetTextureRect(sf::IntRect(0, 0, 1024, 20));
     p->Width=1024.f, p->Height=20.f;
-	p->SetFriction(friction);
+	p->SetFriction(0.5f);
 	
     p=new CollisionEntity(1);
     p->SetPosition(10.f, 10.f);
@@ -186,13 +186,6 @@ void Game::GameLoop()
             
             wobble(gb::timerate, gb::timerate_to, 0.5f, 0.5f, gb::m_spdTR);
             //à implémenter un peux mieux avec un accesseur sur gb::timerate et un set sur gb::timerate_to
-            if (sf::Keyboard::IsKeyPressed(sf::Keyboard::X))
-            {
-                if (gb::timerate_to>0.25f)
-                    gb::timerate_to=0.25f;
-                else
-                    gb::timerate_to=1.f;
-            }
             
             myBack->UpdatePosition();
             
@@ -223,6 +216,13 @@ void Game::GameLoop()
             myGameState=Game::Exiting;
         if (currentEvent.Type==sf::Event::KeyPressed && currentEvent.Key.Code==sf::Keyboard::Escape)
             myGameState=Game::Exiting;
+        if (currentEvent.Type==sf::Event::KeyReleased && currentEvent.Key.Code==sf::Keyboard::X)
+        {
+            if (gb::timerate_to>0.25f)
+                gb::timerate_to=0.25f;
+            else
+                gb::timerate_to=1.f;
+        }
         
     }
 }

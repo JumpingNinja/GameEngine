@@ -46,7 +46,8 @@ public:
     ///@return Relative position
     RelativePosition GetRelativePosition(CollisionEntity &other);
     ///@brief simule un step
-    virtual void TakeAStep();
+    ///@param useFriction tenir compte ou pas de la friction du sol
+    virtual void TakeAStep(bool useFriction=1);
     ///@brief Collisionne avec le monde
     virtual bool Collide();
     ///@brief vérifie si on est par terre ou pas

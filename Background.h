@@ -13,7 +13,7 @@ class Background : public Entity, private sf::RenderTexture {
 private:
     //float myTotal;
     ///@brief facteur de déplacement
-    sf::Vector2f myFactor, myTotal;
+    sf::Vector2f myFactor;
 public:
     ///@brief constructeur à partir de la taille de la texture
     ///@param Width longueur

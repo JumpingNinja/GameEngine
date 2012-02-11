@@ -8,6 +8,7 @@
 
 #include "guyTest.h"
 #include "Game.h"
+#include <iostream>
 
 
 guytest::guytest() : CollisionEntity(0), Animation(Game::GetTexture("player"), 5.f, Game::GetAnimation("player_walk"))
@@ -19,7 +20,7 @@ guytest::guytest() : CollisionEntity(0), Animation(Game::GetTexture("player"), 5
     //Selon l'animation cela change
     SetOrigin(4.5f, 8.5f);
     //SetOrigin(GetTextureRect().Width/2.f, GetTextureRect().Height/2.f);
-    myMaxSpeed.x=2.5f;
+    myMaxSpeed.x=5.f;
     //myAirFriction=sf::Vector2f(0.3f, 1.f);
 }
 /*
@@ -33,14 +34,15 @@ guytest::guytest() : CollisionEntity(0), Animation(Game::GetTexture("ryu"), 6.f,
 guytest::~guytest()
 {}
 
-void guytest::TakeAStep()
+void guytest::TakeAStep(bool useFriction)
 {
-    if (sf::Keyboard::IsKeyPressed(sf::Keyboard::Left)) mySpeed.x-=0.5f*gb::timerate;
-    if (sf::Keyboard::IsKeyPressed(sf::Keyboard::Right)) mySpeed.x+=0.5f*gb::timerate;
+    if (sf::Keyboard::IsKeyPressed(sf::Keyboard::Left)) mySpeed.x-=0.75f*gb::timerate, useFriction=0;
+    if (sf::Keyboard::IsKeyPressed(sf::Keyboard::Right)) mySpeed.x+=0.75f*gb::timerate, useFriction=0;
     if ((sf::Keyboard::IsKeyPressed(sf::Keyboard::Up))&&(CheckGround(1.f))) mySpeed.y=-5.f;
+    //std::cout<<"useFriction:"<<useFriction<<std::endl;
     Play(gb::timerate, *this);
     SetOrigin(GetTextureRect().Width/2.f, GetTextureRect().Height/2.f);
-    CollisionEntity::TakeAStep();
+    CollisionEntity::TakeAStep(1);
     //Il faut le faire dans la classe dérivée car cela est propre à l'objet (je pense) et il faut utiliser SetScale et non pas Scale
     if (mySpeed.x>=0.f)
         SetScale(1.f, 1.f);

@@ -88,15 +88,16 @@ RelativePosition CollisionEntity::GetRelativePosition(CollisionEntity &other)
     //On considere que si ce n'es pas l'une c'est l'autre car cette fonction doit être utilisée lorsqu'il y a collision
 }
 
-void CollisionEntity::TakeAStep()
+void CollisionEntity::TakeAStep(bool useFriction)
 {
     if (mySolid) return;
     //std::cout<<"Step staken\n";
 	float GroundFriction = GetGroundFriction();
-	if(GroundFriction == -1)
+    if(GroundFriction < 0.f)
         mySpeed.y+=myGravity*gb::timerate;
-	else
-		mySpeed.x *= 1.f - myFriction*GroundFriction;
+    else if (useFriction)
+        mySpeed.x *= 1.f - myFriction*GroundFriction;
+	
 		
     //else if (mySpeed.y>0.f)
       //  mySpeed.y=0.f;
@@ -110,6 +111,9 @@ void CollisionEntity::TakeAStep()
         mySpeed.x=max(mySpeed.x, -myMaxSpeed.x);
     else
         mySpeed.x=min(mySpeed.x, myMaxSpeed.x);
+    
+    if (sf::Keyboard::IsKeyPressed(sf::Keyboard::O))
+        std::cout<<"guy speed:"<<mySpeed.x<<std::endl;
     
     //Stoppe quand la vitesse est très petite, il faut prendre la valeur de myGravity pour y!
     if (abs(mySpeed.x)<0.2f*gb::timerate) mySpeed.x=0.f;

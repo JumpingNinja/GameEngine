@@ -17,6 +17,7 @@
 #include "KeyStatus.h"
 #include "Game.h"
 #include "Entity.h"
+#include "Particle.h"
 
 class Entity;
 class Background;
@@ -52,5 +53,8 @@ private:
     static Background *myBack;
     static float myWidth, myHeight;
     static unsigned int myWinWidth, myWinHeight;
+	static void AddKeyBinding(const std::string &Action, sf::Keyboard::Key Key);
+	
+	static ParticleInfo pInfo;
 };
 

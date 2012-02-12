@@ -9,10 +9,11 @@
 #include "CollisionEntity.h"
 #include "Animation.h"
 #include "Playable.h"
+#include "Particle.h"
 
 
 class guytest : public CollisionEntity, public Playable, private Animation {
-
+	ParticleInfo pInfo;
 public:
     guytest();
     ~guytest();

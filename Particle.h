@@ -7,29 +7,43 @@
 //
 #pragma once
 #include "Entity.h"
+#include "Animation.h"
 
 const float NoDeath(-50.f);
 
-struct ParticleInfo {
-    sf::Vector2f Speed, IncrSpeed, Gravity, Size, IncrSize, Friction;
-    float Life, Alpha1, Alpha2, Alpha3;
-    sf::Color Color1, Color2, Color3;
+class ParticleInfo {
+public:
+    sf::Vector2f Speed, IncrSpeed, Gravity, Size, IncrSize, Friction, Origin;
+	const sf::Texture& Texture;
+	const std::vector<sf::IntRect>& Rects;
+	float Life, Rotation, IncrRotation;
+	std::vector<sf::Uint8> Alpha;
+	std::vector<sf::Color> Color;
     bool CanOut;
     short Depth;
+	sf::BlendMode Blend;
     
-    void SetInfo(const sf::Vector2f &aSpeed, const sf::Vector2f &aIncrSpeed, const sf::Vector2f &aGravity, const sf::Vector2f &aSize, const sf::Vector2f &aIncrSize, const sf::Vector2f &aFriction, float aLife, float aAlpha1, float aAlpha2, float aAlpha3, sf::Color aColor1, sf::Color aColor2, sf::Color aColor3, bool aCanOut, short aDepth);
+	void SetNumberOfAlphas(unsigned int n);
+	void SetNumberOfColors(unsigned int n);
+	void SetAlpha(unsigned int i, sf::Uint8 aAlpha);
+	void SetColor(unsigned int i, sf::Color aColor);
+	
+	ParticleInfo(const sf::Texture &aTexture, const std::vector<sf::IntRect>& aRects);
+	~ParticleInfo();
 };
 
-class Particle : public Entity {
+class Particle : public Entity, public Animation {
     const ParticleInfo& myInfo;
     sf::Vector2f mySpeed, mySize;
+	float myLife, myCurrentColor, myCurrentAlpha;
     static std::list<Particle*> list;
     static std::list<Particle*>::iterator it;
-    void TakeAStep();
+    void TakeAStep(float timerate);
 public:
-    Particle(const ParticleInfo &Info);
+    Particle(const ParticleInfo &Info, float Interval);
     ~Particle();
     
-    static void Step(); 
+    static void Step(float timerate); 
+	static void Create(const sf::Vector2f &pos, const ParticleInfo & Info, float Interval);
     
 };

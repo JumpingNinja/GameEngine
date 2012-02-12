@@ -7,60 +7,126 @@
 //
 
 #include "Particle.h"
+#include <iostream>
+#include <cmath>
 
 std::list<Particle*> Particle::list;
 std::list<Particle*>::iterator Particle::it;
 
 
-void ParticleInfo::SetInfo(sf::Vector2f const &aSpeed, sf::Vector2f const &aIncrSpeed, sf::Vector2f const &aGravity, sf::Vector2f const &aSize, sf::Vector2f const &aIncrSize, sf::Vector2f const &aFriction, float aLife, float aAlpha1, float aAlpha2, float aAlpha3, sf::Color aColor1, sf::Color aColor2, sf::Color aColor3, bool aCanOut, short aDepth)
+ParticleInfo::ParticleInfo(const sf::Texture &aTexture, const std::vector<sf::IntRect>& aRects) : Speed(sf::Vector2f()), IncrSpeed(sf::Vector2f()), Gravity(sf::Vector2f()), Size(sf::Vector2f(1.f,1.f)), IncrSize(sf::Vector2f()), Friction(sf::Vector2f()), Origin(sf::Vector2f()), Life(100.f), Rotation(0.f), IncrRotation(0.f), CanOut(0), Depth(0), Alpha(std::vector<sf::Uint8>(1)), Color(std::vector<sf::Color>(1)), Texture(aTexture), Rects(aRects), Blend(sf::BlendNone)
 {
-    Speed=aSpeed;
-    IncrSpeed=aIncrSpeed;
-    Gravity=aGravity;
-    Size=aSize;
-    IncrSize=aIncrSize;
-    Friction=aFriction;
-    Life=aLife;
-    Alpha1=aAlpha1;
-    Alpha2=aAlpha2;
-    Alpha3=aAlpha3;
-    Color1=aColor1;
-    Color2=aColor2;
-    Color3=aColor3;
-    CanOut=aCanOut;
-    Depth=aDepth;
+	Alpha[0]=255;
+	Color[0]=sf::Color::White;
 }
 
-Particle::Particle(const ParticleInfo& Info) : myInfo(Info), Entity(myInfo.Depth), mySize(myInfo.Size), mySpeed(myInfo.Speed)
+ParticleInfo::~ParticleInfo()
 {
+	Alpha.clear();
+	Color.clear();
+}
+
+void ParticleInfo::SetAlpha(unsigned int i, sf::Uint8 aAlpha)
+{
+	Alpha[i]=aAlpha;
+}
+
+void ParticleInfo::SetColor(unsigned int i, sf::Color aColor)
+{
+	Color[i]=aColor;
+}
+
+void ParticleInfo::SetNumberOfAlphas(unsigned int n)
+{
+	Alpha.resize(n);
+}
+
+void ParticleInfo::SetNumberOfColors(unsigned int n)
+{
+	Color.resize(n);
+}
+
+
+Particle::Particle(const ParticleInfo& Info, float Interval) : myInfo(Info), Entity(Info.Depth), mySize(Info.Size), mySpeed(Info.Speed), myLife(Info.Life), myCurrentColor(0.f), myCurrentAlpha(0.f), Animation(Info.Texture, Interval, Info.Rects)
+{
+	SetTexture(Info.Texture);
     list.push_back(this);
+	SetAlpha(Info.Alpha[0]);
+	SetColor(Info.Color[0]);
+	SetOrigin(Info.Origin);
+	SetRotation(Info.Rotation);
+	
+	myBlendMode=Info.Blend;
+
 }
 
 Particle::~Particle()
 {
-    for ( it=list.begin(); it!=list.end(); it++)
+	std::list<Particle*>::iterator ite;
+    for (ite=list.begin(); ite!=list.end(); ite++)
     {
-        if ((*it)==this)
+        if ((*ite)==this)
             break;
     }
     
-    if ((*it)==this)
-        list.erase(it);
+    if ((*ite)==this)
+        list.erase(ite);
 }
 
-void Particle::TakeAStep()
+void Particle::TakeAStep(float timerate)
 {
-    Move(mySpeed);
-    mySpeed+=myInfo.Gravity;
-    mySpeed+=myInfo.IncrSpeed;
-    mySize+=myInfo.IncrSize;
-    mySpeed.x*=myInfo.Friction.x;
-    mySpeed.y*=myInfo.Friction.y;
-    
+	
+	myLife-=1.f*timerate;
+    Move(mySpeed*timerate);
+    mySpeed+=myInfo.Gravity*timerate;
+    mySpeed+=myInfo.IncrSpeed*timerate;
+    mySize+=myInfo.IncrSize*timerate;
+    mySpeed.x*=(1.f-myInfo.Friction.x);
+    mySpeed.y*=(1.f-myInfo.Friction.y);
+
+	if (myLife<=0.f) myDestroy=1;
+	
+	Play(gb::timerate, *this);
+	
+	Rotate(myInfo.IncrRotation);
+	
+	SetScale(mySize);
+	
+	//On modifie la couleur
+	if (myInfo.Color.size()>0)
+	{
+		myCurrentColor+=((myInfo.Color.size()-1)/myInfo.Life)*timerate;
+		unsigned int lower(static_cast<unsigned int>(myCurrentColor));
+		unsigned int upper(static_cast<unsigned int>(myCurrentColor+1.f)); //ceil
+		sf::Color tmpColor;
+		tmpColor.r=(myInfo.Color[upper].r-myInfo.Color[lower].r)*(myCurrentColor-lower)+myInfo.Color[lower].r;
+		tmpColor.g=(myInfo.Color[upper].g-myInfo.Color[lower].g)*(myCurrentColor-lower)+myInfo.Color[lower].g;
+		tmpColor.b=(myInfo.Color[upper].b-myInfo.Color[lower].b)*(myCurrentColor-lower)+myInfo.Color[lower].b;
+		SetColor(tmpColor);
+	}
+		
+	//On modifie le alpha
+	if (myInfo.Alpha.size()>0)
+	{
+		myCurrentAlpha+=((myInfo.Alpha.size()-1)/myInfo.Life)*timerate;
+		unsigned int lower(static_cast<unsigned int>(myCurrentAlpha));
+		unsigned int upper(static_cast<unsigned int>(myCurrentAlpha+1.f)); //ceil
+		SetAlpha((myInfo.Alpha[upper]-myInfo.Alpha[lower])*(myCurrentAlpha-lower)+myInfo.Alpha[lower]);
+	}
 }
 
-void Particle::Step()
+void Particle::Step(float timerate)
 {
     for (it=list.begin(); it!=list.end(); it++)
-        (*it)->TakeAStep();
+	{
+		(*it)->TakeAStep(timerate);
+
+	}
+        
+}
+
+void Particle::Create(sf::Vector2f const &pos, const ParticleInfo &Info, float Interval)
+{
+	Particle *p(new Particle(Info, Interval));
+	p->SetPosition(pos);
 }

@@ -36,17 +36,18 @@ void Game::Start(void)
         new KeyStatus(static_cast<sf::Keyboard::Key>(keyLoop));
     }
     // Quelques binds (à terme : fichier de configuration)
-    Game::Bindings.insert(std::pair<std::string, sf::Keyboard::Key>("Exit", sf::Keyboard::Escape));
-    Game::Bindings.insert(std::pair<std::string, sf::Keyboard::Key>("Slow", sf::Keyboard::X));
-    Game::Bindings.insert(std::pair<std::string, sf::Keyboard::Key>("P1_MoveLeft", sf::Keyboard::Q));
-    Game::Bindings.insert(std::pair<std::string, sf::Keyboard::Key>("P1_MoveRight", sf::Keyboard::D));
-    Game::Bindings.insert(std::pair<std::string, sf::Keyboard::Key>("P1_Jump", sf::Keyboard::Space));
+	AddKeyBinding("Exit", sf::Keyboard::Escape);
+	AddKeyBinding("Slow", sf::Keyboard::X);
+	AddKeyBinding("P1_MoveLeft", sf::Keyboard::Left);
+	AddKeyBinding("P1_MoveRight", sf::Keyboard::Right);
+	AddKeyBinding("P1_Jump", sf::Keyboard::Space);
+	AddKeyBinding("particles", sf::Keyboard::P);
 
     myMainWindow.Create(sf::VideoMode(myWinWidth , myWinHeight,32),"Pang!");
     //myMainWindow.SetFramerateLimit(60);
     myMainWindow.EnableVerticalSync(1);
 	// Ignore la répétition des inputs par l'OS, pourrait être activé dans les menus...
-	myMainWindow.EnableKeyRepeat(0);
+	myMainWindow.EnableKeyRepeat(1);
 
     //Show a splashscreen usefull for loading ressources (go edit SplashScreen.cpp)
     myGameState=ShowingSplash;
@@ -192,7 +193,7 @@ void Game::GameLoop()
             myGameState=Game::Exiting;
 		
 		if (!KeyCheck)
-			KeyStatus::Update(myMainWindow), KeyCheck=1;
+			KeyStatus::Update(), KeyCheck=1;
     }
 
     
@@ -211,9 +212,11 @@ void Game::GameLoop()
     {
         case Game::Playing:
         {
+			
             myMainWindow.SetView(myView);
             //Step
             CollisionEntity::Step();
+			Particle::Step(gb::timerate);
             //sf::Vector2f addPos;
             //addPos.x=(sf::Keyboard::IsKeyPressed(sf::Keyboard::Right)-sf::Keyboard::IsKeyPressed(sf::Keyboard::Left))*10.f;
             //addPos.y=(sf::Keyboard::IsKeyPressed(sf::Keyboard::Down)-sf::Keyboard::IsKeyPressed(sf::Keyboard::Up))*4.f;
@@ -275,4 +278,9 @@ const sf::View& Game::GetView()
 const KeyStatus& Game::GetKeyState(const std::string &Action)
 {
     return *KeyStatus::map[Game::Bindings[Action]];
+}
+
+void Game::AddKeyBinding(std::string const &Action, sf::Keyboard::Key Key)
+{
+	Game::Bindings.insert(std::pair<std::string, sf::Keyboard::Key>(Action, Key));
 }

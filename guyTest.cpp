@@ -11,17 +11,39 @@
 #include <iostream>
 
 
-guytest::guytest() : CollisionEntity(0), Playable(1), Animation(Game::GetTexture("player"), 5.f, Game::GetAnimation("player_walk"))
+guytest::guytest() : CollisionEntity(0), Playable(1), Animation(Game::GetTexture("player"), 5.f, Game::GetAnimation("player_walk")), pInfo(Game::GetTexture("player"), Game::GetAnimation("player_walk"))
 {
     Width=9.f; Height=17.f;
     SetSpeed(sf::Vector2f(3.f, 4.f));
     SetFriction(0.1f), SetBounce(0.f);
-    SetDepth(-2);
+    //SetDepth(-2);
     //Selon l'animation cela change
     SetOrigin(4.5f, 8.5f);
     //SetOrigin(GetTextureRect().Width/2.f, GetTextureRect().Height/2.f);
     myMaxSpeed.x=5.f;
     //myAirFriction=sf::Vector2f(0.3f, 1.f);
+	
+	pInfo.IncrSpeed=sf::Vector2f(0.f,-0.02f);
+	pInfo.Life=60.f;
+	pInfo.IncrSize=sf::Vector2f(0.005f,0.005f);
+	pInfo.Origin=GetOrigin();
+	pInfo.Rotation=15.f;
+	pInfo.IncrRotation=10.f;
+	pInfo.Blend=sf::BlendAdd;
+	
+	pInfo.SetNumberOfAlphas(3);
+	pInfo.SetAlpha(0, 255);
+	pInfo.SetAlpha(1, 255);
+	pInfo.SetAlpha(2, 0);
+	pInfo.SetNumberOfColors(6);
+	pInfo.SetColor(0, sf::Color::Red);
+	pInfo.SetColor(1, sf::Color(254,98,54));
+	pInfo.SetColor(2, sf::Color::Yellow);
+	pInfo.SetColor(3, sf::Color::Green);
+	pInfo.SetColor(4, sf::Color::Cyan);
+	pInfo.SetColor(5, sf::Color::Blue);
+	
+	
 }
 /*
 guytest::guytest() : CollisionEntity(0), Animation(Game::GetTexture("ryu"), 6.f, Game::GetAnimation("ryu_walk"))
@@ -57,5 +79,5 @@ void guytest::TakeAStep(bool useFriction)
     else
         SetScale(-1.f, 1.f);
 
-
+	Particle::Create(GetPosition(), pInfo, 5.f);
 }

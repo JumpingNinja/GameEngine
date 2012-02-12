@@ -15,7 +15,7 @@ std::list<Entity*>::iterator Entity::it;
 short Entity::maxDepth(0), Entity::minDepth(0);
 
 
-Entity::Entity() : sf::Sprite(), myIsVisible(1), myDestroy(0), myDepth(0), myKind(kEK_Any)
+Entity::Entity() : sf::Sprite(), myIsVisible(1), myDestroy(0), myDepth(0), myKind(kEK_Any), myBlendMode(sf::BlendNone)
 {
 	Entity::it = Entity::list.begin();
 	while(Entity::it != Entity::list.end() && myDepth<(*Entity::it)->myDepth)
@@ -24,7 +24,7 @@ Entity::Entity() : sf::Sprite(), myIsVisible(1), myDestroy(0), myDepth(0), myKin
 	Entity::list.insert(Entity::it, this);
 }
 
-Entity::Entity(short Depth) : sf::Sprite(),  myIsVisible(1), myDestroy(0), myDepth(Depth), myKind(kEK_Any)
+Entity::Entity(short Depth) : sf::Sprite(),  myIsVisible(1), myDestroy(0), myDepth(Depth), myKind(kEK_Any), myBlendMode(sf::BlendNone)
 {
     if (Depth<minDepth)
         minDepth=Depth;
@@ -64,7 +64,13 @@ void Entity::DrawAll(sf::RenderTarget &window)
 	for(Entity::it = Entity::list.begin(); Entity::it != Entity::list.end(); Entity::it++)
     {
         if ((*Entity::it)->myIsVisible)
-            window.Draw(**Entity::it);
+		{
+			if ((*Entity::it)->myBlendMode==sf::BlendNone)
+				window.Draw(**Entity::it);
+			else
+				window.Draw(**Entity::it, sf::RenderStates((*Entity::it)->myBlendMode));
+		}
+            
         if ((*Entity::it)->myDestroy)
             delete (*Entity::it), it--;
             

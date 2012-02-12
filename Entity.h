@@ -93,6 +93,7 @@ protected:
     bool myIsVisible, myDestroy;
     short myDepth;
     EntityKind myKind;
+	sf::BlendMode myBlendMode;
     
 public:
     

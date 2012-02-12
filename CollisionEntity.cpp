@@ -169,7 +169,7 @@ bool CollisionEntity::Collide()
         //La collision d'un solid est différente à celle d'un non solide
         if ((*ite)!=this)
         {
-            float off(0.5f);
+            float off(1.f);
             if ((*ite)->IsSolid())
             {
                 if (IsColliding(**ite))
@@ -286,20 +286,20 @@ bool CollisionEntity::CheckGround(float offsetY)
 
 float CollisionEntity::GetGroundFriction()
 {
-    Top+=0.75f; Left+=1.2f; Width-=2.4f;
+    Top+=1.f; //Left+=1.2f; Width-=2.4f;
     for (std::list<CollisionEntity*>::iterator ite=list.begin(); ite!=list.end(); ite++)
     {
         if ((*ite)!=this)// && (*ite)->IsSolid())
         {
             if (IsColliding(**ite))
             {
-                Top-=0.75f; Left-=1.2f; Width+=2.4f;
+                Top-=1.f; //Left-=1.2f; Width+=2.4f;
                 //MoveOutside();
                 return (*ite)->GetFriction();
             }
         }
     }
-    Top-=0.75f; Left-=1.2f; Width+=2.4f;
+    Top-=1.f; //Left-=1.2f; Width+=2.4f;
     return -1.f;
 }
 

@@ -33,6 +33,8 @@ void Game::Start(void)
     myMainWindow.Create(sf::VideoMode(myWinWidth , myWinHeight,32),"Pang!");
     //myMainWindow.SetFramerateLimit(60);
     myMainWindow.EnableVerticalSync(1);
+	// Ignore la répétition des inputs par l'OS, pourrait être activé dans les menus...
+	myMainWindow.EnableKeyRepeat(0);
     
     //Show a splashscreen usefull for loading ressources (go edit SplashScreen.cpp)
     myGameState=ShowingSplash;

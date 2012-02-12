@@ -37,7 +37,7 @@ void Game::Start(void)
     }
     // Quelques binds (à terme : fichier de configuration)
     Game::Bindings.insert(std::pair<std::string, sf::Keyboard::Key>("Exit", sf::Keyboard::Escape));
-    Game::Bindings.insert(std::pair<std::string, sf::Keyboard::Key>("Slow", sf::Keyboard::X));
+    Game::Bindings.insert(std::pair<std::string, sf::Keyboard::Key>("Slow", sf::Keyboard::E));
     Game::Bindings.insert(std::pair<std::string, sf::Keyboard::Key>("P1_MoveLeft", sf::Keyboard::Q));
     Game::Bindings.insert(std::pair<std::string, sf::Keyboard::Key>("P1_MoveRight", sf::Keyboard::D));
     Game::Bindings.insert(std::pair<std::string, sf::Keyboard::Key>("P1_Jump", sf::Keyboard::Space));
@@ -206,6 +206,8 @@ void Game::GameLoop()
         else
             gb::timerate_to=1.f;
     }
+
+	Sound::UpdateAll(gb::timerate);
 
     switch(myGameState)
     {

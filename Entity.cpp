@@ -18,9 +18,9 @@ short Entity::maxDepth(0), Entity::minDepth(0);
 Entity::Entity() : sf::Sprite(), myIsVisible(1), myDestroy(0), myDepth(0), myKind(kEK_Any)
 {
 	Entity::it = Entity::list.begin();
-	while(Entity::it != Entity::list.end() && myDepth<(*Entity::it)->myDepth)
+	while(Entity::it != Entity::list.end() && myDepth<(*Entity::it)->myDepth+1)
 		Entity::it++;
-    
+
 	Entity::list.insert(Entity::it, this);
 }
 
@@ -30,9 +30,9 @@ Entity::Entity(short Depth) : sf::Sprite(),  myIsVisible(1), myDestroy(0), myDep
         minDepth=Depth;
     if (Depth>maxDepth)
         maxDepth=Depth;
-    
+
 	Entity::it = Entity::list.begin();
-	while(Entity::it != Entity::list.end() && myDepth<(*Entity::it)->myDepth)
+	while(Entity::it != Entity::list.end() && myDepth<(*Entity::it)->myDepth+1)
 		Entity::it++;
 
 	Entity::list.insert(Entity::it, this);
@@ -45,7 +45,7 @@ Entity::~Entity()
         if ((*Entity::it)==this)
             break;
     }
-    
+
     if ((*Entity::it)==this)
         Entity::list.erase(Entity::it);
 
@@ -67,7 +67,7 @@ void Entity::DrawAll(sf::RenderTarget &window)
             window.Draw(**Entity::it);
         if ((*Entity::it)->myDestroy)
             delete (*Entity::it), it--;
-            
+
     }
 }
 
@@ -77,20 +77,20 @@ void Entity::SetDepth(short Depth)
         minDepth=Depth;
     if (Depth>maxDepth)
         maxDepth=Depth;
-    
+
     myDepth=Depth;
-    
+
     //On l'enlève de la liste
     Entity::it = Entity::list.begin();
 	while((*Entity::it) != this) //ICI ON SUPPOSE QUE L'élement est déjà dans la liste!!
 		Entity::it++;
     Entity::list.erase(Entity::it);
-    
+
     //Et on le replace
 	Entity::it = Entity::list.begin();
 	while(Entity::it != Entity::list.end() && myDepth<(*Entity::it)->myDepth)
 		Entity::it++;
-    
+
 	Entity::list.insert(Entity::it, this);
 }
 

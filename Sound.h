@@ -13,9 +13,13 @@
 class Sound : public sf::Sound
 {
 	private:
+		/** @brief Détermine si le son pourra être joué plusieurs fois (Défaut : Non)
+		**/
 		bool myPersistant;
 
 	public:
+		/** @brief Contient des pointeurs vers tout les sons
+		**/
 		static std::list<Sound*> mySounds;
 		static std::list<Sound*>::iterator mySoundsIt;
 
@@ -25,13 +29,15 @@ class Sound : public sf::Sound
 
 		/** @brief Met à jour le pitch en fonction du timerate
 		**/
-		static void UpdateAll();
+		static void UpdateAll(float);
 
 		Sound();
 		/** @brief Constructeur à partir d'un SoundBuffer de ResManager
 		**/
 		Sound(std::string key);
 
+		/** @brief Accesseur de la persistance
+		**/
 		bool IsPersistant() { return myPersistant; }
 
 		~Sound();

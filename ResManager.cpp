@@ -40,9 +40,7 @@ bool ResManager::AddSoundBuffer(std::string const &location, std::string const &
         return 0;
 	}
 
-	//mySoundBuffers[key] = file;
-    mySoundBuffers.insert(std::pair<std::string, sf::SoundBuffer*>(key, file));
-	std::cout << "OK !" << mySoundBuffers[key] << std::endl;
+	mySoundBuffers[key] = file;
 	return 1;
 }
 
@@ -135,8 +133,6 @@ void ResManager::LoadResources()
     SetAnimRect("ryu_walk", 0, sf::IntRect(143, 5, 162-143, 37-5));
     SetAnimRect("ryu_walk", 1, sf::IntRect(171, 5, 190-171, 37-5));
     SetAnimRect("ryu_walk", 2, sf::IntRect(197, 5, 219-197, 37-5));
-
-    //std::cout<<"size : "<<GetAnimation("player_walk").size()<<" left of first rectangle: "<<GetAnimation("player_walk")[0].Left<<std::endl;
 }
 
 const sf::Texture& ResManager::GetTexture(std::string const &key)

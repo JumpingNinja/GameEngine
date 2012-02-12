@@ -1,4 +1,5 @@
 #include "SoundEmitter.h"
+#include <iostream>
 
 SoundEmitter::SoundEmitter()
 {

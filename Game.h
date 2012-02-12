@@ -30,6 +30,8 @@ public:
     static void Start();
     static const sf::Texture& GetTexture(const std::string& key);
     static const std::vector<sf::IntRect>& GetAnimation(const std::string &key);
+    static const sf::SoundBuffer& GetSoundBuffer(const std::string &key);
+    static const sf::Music& GetMusic(const std::string &key);
     static float GetWidth();
     static float GetHeight();
     static const sf::View& GetView();
@@ -46,7 +48,7 @@ private:
 
     static GameState myGameState;
     static sf::RenderWindow myMainWindow;
-    static TxManager myTxManager;
+    static ResManager myResManager;
     static sf::View myView;
     static Entity *myFollow;
     static Background *myBack;

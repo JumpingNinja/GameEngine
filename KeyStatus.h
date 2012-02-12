@@ -16,7 +16,6 @@ et enfin de quoi accéder facilement à l'état cherché à partir du string (ex : "S
 
 #include <map>
 #include <SFML/Window.hpp>
-#include <SFML/Graphics.hpp>
 
 /** @brief Donne le status actuel d'une touche du clavier, public.
 **/
@@ -36,7 +35,7 @@ class KeyStatus {
 		static std::map<sf::Keyboard::Key, KeyStatus*> map;
 		/** @brief Met à jour la liste
 		**/
-		static void Update(sf::RenderWindow &myMainWindow);
+		static void Update();
 
 		bool IsKeyPressed() const { return myIsKeyPressed; }
 		bool IsJustPressed() const { return myJustPressed; }

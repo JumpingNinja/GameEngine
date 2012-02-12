@@ -9,9 +9,11 @@
 #include "CollisionEntity.h"
 #include "Animation.h"
 #include "Playable.h"
+#include "Sound.h"
+#include "SoundEmitter.h"
 
 
-class guytest : public CollisionEntity, public Playable, private Animation {
+class guytest : public CollisionEntity, public Playable, private Animation, public SoundEmitter {
 
 public:
     guytest();

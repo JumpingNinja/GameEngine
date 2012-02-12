@@ -112,8 +112,6 @@ void CollisionEntity::TakeAStep(bool useFriction)
     else
         mySpeed.x=min(mySpeed.x, myMaxSpeed.x);
 
-    if (sf::Keyboard::IsKeyPressed(sf::Keyboard::O))
-        std::cout<<"guy speed:"<<mySpeed.x<<std::endl;
 
     //Stoppe quand la vitesse est très petite, il faut prendre la valeur de myGravity pour y!
     if (abs(mySpeed.x)<0.2f*gb::timerate) mySpeed.x=0.f;

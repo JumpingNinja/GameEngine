@@ -184,16 +184,18 @@ bool Game::IsExiting()
 void Game::GameLoop()
 {
 	// Gestion des Events
-    sf::Event currentEvent;
+    sf::Event currentEvent; bool KeyCheck(0);
 
     while(myMainWindow.PollEvent(currentEvent))
     {
         if(currentEvent.Type==sf::Event::Closed)
             myGameState=Game::Exiting;
+		
+		if (!KeyCheck)
+			KeyStatus::Update(myMainWindow), KeyCheck=1;
     }
 
-    // Mise à jour des inputs
-    KeyStatus::Update(myMainWindow);
+    
 
     if (Game::GetKeyState("Exit").IsJustPressed())
         myGameState=Game::Exiting;

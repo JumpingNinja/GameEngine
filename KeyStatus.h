@@ -43,6 +43,8 @@ class KeyStatus {
 		bool IsJustReleased() const { return myJustReleased; }
 		KeyStatus(sf::Keyboard::Key Key);
 		~KeyStatus();
+
+		static void DestroyAll();
 };
 
 #endif

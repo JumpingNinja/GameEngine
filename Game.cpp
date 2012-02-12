@@ -37,6 +37,7 @@ void Game::Start(void)
     }
     // Quelques binds (à terme : fichier de configuration)
     Game::Bindings.insert(std::pair<std::string, sf::Keyboard::Key>("Exit", sf::Keyboard::Escape));
+    Game::Bindings.insert(std::pair<std::string, sf::Keyboard::Key>("Slow", sf::Keyboard::X));
     Game::Bindings.insert(std::pair<std::string, sf::Keyboard::Key>("P1_MoveLeft", sf::Keyboard::Q));
     Game::Bindings.insert(std::pair<std::string, sf::Keyboard::Key>("P1_MoveRight", sf::Keyboard::D));
     Game::Bindings.insert(std::pair<std::string, sf::Keyboard::Key>("P1_Jump", sf::Keyboard::Space));
@@ -167,6 +168,8 @@ void Game::Start(void)
     }
 
     Entity::DestroyAll(); //à cause des new
+    KeyStatus::DestroyAll();
+
     myMainWindow.Close();
 }
 
@@ -180,14 +183,21 @@ bool Game::IsExiting()
 
 void Game::GameLoop()
 {
-    //sf::Event currentEvent;
+	// Gestion des Events
+    sf::Event currentEvent;
+
+    while(myMainWindow.PollEvent(currentEvent))
+    {
+        if(currentEvent.Type==sf::Event::Closed)
+            myGameState=Game::Exiting;
+    }
 
     // Mise à jour des inputs
     KeyStatus::Update(myMainWindow);
 
-    if (KeyStatus::map[sf::Keyboard::Escape]->IsJustPressed())
+    if (Game::GetKeyState("Exit").IsJustPressed())
         myGameState=Game::Exiting;
-    if (KeyStatus::map[sf::Keyboard::X]->IsJustPressed())
+    if (Game::GetKeyState("Slow").IsJustPressed())
     {
         if (gb::timerate_to>0.25f)
             gb::timerate_to=0.25f;
@@ -202,9 +212,9 @@ void Game::GameLoop()
             myMainWindow.SetView(myView);
             //Step
             CollisionEntity::Step();
-            sf::Vector2f addPos;
-            addPos.x=(sf::Keyboard::IsKeyPressed(sf::Keyboard::Right)-sf::Keyboard::IsKeyPressed(sf::Keyboard::Left))*10.f;
-            addPos.y=(sf::Keyboard::IsKeyPressed(sf::Keyboard::Down)-sf::Keyboard::IsKeyPressed(sf::Keyboard::Up))*4.f;
+            //sf::Vector2f addPos;
+            //addPos.x=(sf::Keyboard::IsKeyPressed(sf::Keyboard::Right)-sf::Keyboard::IsKeyPressed(sf::Keyboard::Left))*10.f;
+            //addPos.y=(sf::Keyboard::IsKeyPressed(sf::Keyboard::Down)-sf::Keyboard::IsKeyPressed(sf::Keyboard::Up))*4.f;
             //myView.SetCenter(myView.GetCenter()+addPos);
             myView.SetCenter(myFollow->GetPosition());
             myView.SetCenter(max(myView.GetSize().x/2.f, myView.GetCenter().x), max(myView.GetSize().y/2.f, myView.GetCenter().y));
@@ -235,23 +245,6 @@ void Game::GameLoop()
         default:
             break;
     }
-/*
-    while(myMainWindow.PollEvent(currentEvent))
-    {
-        if(currentEvent.Type==sf::Event::Closed)
-            myGameState=Game::Exiting;
-        if (currentEvent.Type==sf::Event::KeyPressed && currentEvent.Key.Code==sf::Keyboard::Escape)
-            myGameState=Game::Exiting;
-        if (currentEvent.Type==sf::Event::KeyReleased && currentEvent.Key.Code==sf::Keyboard::X)
-        {
-            if (gb::timerate_to>0.25f)
-                gb::timerate_to=0.25f;
-            else
-                gb::timerate_to=1.f;
-        }
-
-    }
-*/
 }
 
 const sf::Texture& Game::GetTexture(const std::string& key)

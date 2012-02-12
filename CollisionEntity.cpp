@@ -29,7 +29,7 @@ CollisionEntity::~CollisionEntity()
         if ((*CollisionEntity::it)==this)
             break;
     }
-    
+
     if ((*CollisionEntity::it)==this)
         CollisionEntity::list.erase(CollisionEntity::it);
 }
@@ -46,7 +46,7 @@ RelativePosition CollisionEntity::GetRelativePosition(CollisionEntity &other)
     //Top et Left donnent déjà la position
     sf::Vector2f relPos(other.Left-Left, other.Top-Top);
     //std::cout<<"vect: "<<relPos.x<<", "<<relPos.y<<std::endl;
-    
+
     if (!isPositive(relPos.x)) //on est sur la droite
     {
         if (!isPositive(relPos.y)) //on est en bas
@@ -83,8 +83,8 @@ RelativePosition CollisionEntity::GetRelativePosition(CollisionEntity &other)
                 return kBottom;
         }
     }
-    
-    
+
+
     //On considere que si ce n'es pas l'une c'est l'autre car cette fonction doit être utilisée lorsqu'il y a collision
 }
 
@@ -97,33 +97,33 @@ void CollisionEntity::TakeAStep(bool useFriction)
         mySpeed.y+=myGravity*gb::timerate;
     else if (useFriction)
         mySpeed.x *= 1.f - myFriction*GroundFriction;
-	
-		
+
+
     //else if (mySpeed.y>0.f)
       //  mySpeed.y=0.f;
-        
+
     //else if (mySpeed.x>0.1f && mySpeed.y<0.1f) MoveOutside();
     //std::cout<<"grav:"<<myGravity*gb::timerate<<std::endl;
-    
+
     //On limite la vitesse
     mySpeed.y=min(mySpeed.y, myMaxSpeed.y);
     if (mySpeed.x<=0)
         mySpeed.x=max(mySpeed.x, -myMaxSpeed.x);
     else
         mySpeed.x=min(mySpeed.x, myMaxSpeed.x);
-    
+
     if (sf::Keyboard::IsKeyPressed(sf::Keyboard::O))
         std::cout<<"guy speed:"<<mySpeed.x<<std::endl;
-    
+
     //Stoppe quand la vitesse est très petite, il faut prendre la valeur de myGravity pour y!
     if (abs(mySpeed.x)<0.2f*gb::timerate) mySpeed.x=0.f;
-    if (abs(mySpeed.y)<0.3f*gb::timerate) mySpeed.y=0.f;
-    
+    if (abs(mySpeed.y)<0.2f*gb::timerate) mySpeed.y=0.f;
+
     mySpeed.x*=myAirFriction.x;
     mySpeed.y*=myAirFriction.y;
-    
+
     //Move(mySpeed);
-    
+
     float maxSpeed(max(static_cast<float>(abs(mySpeed.x)), static_cast<float>(abs(mySpeed.y)))), tmpStep(1.f), tmpSpeed(maxSpeed);
     //Cette vitesse temporelle permet de gérer les collisions entre objets dynamiques
     myStepSpeed=mySpeed;
@@ -136,14 +136,14 @@ void CollisionEntity::TakeAStep(bool useFriction)
             Move(gb::timerate*mySpeed.x/maxSpeed, gb::timerate*mySpeed.y/maxSpeed);
         else
             Move(gb::timerate*tmpSpeed*mySpeed.x/maxSpeed, gb::timerate*tmpSpeed*mySpeed.y/maxSpeed);
-        
+
         Collide();
         //if (Collide())
           //  tmpSpeed=0.f;
         //else
             tmpSpeed-=tmpStep;
     }
-    
+
     //std::cout<<this<<": mySpeed: "<<mySpeed.x<<", "<<mySpeed.y<<" myStepSpeed: "<<myStepSpeed.x<<", "<<myStepSpeed.y<<std::endl;
 }
 
@@ -155,7 +155,7 @@ void CollisionEntity::Step()
     //list.back()->TakeAStep();
     for (it=list.begin(); it!=list.end(); it++)
         (*it)->TakeAStep();
-        
+
 }
 
 bool CollisionEntity::Collide()
@@ -199,18 +199,18 @@ bool CollisionEntity::Collide()
                             mySpeed.y=-mySpeed.y*myBounce;
                             finish=1;
                             break;
-                            
+
                         default:
                             break;
                     }
-                    
+
                 }
             }
             else
             {
                 if (IsColliding(**ite))
                 {
-                    
+
                     //std::cout<<"Dynamic collision\n";
                     switch (GetRelativePosition(**ite)) {
                         case kLeft:
@@ -251,13 +251,13 @@ bool CollisionEntity::Collide()
                             (*ite)->mySpeed.y=(-(*ite)->mySpeed.y/((myMass+(*ite)->myMass)/(*ite)->myMass)+myStepSpeed.y/((myMass+(*ite)->myMass)/myMass))*(*ite)->myBounce;
                             finish=1;
                             break;
-                            
+
                         default:
                             break;
                     }
                 }
             }
-            
+
             if (finish)
                 return 1;
         }
@@ -398,7 +398,7 @@ void CollisionEntity::MoveOutside()
                 if (relPos==kRight)
                     Move(hDiff, 0.f);
             }
-            
+
             vDiff=Top-(*ite)->Top+Height;
             if (vDiff<0.f)
             {

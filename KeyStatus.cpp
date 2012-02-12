@@ -23,21 +23,21 @@ void KeyStatus::Update(sf::RenderWindow &myMainWindow)
 {
 	for(std::map<sf::Keyboard::Key, KeyStatus*>::iterator it = KeyStatus::map.begin(); it != KeyStatus::map.end(); it++)
 	{
+		if((sf::Keyboard::IsKeyPressed(it->first))&&!(it->second->myIsKeyPressed))
+			it->second->myJustPressed = 1;
+		else
+			it->second->myJustPressed = 0;
+
+		if(!(sf::Keyboard::IsKeyPressed(it->first))&&(it->second->myIsKeyPressed))
+			it->second->myJustReleased = 1;
+		else
+			it->second->myJustReleased = 0;
+
 		it->second->myIsKeyPressed = sf::Keyboard::IsKeyPressed(it->first);
-		it->second->myJustPressed = 0;
-		it->second->myJustReleased = 0;
 	}
+}
 
-	sf::Event Event;
+void KeyStatus::DestroyAll()
+{
 
-    // Ë faire ailleurs pour pouvoir prendre en compte tout les types d'ŽvŽnements !
-	while(myMainWindow.PollEvent(Event))
-	{
-		if (Event.Type == sf::Event::KeyPressed)
-		{
-			KeyStatus::map[Event.Key.Code]->myJustPressed = 1;
-		} else if(Event.Type == sf::Event::KeyReleased) {
-			KeyStatus::map[Event.Key.Code]->myJustReleased = 1;
-		}
-	}
 }

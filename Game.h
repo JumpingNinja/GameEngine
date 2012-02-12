@@ -7,9 +7,17 @@
 //
 
 #pragma once
+#include <map>
+
 #include "SFML/Window.hpp"
 #include "SFML/Graphics.hpp"
+
 #include "SplashScreen.h"
+#include "Background.h"
+#include "KeyStatus.h"
+#include "Game.h"
+#include "Entity.h"
+
 class Entity;
 class Background;
 
@@ -25,14 +33,17 @@ public:
     static float GetWidth();
     static float GetHeight();
     static const sf::View& GetView();
-    
+
+    static std::map<std::string, sf::Keyboard::Key> Bindings;
+    static KeyStatus* Binds(std::string Action);
+
 private:
     static bool IsExiting();
     static void GameLoop();
-    
-    enum GameState { Uninitialized, ShowingSplash, Paused, 
+
+    enum GameState { Uninitialized, ShowingSplash, Paused,
         ShowingMenu, Playing, Exiting };
-    
+
     static GameState myGameState;
     static sf::RenderWindow myMainWindow;
     static TxManager myTxManager;

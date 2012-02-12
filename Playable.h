@@ -16,6 +16,7 @@ class Playable {
 		bool myControled;
 	public:
 		Playable();
+		Playable(bool);
 		~Playable();
 		bool IsControled() { return myControled; }
 		void SetControled(bool aControled = 1) { myControled = aControled; }

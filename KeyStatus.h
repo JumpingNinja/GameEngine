@@ -22,11 +22,6 @@ et enfin de quoi accéder facilement à l'état cherché à partir du string (ex : "S
 **/
 class KeyStatus {
 	private:
-		static std::map<sf::Keyboard::Key, KeyStatus*> map;
-		/** @brief Met à jour la liste
-		**/
-		static void Update(sf::RenderWindow* myMainWindow);
-		
 		/** @brief Vaut vrai si la touche est appuyée
 		**/
 		bool myIsKeyPressed;
@@ -36,9 +31,16 @@ class KeyStatus {
 		/** @brief Vaut vrai si la touche vient d'être relachée
 		**/
 		bool myJustReleased;
-		
+
 	public:
-		// Accesseurs...
+		static std::map<sf::Keyboard::Key, KeyStatus*> map;
+		/** @brief Met à jour la liste
+		**/
+		static void Update(sf::RenderWindow &myMainWindow);
+
+		bool IsKeyPressed() { return myIsKeyPressed; }
+		bool IsJustPressed() { return myJustPressed; }
+		bool IsJustReleased() { return myJustReleased; }
 		KeyStatus(sf::Keyboard::Key Key);
 		~KeyStatus();
 };

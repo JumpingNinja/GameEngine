@@ -1,7 +1,7 @@
 #include "KeyStatus.h"
 
 std::map<sf::Keyboard::Key, KeyStatus*> KeyStatus::map;
-		
+
 
 KeyStatus::KeyStatus(sf::Keyboard::Key Key) : myIsKeyPressed(0), myJustPressed(0), myJustReleased(0)
 {
@@ -19,7 +19,7 @@ KeyStatus::~KeyStatus()
     }
 }
 
-void KeyStatus::Update(sf::RenderWindow* myMainWindow)
+void KeyStatus::Update(sf::RenderWindow &myMainWindow)
 {
 	for(std::map<sf::Keyboard::Key, KeyStatus*>::iterator it = KeyStatus::map.begin(); it != KeyStatus::map.end(); it++)
 	{
@@ -27,10 +27,11 @@ void KeyStatus::Update(sf::RenderWindow* myMainWindow)
 		it->second->myJustPressed = 0;
 		it->second->myJustReleased = 0;
 	}
-	
+
 	sf::Event Event;
-	
-	while(myMainWindow->PollEvent(Event))
+
+    // à faire ailleurs pour pouvoir prendre en compte tout les types d'événements !
+	while(myMainWindow.PollEvent(Event))
 	{
 		if (Event.Type == sf::Event::KeyPressed)
 		{

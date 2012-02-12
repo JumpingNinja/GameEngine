@@ -8,10 +8,11 @@
 #pragma once
 #include "CollisionEntity.h"
 #include "Animation.h"
+#include "Playable.h"
 
 
-class guytest : public CollisionEntity, private Animation {
-    
+class guytest : public CollisionEntity, public Playable, private Animation {
+
 public:
     guytest();
     ~guytest();

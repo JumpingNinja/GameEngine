@@ -8,13 +8,13 @@
 
 #include "Game.h"
 #include "Entity.h"
-#include "MyClass.h"
 #include "CollisionEntity.h"
 #include "guyTest.h"
 #include <iostream>
-#include "Background.h"
 
-//Initialization des membres statiques
+//Initialization des membres statiques*
+std::map<std::string, sf::Keyboard::Key> Game::Bindings;
+
 Game::GameState Game::myGameState = Uninitialized;
 sf::RenderWindow Game::myMainWindow;
 SplashScreen Game::mySplash;
@@ -29,30 +29,41 @@ void Game::Start(void)
 {
     if(myGameState != Uninitialized)
         return;
-    
+
+    // Préparation de la gestion des inputs
+    for(int keyLoop = sf::Keyboard::A; keyLoop != sf::Keyboard::KeyCount; keyLoop++)
+    {
+        new KeyStatus(static_cast<sf::Keyboard::Key>(keyLoop));
+    }
+    // Quelques binds (à terme : fichier de configuration)
+    Game::Bindings.insert(std::pair<std::string, sf::Keyboard::Key>("Exit", sf::Keyboard::Escape));
+    Game::Bindings.insert(std::pair<std::string, sf::Keyboard::Key>("P1_MoveLeft", sf::Keyboard::Q));
+    Game::Bindings.insert(std::pair<std::string, sf::Keyboard::Key>("P1_MoveRight", sf::Keyboard::D));
+    Game::Bindings.insert(std::pair<std::string, sf::Keyboard::Key>("P1_Jump", sf::Keyboard::Space));
+
     myMainWindow.Create(sf::VideoMode(myWinWidth , myWinHeight,32),"Pang!");
     //myMainWindow.SetFramerateLimit(60);
     myMainWindow.EnableVerticalSync(1);
 	// Ignore la répétition des inputs par l'OS, pourrait être activé dans les menus...
 	myMainWindow.EnableKeyRepeat(0);
-    
+
     //Show a splashscreen usefull for loading ressources (go edit SplashScreen.cpp)
     myGameState=ShowingSplash;
     //Ceci se fait normalement dans ScreenSplash::Show()
     myTxManager.LoadResources();
-    
+
     myView.SetSize(myMainWindow.GetWidth(), myMainWindow.GetHeight());
     myView.Zoom(1.f/2.f);
-    
-    
+
+
     myBack= new Background(Game::GetTexture("back"), 10);
     //myBack=new Background(300.f, 300.f, 10);
     //fake texture
     sf::Texture tx;
-	
+
     //Manually reate some walls
 	float friction = 0.5f;
-	
+
     CollisionEntity* p;
     p=new CollisionEntity(1);
     p->SetPosition(10.f, 20.f);
@@ -60,49 +71,49 @@ void Game::Start(void)
     p->SetTextureRect(sf::IntRect(0, 0, 20, 700));
     p->Width=20.f, p->Height=700.f;
 	p->SetFriction(friction);
-    
+
     p=new CollisionEntity(1);
     p->SetPosition(1014.f, 20.f);
     p->SetTexture(tx);
     p->SetTextureRect(sf::IntRect(0, 0, 20, 700));
     p->Width=20.f, p->Height=700.f;
 	p->SetFriction(friction);
-    
+
     p=new CollisionEntity(1);
     p->SetPosition(10.f, 720.f);
     p->SetTexture(tx);
     p->SetTextureRect(sf::IntRect(0, 0, 1024, 20));
     p->Width=1024.f, p->Height=20.f;
 	p->SetFriction(0.5f);
-	
+
     p=new CollisionEntity(1);
     p->SetPosition(10.f, 10.f);
     p->SetTexture(tx);
     p->SetTextureRect(sf::IntRect(0, 0, 1024, 20));
     p->Width=1024.f, p->Height=20.f;
 	p->SetFriction(friction);
-	
+
     p=new CollisionEntity(1);
     p->SetPosition(10.f, 700.f);
     p->SetTexture(tx);
     p->SetTextureRect(sf::IntRect(0, 0, 100, 20));
     p->Width=100.f, p->Height=20.f;
 	p->SetFriction(friction);
-	
+
     p=new CollisionEntity(1);
     p->SetPosition(10.f, 680.f);
     p->SetTexture(tx);
     p->SetTextureRect(sf::IntRect(0, 0, 50, 20));
     p->Width=50.f, p->Height=20.f;
 	p->SetFriction(friction);
-	
+
     p=new CollisionEntity(1);
     p->SetPosition(300.f, 640.f);
     p->SetTexture(tx);
     p->SetTextureRect(sf::IntRect(0, 0, 50, 20));
     p->Width=50.f, p->Height=20.f;
 	p->SetFriction(friction);
-	
+
     p=new CollisionEntity(1);
     p->SetPosition(350.f, 660.f);
     p->SetTexture(tx);
@@ -118,10 +129,10 @@ void Game::Start(void)
     pg2->SetPosition(200.f, 45.f);*/
     myFollow=new guytest;
     myFollow->SetPosition(300.f, 50.f);
-    
-    
-     
-    
+
+
+
+
     /*for (int i=0; i<30; i++)
     {
         p=new CollisionEntity(0);
@@ -131,7 +142,7 @@ void Game::Start(void)
         p->SetTextureRect(sf::IntRect(0, 0, 10, 10));
         p->SetColor(sf::Color::Green);
         p->Width=10.f, p->Height=10.f;
-        
+
         //Quelques paramètres por un objet qui ne s'arrete jamais de bouger ^^
         p->SetFriction(0.0f), p->SetBounce(1.0f);
         p->SetSpeed(sf::Vector2f(5.f, -3.f));
@@ -140,12 +151,12 @@ void Game::Start(void)
         if (i==1)
             p->SetSpeed(sf::Vector2f(-18.f, -3.f));
     }*/
-     
-    
-    
+
+
+
     //On ralentie le temps
     //gb::timerate=0.25f;
-    
+
     //sf::Clock clock; unsigned int counter(0);
     while(!IsExiting())
     {
@@ -154,14 +165,14 @@ void Game::Start(void)
         //if (clock.GetElapsedTime().AsSeconds()>=1.0f)
         //std::cout<<"Frametime: "<<1.f/clock.GetElapsedTime().AsSeconds()<<std::endl, counter=0, clock.Restart();
     }
-    
+
     Entity::DestroyAll(); //à cause des new
     myMainWindow.Close();
 }
 
 bool Game::IsExiting()
 {
-    if(myGameState == Game::Exiting) 
+    if(myGameState == Game::Exiting)
         return true;
     else
         return false;
@@ -169,8 +180,21 @@ bool Game::IsExiting()
 
 void Game::GameLoop()
 {
-    sf::Event currentEvent;
-    
+    //sf::Event currentEvent;
+
+    // Mise à jour des inputs
+    KeyStatus::Update(myMainWindow);
+
+    if (KeyStatus::map[sf::Keyboard::Escape]->IsJustPressed())
+        myGameState=Game::Exiting;
+    if (KeyStatus::map[sf::Keyboard::X]->IsJustPressed())
+    {
+        if (gb::timerate_to>0.25f)
+            gb::timerate_to=0.25f;
+        else
+            gb::timerate_to=1.f;
+    }
+
     switch(myGameState)
     {
         case Game::Playing:
@@ -185,24 +209,24 @@ void Game::GameLoop()
             myView.SetCenter(myFollow->GetPosition());
             myView.SetCenter(max(myView.GetSize().x/2.f, myView.GetCenter().x), max(myView.GetSize().y/2.f, myView.GetCenter().y));
             myView.SetCenter(min(myWidth - myView.GetSize().x/2.f, myView.GetCenter().x), min(myHeight - myView.GetSize().y/2.f, myView.GetCenter().y));
-            
+
             wobble(gb::timerate, gb::timerate_to, 0.5f, 0.5f, gb::m_spdTR);
             //à implémenter un peux mieux avec un accesseur sur gb::timerate et un set sur gb::timerate_to
-            
+
             myBack->UpdatePosition();
-            
+
             //drawing
             myMainWindow.Clear();
             Entity::DrawAll(myMainWindow);
-            
+
             //myMainWindow.Draw(*myBack);
-            
+
             //myMainWindow.SetView(myView);
             myMainWindow.Display();
-            
+
             break;
         }
-        
+
         case Game::ShowingSplash:
             mySplash.Show(myMainWindow);
             //c'est la aussi que mySplash.Show() va faire normalement appel au chargement de resources pour afficher "Loading"
@@ -211,7 +235,7 @@ void Game::GameLoop()
         default:
             break;
     }
-    
+/*
     while(myMainWindow.PollEvent(currentEvent))
     {
         if(currentEvent.Type==sf::Event::Closed)
@@ -225,8 +249,9 @@ void Game::GameLoop()
             else
                 gb::timerate_to=1.f;
         }
-        
+
     }
+*/
 }
 
 const sf::Texture& Game::GetTexture(const std::string& key)
@@ -250,4 +275,9 @@ float Game::GetHeight()
 const sf::View& Game::GetView()
 {
     return myView;
+}
+
+KeyStatus* Game::Binds(std::string Action)
+{
+    return KeyStatus::map[Game::Bindings[Action]];
 }

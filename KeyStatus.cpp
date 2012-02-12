@@ -30,7 +30,7 @@ void KeyStatus::Update(sf::RenderWindow &myMainWindow)
 
 	sf::Event Event;
 
-    // à faire ailleurs pour pouvoir prendre en compte tout les types d'événements !
+    // Ë faire ailleurs pour pouvoir prendre en compte tout les types d'ŽvŽnements !
 	while(myMainWindow.PollEvent(Event))
 	{
 		if (Event.Type == sf::Event::KeyPressed)

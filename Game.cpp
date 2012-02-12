@@ -277,7 +277,7 @@ const sf::View& Game::GetView()
     return myView;
 }
 
-KeyStatus* Game::Binds(std::string Action)
+const KeyStatus& Game::GetKeyState(const std::string &Action)
 {
-    return KeyStatus::map[Game::Bindings[Action]];
+    return *KeyStatus::map[Game::Bindings[Action]];
 }

@@ -35,7 +35,7 @@ public:
     static const sf::View& GetView();
 
     static std::map<std::string, sf::Keyboard::Key> Bindings;
-    static KeyStatus* Binds(std::string Action);
+    static const KeyStatus& GetKeyState(const std::string &Action);
 
 private:
     static bool IsExiting();

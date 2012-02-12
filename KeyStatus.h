@@ -38,9 +38,9 @@ class KeyStatus {
 		**/
 		static void Update(sf::RenderWindow &myMainWindow);
 
-		bool IsKeyPressed() { return myIsKeyPressed; }
-		bool IsJustPressed() { return myJustPressed; }
-		bool IsJustReleased() { return myJustReleased; }
+		bool IsKeyPressed() const { return myIsKeyPressed; }
+		bool IsJustPressed() const { return myJustPressed; }
+		bool IsJustReleased() const { return myJustReleased; }
 		KeyStatus(sf::Keyboard::Key Key);
 		~KeyStatus();
 };

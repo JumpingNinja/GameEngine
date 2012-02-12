@@ -17,9 +17,9 @@ class Playable {
 	public:
 		Playable();
 		Playable(bool);
-		~Playable();
-		bool IsControled() { return myControled; }
-		void SetControled(bool aControled = 1) { myControled = aControled; }
+		virtual ~Playable();
+		bool IsControled()const ;
+		void SetControled(bool aControled = 1);
 };
 
 #endif

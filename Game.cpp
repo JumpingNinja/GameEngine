@@ -18,7 +18,7 @@ std::map<std::string, sf::Keyboard::Key> Game::Bindings;
 Game::GameState Game::myGameState = Uninitialized;
 sf::RenderWindow Game::myMainWindow;
 SplashScreen Game::mySplash;
-TxManager Game::myTxManager;
+ResManager Game::myResManager;
 sf::View Game::myView;
 Entity* Game::myFollow(NULL);
 Background* Game::myBack(NULL);
@@ -41,7 +41,6 @@ void Game::Start(void)
 	AddKeyBinding("P1_MoveLeft", sf::Keyboard::Left);
 	AddKeyBinding("P1_MoveRight", sf::Keyboard::Right);
 	AddKeyBinding("P1_Jump", sf::Keyboard::Space);
-	AddKeyBinding("particles", sf::Keyboard::P);
 
     myMainWindow.Create(sf::VideoMode(myWinWidth , myWinHeight,32),"Pang!");
     //myMainWindow.SetFramerateLimit(60);
@@ -52,7 +51,7 @@ void Game::Start(void)
     //Show a splashscreen usefull for loading ressources (go edit SplashScreen.cpp)
     myGameState=ShowingSplash;
     //Ceci se fait normalement dans ScreenSplash::Show()
-    myTxManager.LoadResources();
+    myResManager.LoadResources();
 
     myView.SetSize(myMainWindow.GetWidth(), myMainWindow.GetHeight());
     myView.Zoom(1.f/2.f);
@@ -191,12 +190,12 @@ void Game::GameLoop()
     {
         if(currentEvent.Type==sf::Event::Closed)
             myGameState=Game::Exiting;
-		
+
 		if (!KeyCheck)
 			KeyStatus::Update(), KeyCheck=1;
     }
 
-    
+
 
     if (Game::GetKeyState("Exit").IsJustPressed())
         myGameState=Game::Exiting;
@@ -207,6 +206,8 @@ void Game::GameLoop()
         else
             gb::timerate_to=1.f;
     }
+
+	Sound::UpdateAll(gb::timerate);
 
     switch(myGameState)
     {
@@ -254,11 +255,22 @@ void Game::GameLoop()
 
 const sf::Texture& Game::GetTexture(const std::string& key)
 {
-    return myTxManager.GetTexture(key);
+    return myResManager.GetTexture(key);
 }
+
 const std::vector<sf::IntRect>& Game::GetAnimation(const std::string &key)
 {
-    return myTxManager.GetAnimation(key);
+    return myResManager.GetAnimation(key);
+}
+
+const sf::SoundBuffer& Game::GetSoundBuffer(const std::string& key)
+{
+    return myResManager.GetSoundBuffer(key);
+}
+
+const sf::Music& Game::GetMusic(const std::string& key)
+{
+    return myResManager.GetMusic(key);
 }
 
 float Game::GetWidth()

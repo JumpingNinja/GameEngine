@@ -88,7 +88,7 @@ void Particle::TakeAStep(float timerate)
 	
 	Play(gb::timerate, *this);
 	
-	Rotate(myInfo.IncrRotation);
+	Rotate(myInfo.IncrRotation*timerate);
 	
 	SetScale(mySize);
 	

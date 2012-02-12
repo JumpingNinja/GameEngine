@@ -16,7 +16,7 @@ guytest::guytest() : CollisionEntity(0), Playable(1), Animation(Game::GetTexture
     Width=9.f; Height=17.f;
     SetSpeed(sf::Vector2f(3.f, 4.f));
     SetFriction(0.1f), SetBounce(0.f);
-    //SetDepth(-2);
+    SetDepth(-2);
     //Selon l'animation cela change
     SetOrigin(4.5f, 8.5f);
     //SetOrigin(GetTextureRect().Width/2.f, GetTextureRect().Height/2.f);
@@ -63,8 +63,10 @@ void guytest::TakeAStep(bool useFriction)
         // A terme les KeyStatus::map seront remplacé par des désignation plus claires : Bindings['P1MoveLeft'] par exemple
         if (Game::GetKeyState("P1_MoveLeft").IsKeyPressed()) mySpeed.x-=0.75f*gb::timerate, useFriction=0;
         if (Game::GetKeyState("P1_MoveRight").IsKeyPressed()) mySpeed.x+=0.75f*gb::timerate, useFriction=0;
-        if ((Game::GetKeyState("P1_Jump").IsJustPressed())&&(CheckGround(1.f))) mySpeed.y=-5.f;
+        if ((Game::GetKeyState("P1_Jump").IsJustPressed())&&(CheckGround(1.f))) mySpeed.y=-5.f, AddSound("Jump");
     }
+
+	UpdateSoundList();
 
     /*if (sf::Keyboard::IsKeyPressed(sf::Keyboard::Left)) mySpeed.x-=0.75f*gb::timerate, useFriction=0;
     if (sf::Keyboard::IsKeyPressed(sf::Keyboard::Right)) mySpeed.x+=0.75f*gb::timerate, useFriction=0;

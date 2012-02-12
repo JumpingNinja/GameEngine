@@ -28,6 +28,8 @@ class Sound : public sf::Sound
 		static void DestroyAll();
 
 		/** @brief Met à jour le pitch en fonction du timerate
+		*
+		* @todo Probablement optimisable facilement
 		**/
 		static void UpdateAll(float);
 

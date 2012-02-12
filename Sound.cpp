@@ -5,6 +5,7 @@ std::list<Sound*>::iterator Sound::mySoundsIt;
 
 Sound::Sound(std::string key) : sf::Sound(Game::GetSoundBuffer(key))
 {
+	this->SetPitch(gb::timerate);
 	Sound::mySounds.push_back(this);
 }
 
@@ -15,13 +16,9 @@ Sound::~Sound()
 
 void Sound::UpdateAll(float timerate)
 {
-	// Le pitch est considéré identique pour tout les sons, ne pas parcourir la list si le pitch est déjà conforme au timerate
-	if((!mySounds.empty())&&(mySounds.front()->GetPitch() != timerate))
+	for(mySoundsIt = mySounds.begin(); mySoundsIt != mySounds.end(); mySoundsIt++)
 	{
-		for(mySoundsIt = mySounds.begin(); mySoundsIt != mySounds.end(); mySoundsIt++)
-		{
-			(*mySoundsIt)->SetPitch(timerate);
-		}
+		(*mySoundsIt)->SetPitch(timerate);
 	}
 }
 

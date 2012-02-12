@@ -37,9 +37,9 @@ void Game::Start(void)
     }
     // Quelques binds (à terme : fichier de configuration)
 	AddKeyBinding("Exit", sf::Keyboard::Escape);
-	AddKeyBinding("Slow", sf::Keyboard::X);
-	AddKeyBinding("P1_MoveLeft", sf::Keyboard::Left);
-	AddKeyBinding("P1_MoveRight", sf::Keyboard::Right);
+	AddKeyBinding("Slow", sf::Keyboard::E);
+	AddKeyBinding("P1_MoveLeft", sf::Keyboard::Q);
+	AddKeyBinding("P1_MoveRight", sf::Keyboard::D);
 	AddKeyBinding("P1_Jump", sf::Keyboard::Space);
 
     myMainWindow.Create(sf::VideoMode(myWinWidth , myWinHeight,32),"Pang!");
@@ -184,23 +184,22 @@ bool Game::IsExiting()
 void Game::GameLoop()
 {
 	// Gestion des Events
-    sf::Event currentEvent; bool KeyCheck(0);
+    sf::Event currentEvent;
 
     while(myMainWindow.PollEvent(currentEvent))
     {
         if(currentEvent.Type==sf::Event::Closed)
             myGameState=Game::Exiting;
-
-		if (!KeyCheck)
-			KeyStatus::Update(), KeyCheck=1;
     }
 
+	KeyStatus::Update();
 
 
     if (Game::GetKeyState("Exit").IsJustPressed())
         myGameState=Game::Exiting;
     if (Game::GetKeyState("Slow").IsJustPressed())
     {
+    	std::cout << "Slow pressed" << std::endl;
         if (gb::timerate_to>0.25f)
             gb::timerate_to=0.25f;
         else
@@ -213,7 +212,7 @@ void Game::GameLoop()
     {
         case Game::Playing:
         {
-			
+
             myMainWindow.SetView(myView);
             //Step
             CollisionEntity::Step();

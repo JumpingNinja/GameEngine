@@ -39,5 +39,8 @@ void KeyStatus::Update(sf::RenderWindow &myMainWindow)
 
 void KeyStatus::DestroyAll()
 {
-
+	while(!KeyStatus::map.empty())
+	{
+		delete KeyStatus::map.begin()->second;
+	}
 }

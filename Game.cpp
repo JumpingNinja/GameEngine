@@ -199,7 +199,6 @@ void Game::GameLoop()
         myGameState=Game::Exiting;
     if (Game::GetKeyState("Slow").IsJustPressed())
     {
-    	std::cout << "Slow pressed" << std::endl;
         if (gb::timerate_to>0.25f)
             gb::timerate_to=0.25f;
         else

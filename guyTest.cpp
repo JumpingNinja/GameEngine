@@ -9,9 +9,18 @@
 #include "guyTest.h"
 #include "Game.h"
 #include <iostream>
+#include <time.h>
+
+float RandOne()
+{
+	if (rand()%2)
+		return 1.f;
+	else
+		return -1.f;
+}
 
 
-guytest::guytest() : CollisionEntity(0), Playable(1), Animation(Game::GetTexture("nyancat"), 5.f, Game::GetAnimation("nyancat_fly")), pInfo(Game::GetTexture("nyancat"), Game::GetAnimation("nyancat_rainbow"))
+guytest::guytest() : CollisionEntity(0), Playable(1), Animation(Game::GetTexture("nyancat"), 5.f, Game::GetAnimation("nyancat_fly")), pInfo(Game::GetTexture("nyancat"), Game::GetAnimation("nyancat_rainbow")), pStar(Game::GetTexture("nyancat"), Game::GetAnimation("nyancat_star"))
 {
     Width=33.f; Height=20.f;
     SetSpeed(sf::Vector2f(3.f, 4.f));
@@ -43,6 +52,14 @@ guytest::guytest() : CollisionEntity(0), Playable(1), Animation(Game::GetTexture
 	pInfo.SetColor(3, sf::Color::Green);
 	pInfo.SetColor(4, sf::Color::Cyan);
 	pInfo.SetColor(5, sf::Color::Blue);*/
+	
+	pStar.Life=10.f;
+	pStar.Depth=-1;
+	pStar.Origin=sf::Vector2f(3.5f, 3.5f);
+	pStar.SetNumberOfAlphas(3);
+	pStar.SetAlpha(0, 255);
+	pStar.SetAlpha(1, 255);
+	pStar.SetAlpha(2, 0);
 	
 	
 }
@@ -84,4 +101,5 @@ void guytest::TakeAStep(bool useFriction)
 
 	//Particle::Create(GetPosition()-sf::Vector2f((Width/2.f-5.f)*GetScale().x, 0.f), pInfo, 5.f);
 	Particle::Create(GetPosition(), pInfo, 5.f);
+	Particle::Create(GetPosition() + sf::Vector2f((rand()%150+15.f)*RandOne(), (rand()%150+15.f)*RandOne()), pStar, 7.f);
 }

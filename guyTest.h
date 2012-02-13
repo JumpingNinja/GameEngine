@@ -15,7 +15,7 @@
 
 
 class guytest : public CollisionEntity, public Playable, private Animation, public SoundEmitter {
-	ParticleInfo pInfo;
+	ParticleInfo pInfo, pStar;
 public:
     guytest();
     ~guytest();

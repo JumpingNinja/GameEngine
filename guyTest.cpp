@@ -29,7 +29,7 @@ guytest::guytest() : CollisionEntity(0), Playable(1), Animation(Game::GetTexture
     //Selon l'animation cela change
     SetOrigin(15.5f, 10.f);
     //SetOrigin(GetTextureRect().Width/2.f, GetTextureRect().Height/2.f);
-    myMaxSpeed.x=5.f;
+    myMaxSpeed.x=5.f*4.f;
     //myAirFriction=sf::Vector2f(0.3f, 1.f);
 	
 	//pInfo.IncrSpeed=sf::Vector2f(0.f,-0.002f);
@@ -79,12 +79,24 @@ void guytest::TakeAStep(bool useFriction)
     if(IsControled())
     {
         // A terme les KeyStatus::map seront remplacé par des désignation plus claires : Bindings['P1MoveLeft'] par exemple
-        if (Game::GetKeyState("P1_MoveLeft").IsKeyPressed()) mySpeed.x-=0.75f*gb::timerate, useFriction=0;
-        if (Game::GetKeyState("P1_MoveRight").IsKeyPressed()) mySpeed.x+=0.75f*gb::timerate, useFriction=0;
-        if ((Game::GetKeyState("P1_Jump").IsKeyPressed())&&(CheckGround(1.f))) mySpeed.y=-5.f, AddSound("Jump");
+        if (Game::GetKeyState("P1_MoveLeft").IsKeyPressed()) mySpeed.x-=0.75f*gb::timerate*4.f, useFriction=0;
+        if (Game::GetKeyState("P1_MoveRight").IsKeyPressed()) mySpeed.x+=0.75f*gb::timerate*4.f, useFriction=0;
+        if ((Game::GetKeyState("P1_Jump").IsKeyPressed())&&(CheckGround(1.f))) mySpeed.y=-5.f;// AddSound("Jump");
     }
 
 	UpdateSoundList();
+	
+	float maxSpeed(max(static_cast<float>(abs(mySpeed.x)), static_cast<float>(abs(mySpeed.y)))*gb::timerate), tmpStep(1.f), tmpSpeed(maxSpeed);
+    //Cette vitesse temporelle permet de gérer les collisions entre objets dynamiques
+    myStepSpeed=mySpeed;
+    //if (!isPositive(maxSpeed)) tmpStep*=-1.f;
+    //std::cout<<"Max: "<<max(static_cast<float>(abs(5.f)), static_cast<float>(abs(12.f)))<<std::endl;
+	
+    while (tmpSpeed>0.0001f)
+    {
+		Particle::Create(GetPosition()+sf::Vector2f(tmpSpeed*gb::timerate*mySpeed.x/maxSpeed, tmpSpeed*gb::timerate*mySpeed.y/maxSpeed), pInfo, 5.f);
+		tmpSpeed-=tmpStep;
+    }
 
     /*if (sf::Keyboard::IsKeyPressed(sf::Keyboard::Left)) mySpeed.x-=0.75f*gb::timerate, useFriction=0;
     if (sf::Keyboard::IsKeyPressed(sf::Keyboard::Right)) mySpeed.x+=0.75f*gb::timerate, useFriction=0;
@@ -100,6 +112,6 @@ void guytest::TakeAStep(bool useFriction)
         SetScale(-1.f, 1.f);
 
 	//Particle::Create(GetPosition()-sf::Vector2f((Width/2.f-5.f)*GetScale().x, 0.f), pInfo, 5.f);
-	Particle::Create(GetPosition(), pInfo, 5.f);
+	//Particle::Create(GetPosition(), pInfo, 5.f);
 	Particle::Create(GetPosition() + sf::Vector2f((rand()%150+15.f)*RandOne(), (rand()%150+15.f)*RandOne()), pStar, 7.f);
 }

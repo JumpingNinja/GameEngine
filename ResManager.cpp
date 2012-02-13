@@ -97,10 +97,10 @@ bool ResManager::AddAnimation(unsigned int frames, std::string const &key)
         return 0;
     }
 
-    myAnimations.insert(std::pair<std::string, std::vector<sf::IntRect> >(key, std::vector<sf::IntRect>()));
-    myAnimationsIt=myAnimations.end();
-    myAnimationsIt--;
-    myAnimationsIt->second.resize(frames);
+    myAnimations.insert(std::pair<std::string, std::vector<sf::IntRect> >(key, std::vector<sf::IntRect>(frames)));
+    //myAnimationsIt=--myAnimations.end();
+    //myAnimationsIt--;
+    //myAnimationsIt->second.resize(frames);
 
     return 1;
 }
@@ -121,6 +121,7 @@ void ResManager::LoadResources()
     AddTexture("img/player.png", "player");
     AddTexture("img/ryu.png", "ryu");
     AddTexture("img/SplashScreen.png", "back");
+	AddTexture("img/nyancat.png", "nyancat");
 
     AddAnimation(5, "player_walk");
     SetAnimRect("player_walk", 0, sf::IntRect(37, 0, 9, 17));
@@ -133,6 +134,17 @@ void ResManager::LoadResources()
     SetAnimRect("ryu_walk", 0, sf::IntRect(143, 5, 162-143, 37-5));
     SetAnimRect("ryu_walk", 1, sf::IntRect(171, 5, 190-171, 37-5));
     SetAnimRect("ryu_walk", 2, sf::IntRect(197, 5, 219-197, 37-5));
+	
+	AddAnimation(1, "block");
+	SetAnimRect("block", 0, sf::IntRect(1,1,3,3));
+	
+	AddAnimation(6, "nyancat_fly");
+	for (int i=0; i<6; i++)
+	SetAnimRect("nyancat_fly", i, sf::IntRect(i*33,18,33,20));
+	
+	AddAnimation(1, "nyancat_rainbow");
+	SetAnimRect("nyancat_rainbow", 0, sf::IntRect(0,0,4,17));
+	
 }
 
 const sf::Texture& ResManager::GetTexture(std::string const &key)

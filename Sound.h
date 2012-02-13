@@ -40,7 +40,7 @@ class Sound : public sf::Sound
 
 		/** @brief Accesseur de la persistance
 		**/
-		bool IsPersistant() { return myPersistant; }
+		bool IsPersistant() const { return myPersistant; }
 
 		~Sound();
 };

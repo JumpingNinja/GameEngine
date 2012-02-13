@@ -11,37 +11,38 @@
 #include <iostream>
 
 
-guytest::guytest() : CollisionEntity(0), Playable(1), Animation(Game::GetTexture("player"), 5.f, Game::GetAnimation("player_walk")), pInfo(Game::GetTexture("player"), Game::GetAnimation("player_walk"))
+guytest::guytest() : CollisionEntity(0), Playable(1), Animation(Game::GetTexture("nyancat"), 5.f, Game::GetAnimation("nyancat_fly")), pInfo(Game::GetTexture("nyancat"), Game::GetAnimation("nyancat_rainbow"))
 {
-    Width=9.f; Height=17.f;
+    Width=33.f; Height=20.f;
     SetSpeed(sf::Vector2f(3.f, 4.f));
     SetFriction(0.1f), SetBounce(0.f);
     SetDepth(-2);
     //Selon l'animation cela change
-    SetOrigin(4.5f, 8.5f);
+    SetOrigin(15.5f, 10.f);
     //SetOrigin(GetTextureRect().Width/2.f, GetTextureRect().Height/2.f);
     myMaxSpeed.x=5.f;
     //myAirFriction=sf::Vector2f(0.3f, 1.f);
 	
-	pInfo.IncrSpeed=sf::Vector2f(0.f,-0.02f);
+	//pInfo.IncrSpeed=sf::Vector2f(0.f,-0.002f);
 	pInfo.Life=60.f;
-	pInfo.IncrSize=sf::Vector2f(0.005f,0.005f);
-	pInfo.Origin=GetOrigin();
-	pInfo.Rotation=15.f;
-	pInfo.IncrRotation=10.f;
-	pInfo.Blend=sf::BlendAdd;
+	//pInfo.Size=sf::Vector2f(3.f,3.f);
+	pInfo.IncrSize=sf::Vector2f(-0.005f,-0.005f);
+	pInfo.Origin=sf::Vector2f(2.f, 8.5f);
+	//pInfo.Rotation=15.f;
+	//pInfo.IncrRotation=10.f;
+	pInfo.Blend=sf::BlendNone;
 	
 	pInfo.SetNumberOfAlphas(3);
 	pInfo.SetAlpha(0, 255);
 	pInfo.SetAlpha(1, 255);
 	pInfo.SetAlpha(2, 0);
-	pInfo.SetNumberOfColors(6);
+	/*pInfo.SetNumberOfColors(6);
 	pInfo.SetColor(0, sf::Color::Red);
 	pInfo.SetColor(1, sf::Color(254,98,54));
 	pInfo.SetColor(2, sf::Color::Yellow);
 	pInfo.SetColor(3, sf::Color::Green);
 	pInfo.SetColor(4, sf::Color::Cyan);
-	pInfo.SetColor(5, sf::Color::Blue);
+	pInfo.SetColor(5, sf::Color::Blue);*/
 	
 	
 }
@@ -63,7 +64,7 @@ void guytest::TakeAStep(bool useFriction)
         // A terme les KeyStatus::map seront remplacé par des désignation plus claires : Bindings['P1MoveLeft'] par exemple
         if (Game::GetKeyState("P1_MoveLeft").IsKeyPressed()) mySpeed.x-=0.75f*gb::timerate, useFriction=0;
         if (Game::GetKeyState("P1_MoveRight").IsKeyPressed()) mySpeed.x+=0.75f*gb::timerate, useFriction=0;
-        if ((Game::GetKeyState("P1_Jump").IsJustPressed())&&(CheckGround(1.f))) mySpeed.y=-5.f, AddSound("Jump");
+        if ((Game::GetKeyState("P1_Jump").IsKeyPressed())&&(CheckGround(1.f))) mySpeed.y=-5.f, AddSound("Jump");
     }
 
 	UpdateSoundList();
@@ -81,5 +82,6 @@ void guytest::TakeAStep(bool useFriction)
     else
         SetScale(-1.f, 1.f);
 
+	//Particle::Create(GetPosition()-sf::Vector2f((Width/2.f-5.f)*GetScale().x, 0.f), pInfo, 5.f);
 	Particle::Create(GetPosition(), pInfo, 5.f);
 }

@@ -27,6 +27,13 @@ class SoundEmitter : virtual public CollisionEntity
 	**/
 	std::list<Sound*>::iterator AddSound(std::string key);
 
+	/** @brief Joue un son NON persistant
+	*
+	* Ajoute un son à la liste des sons de l'objet destiné à n'être joué qu'UNE SEULE fois, et le joue.
+	* @param key Chaine de caractère désignant un SoundBuffer de ResManager
+	**/
+	void PlaySound(std::string key);
+
 	/** @brief Joue un son persistant
 	*
 	* @param it Iterateur sur la liste de son de l'objet (mySounds)

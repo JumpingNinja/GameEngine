@@ -15,10 +15,13 @@ std::list<Sound*>::iterator SoundEmitter::AddSound(std::string key)
 	mySounds.push_back(new Sound(key));
 	// Le place sur l'objet
 	mySounds.back()->sf::SoundSource::SetPosition(CollisionEntity::GetPosition().x, CollisionEntity::GetPosition().y, 0);
-	// Le joue
-	mySounds.back()->Play();
 	// Renvoi un itérateur sur la liste des sons de l'objet pointant sur le son ajouté
 	return (--mySounds.end());
+}
+
+void SoundEmitter::PlaySound(std::string key)
+{
+    (*AddSound(key))->Play();
 }
 
 void SoundEmitter::PlaySound(std::list<Sound*>::iterator it)

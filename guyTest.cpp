@@ -81,7 +81,7 @@ void guytest::TakeAStep(bool useFriction)
         // A terme les KeyStatus::map seront remplacé par des désignation plus claires : Bindings['P1MoveLeft'] par exemple
         if (Game::GetKeyState("P1_MoveLeft").IsKeyPressed()) MoveLeft(), useFriction=0;
         if (Game::GetKeyState("P1_MoveRight").IsKeyPressed()) MoveRight(), useFriction=0;
-        if ((Game::GetKeyState("P1_Jump").IsKeyPressed())&&(CheckGround(1.f))) Jump();// AddSound("Jump");
+        if ((Game::GetKeyState("P1_Jump").IsKeyPressed())&&(CheckGround(1.f))) Jump();// PlaySound("Jump");
     }
 
 	UpdateSoundList();

@@ -13,7 +13,7 @@
 #include <iostream>
 
 //Initialization des membres statiques*
-std::map<std::string, sf::Keyboard::Key> Game::Bindings;
+std::map<std::string, gb::Key> Game::Bindings;
 
 Game::GameState Game::myGameState = Uninitialized;
 sf::RenderWindow Game::myMainWindow;
@@ -35,12 +35,18 @@ void Game::Start(void)
     {
         new KeyStatus(static_cast<sf::Keyboard::Key>(keyLoop));
     }
+    for(int keyLoop = gb::LastKeyboardKey + 1; keyLoop != gb::LastMouseButton; keyLoop++)
+    {
+        new MouseStatus(static_cast<sf::Mouse::Button>(keyLoop - gb::LastKeyboardKey - 1));
+    }
     // Quelques binds (à terme : fichier de configuration)
-	AddKeyBinding("Exit", sf::Keyboard::Escape);
-	AddKeyBinding("Slow", sf::Keyboard::E);
-	AddKeyBinding("P1_MoveLeft", sf::Keyboard::Q);
-	AddKeyBinding("P1_MoveRight", sf::Keyboard::D);
-	AddKeyBinding("P1_Jump", sf::Keyboard::Space);
+	AddKeyBinding("Exit", gb::Escape);
+	AddKeyBinding("Slow", gb::E);
+	AddKeyBinding("P1_MoveLeft", gb::Q);
+	AddKeyBinding("P1_MoveRight", gb::D);
+	AddKeyBinding("P1_Jump", gb::Space);
+	AddKeyBinding("DoStuff", gb::MouseButton1);
+	AddKeyBinding("DoStuff2", gb::MouseButton2);
 
     myMainWindow.Create(sf::VideoMode(myWinWidth , myWinHeight,32),"Pang!");
     //myMainWindow.SetFramerateLimit(60);
@@ -194,6 +200,7 @@ void Game::GameLoop()
     }
 
 	KeyStatus::Update();
+	MouseStatus::Update();
 
 
     if (Game::GetKeyState("Exit").IsJustPressed())
@@ -221,7 +228,12 @@ void Game::GameLoop()
             //addPos.x=(sf::Keyboard::IsKeyPressed(sf::Keyboard::Right)-sf::Keyboard::IsKeyPressed(sf::Keyboard::Left))*10.f;
             //addPos.y=(sf::Keyboard::IsKeyPressed(sf::Keyboard::Down)-sf::Keyboard::IsKeyPressed(sf::Keyboard::Up))*4.f;
             //myView.SetCenter(myView.GetCenter()+addPos);
+
+            // Place le centre de l'écoute sur le joueur, et un peu derrière la scène pour éviter des effets bizarres.
+            sf::Listener::SetPosition(myFollow->GetPosition().x, myFollow->GetPosition().y, -5);
+
             myView.SetCenter(myFollow->GetPosition());
+
             myView.SetCenter(max(myView.GetSize().x/2.f, myView.GetCenter().x), max(myView.GetSize().y/2.f, myView.GetCenter().y));
             myView.SetCenter(min(myWidth - myView.GetSize().x/2.f, myView.GetCenter().x), min(myHeight - myView.GetSize().y/2.f, myView.GetCenter().y));
 
@@ -286,12 +298,15 @@ const sf::View& Game::GetView()
     return myView;
 }
 
-const KeyStatus& Game::GetKeyState(const std::string &Action)
+const InputStatus& Game::GetKeyState(const std::string &Action)
 {
-    return *KeyStatus::map[Game::Bindings[Action]];
+	if (Game::Bindings[Action] < gb::LastKeyboardKey)
+		return *KeyStatus::map[static_cast<sf::Keyboard::Key>(Game::Bindings[Action])];
+	else
+		return *MouseStatus::map[static_cast<sf::Mouse::Button>(Game::Bindings[Action] - gb::LastKeyboardKey - 1)];
 }
 
-void Game::AddKeyBinding(std::string const &Action, sf::Keyboard::Key Key)
+void Game::AddKeyBinding(std::string const &Action, gb::Key Key)
 {
-	Game::Bindings.insert(std::pair<std::string, sf::Keyboard::Key>(Action, Key));
+	Game::Bindings.insert(std::pair<std::string, gb::Key>(Action, Key));
 }

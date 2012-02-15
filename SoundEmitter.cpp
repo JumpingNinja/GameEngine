@@ -27,7 +27,7 @@ void SoundEmitter::PlaySound(std::string key)
 void SoundEmitter::PlaySound(std::list<Sound*>::iterator it)
 {
     // Place le son sur l'objet qui le joue
-	(*it)->sf::SoundSource::SetPosition(CollisionEntity::GetPosition().x, CollisionEntity::GetPosition().y, 0);
+	(*it)->sf::SoundSource::SetPosition(Entity::GetPosition().x, Entity::GetPosition().y, 0);
 	// Joue le son
 	(*it)->Play();
 }
@@ -39,9 +39,13 @@ void SoundEmitter::RmSound(std::list<Sound*>::iterator it)
 
 void SoundEmitter::UpdateSoundList()
 {
+	std::list<Sound*>::iterator tmp_it;
 	for(std::list<Sound*>::iterator it = mySounds.begin(); it != mySounds.end(); it++)
 	{
+		// Place le son sur l'objet
+		(*it)->sf::SoundSource::SetPosition(Entity::GetPosition().x, Entity::GetPosition().y, 0);
+		// Supprime les sons non persistant et stoppés.
 		if((!(*it)->IsPersistant())&&((*it)->GetStatus() == sf::Sound::Stopped))
-			RmSound(it), it--; // Pour éviter que l'itérateur sorte de la liste
+			tmp_it = it, it--, RmSound(tmp_it), tmp_it = it; // Pour éviter que l'itérateur sorte de la liste
 	}
 }

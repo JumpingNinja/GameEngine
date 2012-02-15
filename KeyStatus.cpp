@@ -3,7 +3,7 @@
 std::map<sf::Keyboard::Key, KeyStatus*> KeyStatus::map;
 
 
-KeyStatus::KeyStatus(sf::Keyboard::Key Key) : myIsKeyPressed(0), myJustPressed(0), myJustReleased(0)
+KeyStatus::KeyStatus(sf::Keyboard::Key Key) : InputStatus(static_cast<gb::Key>(Key))
 {
 	KeyStatus::map[Key] = this;
 }

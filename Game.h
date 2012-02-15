@@ -15,6 +15,7 @@
 #include "SplashScreen.h"
 #include "Background.h"
 #include "KeyStatus.h"
+#include "Mouse.h"
 #include "Game.h"
 #include "Entity.h"
 #include "Particle.h"
@@ -36,9 +37,13 @@ public:
     static float GetWidth();
     static float GetHeight();
     static const sf::View& GetView();
+    /** @brief Renvoi les coordonnées de la souris dans la scène.
+    *
+    **/
+    static inline sf::Vector2f GetMousePosition() { return myMainWindow.ConvertCoords(sf::Mouse::GetPosition(myMainWindow).x, sf::Mouse::GetPosition(myMainWindow).y); }
 
-    static std::map<std::string, sf::Keyboard::Key> Bindings;
-    static const KeyStatus& GetKeyState(const std::string &Action);
+    static std::map<std::string, gb::Key> Bindings;
+    static const InputStatus& GetKeyState(const std::string &Action);
 
 private:
     static bool IsExiting();
@@ -55,8 +60,9 @@ private:
     static Background *myBack;
     static float myWidth, myHeight;
     static unsigned int myWinWidth, myWinHeight;
-	static void AddKeyBinding(const std::string &Action, sf::Keyboard::Key Key);
-	
+	static void AddKeyBinding(const std::string &Action, gb::Key Key);
+
 	static ParticleInfo pInfo;
+
 };
 

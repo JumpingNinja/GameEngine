@@ -47,7 +47,7 @@ class SoundEmitter : virtual public CollisionEntity
 	void RmSound(std::list<Sound*>::iterator it);
 
 
-	/** @brief Supprime les sons non persistants et stoppés
+	/** @brief Supprime les sons non persistants et stoppés, les replace sur l'objet
 	**/
 	virtual void UpdateSoundList();
 };

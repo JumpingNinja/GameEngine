@@ -6,40 +6,23 @@
 // GameEngine
 //
 
-/*
-TODO :
-Ajouter dans le constructeur de Game de quoi lister toutes les touches accessibles et créer le KeyStatus associé
-Créer une map liant un string à une touche (dans Game ?)
-	std::map<string, sf::Keyboard::Key> Bindings;
-et enfin de quoi accéder facilement à l'état cherché à partir du string (ex : "Shoot")
-*/
-
 #include <map>
 #include <SFML/Window.hpp>
 
-/** @brief Donne le status actuel d'une touche du clavier, public.
+#include "Input.h"
+#include "Game.h"
+
+/** @brief Donne le status actuel d'une touche du clavier.
 **/
-class KeyStatus {
+class KeyStatus : public InputStatus {
 	private:
-		/** @brief Vaut vrai si la touche est appuyée
-		**/
-		bool myIsKeyPressed;
-		/** @brief Vaut vrai si la touche vient d'être appuyée
-		**/
-		bool myJustPressed;
-		/** @brief Vaut vrai si la touche vient d'être relachée
-		**/
-		bool myJustReleased;
 
 	public:
 		static std::map<sf::Keyboard::Key, KeyStatus*> map;
-		/** @brief Met à jour la liste
+		/** @brief Met Ã  jour la liste
 		**/
 		static void Update();
 
-		bool IsKeyPressed() const { return myIsKeyPressed; }
-		bool IsJustPressed() const { return myJustPressed; }
-		bool IsJustReleased() const { return myJustReleased; }
 		KeyStatus(sf::Keyboard::Key Key);
 		~KeyStatus();
 

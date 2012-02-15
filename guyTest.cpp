@@ -78,13 +78,14 @@ void guytest::TakeAStep(bool useFriction)
 {
     if(IsControled())
     {
-        // A terme les KeyStatus::map seront remplacé par des désignation plus claires : Bindings['P1MoveLeft'] par exemple
         if (Game::GetKeyState("P1_MoveLeft").IsKeyPressed()) MoveLeft(), useFriction=0;
         if (Game::GetKeyState("P1_MoveRight").IsKeyPressed()) MoveRight(), useFriction=0;
-        if ((Game::GetKeyState("P1_Jump").IsKeyPressed())&&(CheckGround(1.f))) Jump();// PlaySound("Jump");
+        if ((Game::GetKeyState("P1_Jump").IsKeyPressed())&&(CheckGround(1.f))) Jump(), PlaySound("Jump");
+
+        if (Game::GetKeyState("DoStuff").IsKeyPressed()) Particle::Create(Game::GetMousePosition(), pInfo, 7.f);
+        if (Game::GetKeyState("DoStuff2").IsKeyPressed()) std::cout << "Trop fort, t'as clique sur le bouton droit de la souris..." << std::endl;
     }
 
-	UpdateSoundList();
 
 	float maxSpeed(max(static_cast<float>(abs(mySpeed.x)), static_cast<float>(abs(mySpeed.y)))*gb::timerate), tmpStep(1.f), tmpSpeed(maxSpeed);
     //Cette vitesse temporelle permet de gérer les collisions entre objets dynamiques
@@ -98,18 +99,17 @@ void guytest::TakeAStep(bool useFriction)
 		tmpSpeed-=tmpStep;
     }
 
-    /*if (sf::Keyboard::IsKeyPressed(sf::Keyboard::Left)) mySpeed.x-=0.75f*gb::timerate, useFriction=0;
-    if (sf::Keyboard::IsKeyPressed(sf::Keyboard::Right)) mySpeed.x+=0.75f*gb::timerate, useFriction=0;
-    if ((sf::Keyboard::IsKeyPressed(sf::Keyboard::Up))&&(CheckGround(1.f))) mySpeed.y=-5.f;*/
-    //std::cout<<"useFriction:"<<useFriction<<std::endl;
     Play(gb::timerate, *this);
-    SetOrigin(GetTextureRect().Width/2.f, GetTextureRect().Height/2.f);
     CollisionEntity::TakeAStep(1);
-    //Il faut le faire dans la classe dérivée car cela est propre à l'objet (je pense) et il faut utiliser SetScale et non pas Scale
-    if (mySpeed.x>=0.f)
+
+	// Tourne le personnage vers sa direction
+    SetOrigin(GetTextureRect().Width/2.f, GetTextureRect().Height/2.f);
+    if (mySpeed.x>0.f)
         SetScale(1.f, 1.f);
-    else
+    else if(mySpeed.x<0.f)
         SetScale(-1.f, 1.f);
+
+	UpdateSoundList();
 
 	//Particle::Create(GetPosition()-sf::Vector2f((Width/2.f-5.f)*GetScale().x, 0.f), pInfo, 5.f);
 	//Particle::Create(GetPosition(), pInfo, 5.f);

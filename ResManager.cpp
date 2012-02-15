@@ -29,14 +29,14 @@ bool ResManager::AddSoundBuffer(std::string const &location, std::string const &
 	mySoundBuffersIt = mySoundBuffers.find(key);
 	if(mySoundBuffersIt != mySoundBuffers.end())
 	{
-        std::cout<<"Error adding: "<<location<<". There is already a SoundBuffer with key: "<<key<<std::endl;
+        std::cerr << "Error adding: " << location << ". There is already a SoundBuffer with key: " << key << std::endl;
         return 0;
 	}
 
 	sf::SoundBuffer* file(new sf::SoundBuffer);
 	if(!file->LoadFromFile(ResourcePath()+location))
 	{
-        std::cout<<"Error loading: "<<location<<". Cannot find the file"<<std::endl;
+        std::cerr << "Error loading: " << location << ". Cannot find the file" << std::endl;
         return 0;
 	}
 
@@ -49,14 +49,14 @@ bool ResManager::AddMusic(std::string const &location, std::string const &key)
 	myMusicsIt = myMusics.find(key);
 	if(myMusicsIt != myMusics.end())
 	{
-        std::cout<<"Error adding: "<<location<<". There is already a Music with key: "<<key<<std::endl;
+        std::cerr << "Error adding: " << location << ". There is already a Music with key: " << key << std::endl;
         return 0;
 	}
 
 	sf::Music* file(new sf::Music);
 	if(!file->OpenFromFile(ResourcePath()+location))
 	{
-        std::cout<<"Error loading: "<<location<<". Cannot find the file"<<std::endl;
+        std::cerr << "Error loading: " << location << ". Cannot find the file" << std::endl;
         return 0;
 	}
 
@@ -71,14 +71,14 @@ bool ResManager::AddTexture(std::string const &location, std::string const &key)
     myTexturesIt=myTextures.find(key);
     if (myTexturesIt!=myTextures.end())
     {
-        std::cout<<"Error adding: "<<location<<". There is already a Texture with key: "<<key<<std::endl;
+        std::cerr << "Error adding: " << location << ". There is already a Texture with key: " << key << std::endl;
         return 0;
     }
 
     sf::Texture *file(new sf::Texture);
     if (!file->LoadFromFile(ResourcePath()+location))
     {
-        std::cout<<"Error loading: "<<location<<". Cannot find the file"<<std::endl;
+        std::cerr << "Error loading: " << location << ". Cannot find the file" << std::endl;
         return 0;
     }
 
@@ -93,7 +93,7 @@ bool ResManager::AddAnimation(unsigned int frames, std::string const &key)
     myAnimationsIt=myAnimations.find(key);
     if (myAnimationsIt!=myAnimations.end())
     {
-        std::cout<<"Error adding animation. There is already an animation with key: "<<key<<std::endl;
+        std::cerr << "Error adding animation. There is already an animation with key: " << key << std::endl;
         return 0;
     }
 
@@ -135,21 +135,21 @@ void ResManager::LoadResources()
     SetAnimRect("ryu_walk", 0, sf::IntRect(143, 5, 162-143, 37-5));
     SetAnimRect("ryu_walk", 1, sf::IntRect(171, 5, 190-171, 37-5));
     SetAnimRect("ryu_walk", 2, sf::IntRect(197, 5, 219-197, 37-5));
-	
+
 	AddAnimation(1, "block");
 	SetAnimRect("block", 0, sf::IntRect(1,1,3,3));
-	
+
 	AddAnimation(6, "nyancat_fly");
 	for (int i=0; i<6; i++)
 		SetAnimRect("nyancat_fly", i, sf::IntRect(i*33,18,33,20));
-	
+
 	AddAnimation(1, "nyancat_rainbow");
 	SetAnimRect("nyancat_rainbow", 0, sf::IntRect(0,0,4,17));
-	
+
 	AddAnimation(6, "nyancat_star");
 	for (int i=0; i<6; i++)
 		SetAnimRect("nyancat_star", i, sf::IntRect(5+i*7,0,7,7));
-	
+
 }
 
 const sf::Texture& ResManager::GetTexture(std::string const &key)

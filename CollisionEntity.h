@@ -17,6 +17,9 @@ enum RelativePosition {
     kBottom
     };
 
+/** @brief Définit un objet pouvant entrer en collision avec d'autres
+*
+**/
 class CollisionEntity : public Entity, public sf::FloatRect {
 private:
     static std::list<CollisionEntity*> list;
@@ -31,6 +34,8 @@ public:
     ///@brief Return if the Entity is a solid object
     ///@return true if soled else otherway
     bool IsSolid();
+    ///@brief Constructeur par défaut, solid vaut alors 0.
+    CollisionEntity();
     ///@brief Constructeur par défaut
     ///@param solid défini si l'objet est solide ou pas
     CollisionEntity(bool solid);
@@ -44,7 +49,7 @@ public:
     ///@param other une autre entité
     ///@return Relative position
     RelativePosition GetRelativePosition(CollisionEntity &other);
-    ///@brief simule un step
+    ///@brief Simule un step
     ///@param useFriction tenir compte ou pas de la friction du sol
     virtual void TakeAStep(bool useFriction=1);
     ///@brief Collisionne avec le monde
@@ -67,7 +72,11 @@ public:
     ///@brief Change la position
     ///@param vec vecteur de mouvement
     virtual void Move(const sf::Vector2f &vec);
-    /** @brief Modificateur de la vitesse.
+    /** @brief Ajoute aSpeed à la vitesse courante
+    * @param aSpeed Vitesse à ajouter.
+    **/
+	void AddSpeed(const sf::Vector2f& aSpeed);
+    /** @brief Mutateur de la vitesse.
      * @param aSpeed Nouvelle vitesse.
      **/
 	void SetSpeed(const sf::Vector2f& aSpeed);

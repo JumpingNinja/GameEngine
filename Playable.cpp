@@ -22,3 +22,18 @@ Playable::Playable(bool aControled) : myControled(aControled)
 
 Playable::~Playable()
 {}
+
+void Playable::Jump()
+{
+    AddSpeed(sf::Vector2f(0, -5.f));
+}
+
+void Playable::MoveLeft()
+{
+    AddSpeed(sf::Vector2f(-0.75f*gb::timerate, 0));
+}
+
+void Playable::MoveRight()
+{
+    AddSpeed(sf::Vector2f(0.75f*gb::timerate, 0));
+}

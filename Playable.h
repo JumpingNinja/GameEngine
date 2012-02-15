@@ -6,10 +6,15 @@
 // GameEngine
 //
 
-/** @brief Désigne les Colisions Entity devant réagir à des inputs
+#include "CollisionEntity.h"
+
+/** @brief Désigne les CollisionEntity devant réagir à des inputs
 *
+* Héritage "horizontal" : Cette classe doit être héritée uniquement sur des CollisionEntity.
+* Exemple : \n
+* class guyTest : public CollisionEntity, public Playable { }
 **/
-class Playable {
+class Playable : virtual public CollisionEntity {
 	private :
 	/** @brief myControled Spécifie si l'objet doit prendre en compte les entrées de l'utilisateur.
 	**/
@@ -20,6 +25,19 @@ class Playable {
 		virtual ~Playable();
 		bool IsControled()const ;
 		void SetControled(bool aControled = 1);
+
+        /** @brief Fonction générique de saut
+        *
+        **/
+		virtual void Jump();
+        /** @brief Fonction générique de mouvement à gauche
+        *
+        **/
+		virtual void MoveLeft();
+        /** @brief Fonction générique de mouvement à droite
+        *
+        **/
+		virtual void MoveRight();
 };
 
 #endif

@@ -31,7 +31,7 @@ guytest::guytest() : CollisionEntity(0), Playable(1), Animation(Game::GetTexture
     //SetOrigin(GetTextureRect().Width/2.f, GetTextureRect().Height/2.f);
     myMaxSpeed.x=5.f*4.f;
     //myAirFriction=sf::Vector2f(0.3f, 1.f);
-	
+
 	//pInfo.IncrSpeed=sf::Vector2f(0.f,-0.002f);
 	pInfo.Life=60.f;
 	//pInfo.Size=sf::Vector2f(3.f,3.f);
@@ -40,7 +40,7 @@ guytest::guytest() : CollisionEntity(0), Playable(1), Animation(Game::GetTexture
 	//pInfo.Rotation=15.f;
 	//pInfo.IncrRotation=10.f;
 	pInfo.Blend=sf::BlendNone;
-	
+
 	pInfo.SetNumberOfAlphas(3);
 	pInfo.SetAlpha(0, 255);
 	pInfo.SetAlpha(1, 255);
@@ -52,7 +52,7 @@ guytest::guytest() : CollisionEntity(0), Playable(1), Animation(Game::GetTexture
 	pInfo.SetColor(3, sf::Color::Green);
 	pInfo.SetColor(4, sf::Color::Cyan);
 	pInfo.SetColor(5, sf::Color::Blue);*/
-	
+
 	pStar.Life=10.f;
 	pStar.Depth=-1;
 	pStar.Origin=sf::Vector2f(3.5f, 3.5f);
@@ -60,8 +60,8 @@ guytest::guytest() : CollisionEntity(0), Playable(1), Animation(Game::GetTexture
 	pStar.SetAlpha(0, 255);
 	pStar.SetAlpha(1, 255);
 	pStar.SetAlpha(2, 0);
-	
-	
+
+
 }
 /*
 guytest::guytest() : CollisionEntity(0), Animation(Game::GetTexture("ryu"), 6.f, Game::GetAnimation("ryu_walk"))
@@ -79,19 +79,19 @@ void guytest::TakeAStep(bool useFriction)
     if(IsControled())
     {
         // A terme les KeyStatus::map seront remplacé par des désignation plus claires : Bindings['P1MoveLeft'] par exemple
-        if (Game::GetKeyState("P1_MoveLeft").IsKeyPressed()) mySpeed.x-=0.75f*gb::timerate*4.f, useFriction=0;
-        if (Game::GetKeyState("P1_MoveRight").IsKeyPressed()) mySpeed.x+=0.75f*gb::timerate*4.f, useFriction=0;
-        if ((Game::GetKeyState("P1_Jump").IsKeyPressed())&&(CheckGround(1.f))) mySpeed.y=-5.f;// AddSound("Jump");
+        if (Game::GetKeyState("P1_MoveLeft").IsKeyPressed()) MoveLeft(), useFriction=0;
+        if (Game::GetKeyState("P1_MoveRight").IsKeyPressed()) MoveRight(), useFriction=0;
+        if ((Game::GetKeyState("P1_Jump").IsKeyPressed())&&(CheckGround(1.f))) Jump();// AddSound("Jump");
     }
 
 	UpdateSoundList();
-	
+
 	float maxSpeed(max(static_cast<float>(abs(mySpeed.x)), static_cast<float>(abs(mySpeed.y)))*gb::timerate), tmpStep(1.f), tmpSpeed(maxSpeed);
     //Cette vitesse temporelle permet de gérer les collisions entre objets dynamiques
     myStepSpeed=mySpeed;
     //if (!isPositive(maxSpeed)) tmpStep*=-1.f;
     //std::cout<<"Max: "<<max(static_cast<float>(abs(5.f)), static_cast<float>(abs(12.f)))<<std::endl;
-	
+
     while (tmpSpeed>0.0001f)
     {
 		Particle::Create(GetPosition()+sf::Vector2f(tmpSpeed*gb::timerate*mySpeed.x/maxSpeed, tmpSpeed*gb::timerate*mySpeed.y/maxSpeed), pInfo, 5.f);

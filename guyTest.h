@@ -14,7 +14,7 @@
 #include "SoundEmitter.h"
 
 
-class guytest : public CollisionEntity, public Playable, private Animation, public SoundEmitter {
+class guytest : virtual public CollisionEntity, public Playable, private Animation, public SoundEmitter {
 	ParticleInfo pInfo, pStar;
 public:
     guytest();

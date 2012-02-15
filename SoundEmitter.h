@@ -4,10 +4,13 @@
 
 #include "Sound.h"
 #include "Game.h"
+#include "CollisionEntity.h"
 
 /** @brief Objet pouvant émettre des sons (à hériter)
+*
+* Utilise CollisionEntity pour situer le son dans l'espace
 **/
-class SoundEmitter
+class SoundEmitter : virtual public CollisionEntity
 {
 	private:
 	/** @brief Contient les sons liés à l'objet

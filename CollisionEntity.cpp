@@ -10,7 +10,6 @@
 #include <iostream>
 
 std::list<CollisionEntity*> CollisionEntity::list;
-std::list<CollisionEntity*>::iterator CollisionEntity::it;
 
 bool CollisionEntity::IsSolid()
 {
@@ -24,14 +23,15 @@ CollisionEntity::CollisionEntity(bool solid) : Entity::Entity(), mySolid(solid),
 
 CollisionEntity::~CollisionEntity()
 {
-    for (CollisionEntity::it=CollisionEntity::list.begin(); CollisionEntity::it!=CollisionEntity::list.end(); CollisionEntity::it++)
+    std::list<CollisionEntity*>::iterator ite;
+    for (ite=CollisionEntity::list.begin(); ite!=CollisionEntity::list.end(); ite++)
     {
-        if ((*CollisionEntity::it)==this)
+        if ((*ite)==this)
             break;
     }
 
-    if ((*CollisionEntity::it)==this)
-        CollisionEntity::list.erase(CollisionEntity::it);
+    if ((*ite)==this)
+        CollisionEntity::list.erase(ite);
 }
 
 bool CollisionEntity::IsColliding(CollisionEntity &other)
@@ -151,8 +151,9 @@ void CollisionEntity::Step()
     //list.back()->SetPosition(sf::Mouse::GetPosition().x, sf::Mouse::GetPosition().y);
     //list.back()->Collide();
     //list.back()->TakeAStep();
-    for (it=list.begin(); it!=list.end(); it++)
-        (*it)->TakeAStep();
+    std::list<CollisionEntity*>::iterator ite;
+    for (ite=list.begin(); ite!=list.end(); ite++)
+        (*ite)->TakeAStep();
 
 }
 
@@ -175,13 +176,13 @@ bool CollisionEntity::Collide()
                     switch (GetRelativePosition(**ite)) {
                         case kLeft:
                             Move(off, 0.f);
-                            mySpeed.x=-mySpeed.x*myBounce;
+                            mySpeed.x=-mySpeed.x*myBounce*(*ite)->myBounce;
                             mySpeed.y=mySpeed.y*(1.f-myFriction);
                             finish=1;
                             break;
                         case kRight:
                             Move(-off, 0.f);
-                            mySpeed.x=-mySpeed.x*myBounce;
+                            mySpeed.x=-mySpeed.x*myBounce*(*ite)->myBounce;
                             mySpeed.y=mySpeed.y*(1.f-myFriction);
                             finish=1;
                             break;

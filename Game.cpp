@@ -78,6 +78,7 @@ void Game::Start(void)
     p->SetTexture(tx);
     p->SetTextureRect(sf::IntRect(0, 0, 20, 700));
     p->Width=20.f, p->Height=700.f;
+	p->SetBounce(20.f);
 	p->SetFriction(friction);
 
     p=new CollisionEntity(1);

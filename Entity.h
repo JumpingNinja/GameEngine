@@ -25,20 +25,20 @@ enum EntityKind {
     @li gerer tout dans la même liste et faire un while sur la liste qui dessine et parcour toute la liste plusieurs fois
     @li gerer dans des listes separes ordonnés en croissant dans une autre liste contenants toutes ces listes
     @li gerer dans une seule liste triée et faire chaque insert à sa bonne place pour quelle soit toujours triée
- 
+
  La @b troisème méthode semble la plus efficace, c'est celle qui a été implémentée.
 **/
 
 /**
  @brief Class pour gérer une entité
- 
+
  Cette classe est abstraite, il faut l'hériter pour l'utiliser et redéfinir le constructeur et destructeur obligatoirement. Elle a une liste static à reimplementer chaque fois si nécessaire (ex pour grouper des objets comme les objets de physiques, les bullets, les ennemis etc) d'appliquer une action a un groupe d'objets
  Voilà un exemple d'utilisation:
  @code
  MyClass.h
- 
+
  #include "Entity.h"
- 
+
  class MyClass : public Entity {
     static std::list<MyClass*> list;
     static std::list<MyClass*>::iterator it;
@@ -47,7 +47,7 @@ public:
     MyClass();
     virtual ~MyClass();
  };
- 
+
  MyClass.cpp
 
 #include "MyClass.h"
@@ -56,13 +56,13 @@ std::list<MyClass*> MyClass::list;
 std::list<MyClass*>::iterator MyClass::it;
 
 MyClass::MyClass(short Depth) : Entity::Entity(Depth)
-{ 
+{
     //Ici pas besoin d'ordre
     MyClass::list.push_back(this);
 }
 
 MyClass::MyClass() : Entity::Entity(3) //Depth par défaut de la classe. Très utile!
-{ 
+{
     //Ici pas besoin d'ordre
     MyClass::list.push_back(this);
 }
@@ -74,30 +74,29 @@ MyClass::~MyClass()
         if ((*MyClass::it)==this)
             break;
     }
-    
+
     if ((*MyClass::it)==this)
         MyClass::list.erase(MyClass::it);
-    
+
     //Entity destructor called implicetly
 }
  @endcode
- 
+
 **/
 
 class Entity : public sf::Sprite {
 private:
     static std::list<Entity*> list;
-    static std::list<Entity*>::iterator it;
     static short maxDepth, minDepth;
 protected:
     bool myIsVisible, myDestroy;
     short myDepth;
     EntityKind myKind;
 	sf::BlendMode myBlendMode;
-    
+
 public:
-    
-    
+
+
     virtual ~Entity()=0; //pou abstraite
     ///@brief Contructeur, UTILISER PLUTOT new Entity
     Entity();
@@ -106,16 +105,16 @@ public:
      @param aDepth Profondeur. D'abord sont dessinés les entités ayant une profondeur haute, puis par dessus sont dessinés es entités avec une plus petite densité
      **/
     Entity(short Depth);
-    
+
     ///@brief Détruit tous les objets manuellement (Déallocation manuelle). Normalement tout est géré automatiquement
     static void DestroyAll();
-    
+
     /**
      @brief Déssine les entités à leur position selon leur depth (fenetre ou texture, d'où le renderTarget)
      @param window Cible où doit être dessinée l'entité
      **/
     static void DrawAll(sf::RenderTarget &window);
-    
+
     ///@brief Change la profondeur de l'entité
     ///@param Depth nouvelle profondeur
     void SetDepth(short Depth);

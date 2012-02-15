@@ -11,17 +11,16 @@
 
 
 std::list<Entity*> Entity::list;
-std::list<Entity*>::iterator Entity::it;
 short Entity::maxDepth(0), Entity::minDepth(0);
 
 
 Entity::Entity() : sf::Sprite(), myIsVisible(1), myDestroy(0), myDepth(0), myKind(kEK_Any), myBlendMode(sf::BlendNone)
 {
-	Entity::it = Entity::list.begin();
-	while(Entity::it != Entity::list.end() && myDepth<(*Entity::it)->myDepth+1)
-		Entity::it++;
+	std::list<Entity*>::iterator ite = Entity::list.begin();
+	while(ite != Entity::list.end() && myDepth<(*ite)->myDepth+1)
+		ite++;
 
-	Entity::list.insert(Entity::it, this);
+	Entity::list.insert(ite, this);
 }
 
 Entity::Entity(short Depth) : sf::Sprite(),  myIsVisible(1), myDestroy(0), myDepth(Depth), myKind(kEK_Any), myBlendMode(sf::BlendNone)
@@ -31,23 +30,24 @@ Entity::Entity(short Depth) : sf::Sprite(),  myIsVisible(1), myDestroy(0), myDep
     if (Depth>maxDepth)
         maxDepth=Depth;
 
-	Entity::it = Entity::list.begin();
-	while(Entity::it != Entity::list.end() && myDepth<(*Entity::it)->myDepth+1)
-		Entity::it++;
+	std::list<Entity*>::iterator ite = Entity::list.begin();
+	while(ite != Entity::list.end() && myDepth<(*ite)->myDepth+1)
+		ite++;
 
-	Entity::list.insert(Entity::it, this);
+	Entity::list.insert(ite, this);
 }
 
 Entity::~Entity()
 {
-    for (Entity::it=Entity::list.begin(); Entity::it!=Entity::list.end(); Entity::it++)
+    std::list<Entity*>::iterator ite;
+    for (ite=Entity::list.begin(); ite!=Entity::list.end(); ite++)
     {
-        if ((*Entity::it)==this)
+        if ((*ite)==this)
             break;
     }
 
-    if ((*Entity::it)==this)
-        Entity::list.erase(Entity::it);
+    if ((*ite)==this)
+        Entity::list.erase(ite);
 
 }
 
@@ -61,19 +61,22 @@ void Entity::DrawAll(sf::RenderTarget &window)
 {
     sf::Clock clock;
     clock.Restart();
-	for(Entity::it = Entity::list.begin(); Entity::it != Entity::list.end(); Entity::it++)
+    Entity* temp_ptr;
+    std::list<Entity*>::iterator ite;
+	for(ite = Entity::list.begin(); ite != Entity::list.end(); ite++)
     {
-        if ((*Entity::it)->myIsVisible)
+        //std::cerr << &(*Entity::list.begin()) << " " << &(*ite) << " " << &(*Entity::list.end()) << " " << Entity::list.size() << std::endl;
+        if ((*ite)->myIsVisible)
 		{
-			if ((*Entity::it)->myBlendMode==sf::BlendNone)
-				window.Draw(**Entity::it);
+			if ((*ite)->myBlendMode==sf::BlendNone)
+				window.Draw(**ite);
 			else
-				window.Draw(**Entity::it, sf::RenderStates((*Entity::it)->myBlendMode));
+				window.Draw(**ite, sf::RenderStates((*ite)->myBlendMode));
 		}
-            
-        if ((*Entity::it)->myDestroy)
-            delete (*Entity::it), it--;
 
+        if ((*ite)->myDestroy)
+            //std::cerr << "Deleted " << &(*ite) << std::endl, ite = ite, ite--, delete (*ite), ite = ite, std::cerr << "Next step " << &(*ite) << std::endl;
+            temp_ptr = (*ite), --ite, delete temp_ptr, temp_ptr = NULL;
     }
 }
 
@@ -87,17 +90,17 @@ void Entity::SetDepth(short Depth)
     myDepth=Depth;
 
     //On l'enlève de la liste
-    Entity::it = Entity::list.begin();
-	while((*Entity::it) != this) //ICI ON SUPPOSE QUE L'élement est déjà dans la liste!!
-		Entity::it++;
-    Entity::list.erase(Entity::it);
+    std::list<Entity*>::iterator ite = Entity::list.begin();
+	while((*ite) != this) //ICI ON SUPPOSE QUE L'élement est déjà dans la liste!!
+		ite++;
+    Entity::list.erase(ite);
 
     //Et on le replace
-	Entity::it = Entity::list.begin();
-	while(Entity::it != Entity::list.end() && myDepth<(*Entity::it)->myDepth)
-		Entity::it++;
+	ite = Entity::list.begin();
+	while(ite != Entity::list.end() && myDepth<(*ite)->myDepth)
+		ite++;
 
-	Entity::list.insert(Entity::it, this);
+	Entity::list.insert(ite, this);
 }
 
 short Entity::GetDepth() const

@@ -4,7 +4,7 @@ else
 	OS := $(shell uname)
 endif
 
-LIBS = -lsfml-graphics -lsfml-window -lsfml-system
+LIBS = -lsfml-audio -lsfml-graphics -lsfml-window -lsfml-system
 EXE := GameEngine
 OBJ_DIR := obj
 BIN_DIR := bin
@@ -22,7 +22,7 @@ ifeq ($(OS), Darwin) #Mac OS X Ici l'ordre est inverse mais je ne suis pas certa
 endif
 
 ifeq ($(OS), Win)
-	LIBS := -lsfml-graphics -lsfml-window -lsfml-system
+	LIBS := -lsfml-audio -lsfml-graphics -lsfml-window -lsfml-system
 	DEL := del
 	EXE := GameEngine.exe
 	MKDIR := mkdir
@@ -38,7 +38,7 @@ C := $(wildcard *.cpp)
 _O := $(C:.cpp=.o)
 O := $(patsubst %,$(OBJ_DIR)/%,$(_O)) #Ça permet de mettre les .o dans le dossier obj/
 H := $(C:.cpp=.h)
-OPTION := -pedantic -Wall -Wextra -Wold-style-cast -Woverloaded-virtual -Wfloat-equal -Wwrite-strings -Wpointer-arith -Wcast-qual -Wcast-align -Wconversion -Wshadow -Weffc++ -Wredundant-decls -Winit-self -Wswitch-default -Wswitch-enum -Wundef -Winline -O2 -s
+OPTION := -pedantic -Wall -Wextra -Wold-style-cast -Woverloaded-virtual -Wfloat-equal -Wwrite-strings -Wpointer-arith -Wcast-qual -Wcast-align -Wconversion -Wshadow -Weffc++ -Wredundant-decls -Winit-self -Wswitch-default -Wswitch-enum -Wundef -Winline -s
 
 ifeq ($(OS), Win)
 all : $(EXE)

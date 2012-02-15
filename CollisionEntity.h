@@ -20,7 +20,6 @@ enum RelativePosition {
 class CollisionEntity : public Entity, public sf::FloatRect {
 private:
     static std::list<CollisionEntity*> list;
-    static std::list<CollisionEntity*>::iterator it;
     //static float maxSpeed;
 protected:
     bool mySolid; //Solid object don't move
@@ -102,9 +101,9 @@ public:
     void MoveOutside(const sf::Vector2f &dirVec, unsigned int maxSteps);
     ///@brief Bouge selon ses cotes et le bas por ne pas rentrer dans autres objets
     void MoveOutside();
-    
-    
-    
+
+
+
     ///@brief Step sur tous les dynamiques
     static void Step();
     ///@brief Obtient la plus grande vitesse pour simuler tout correctement

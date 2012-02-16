@@ -19,7 +19,7 @@ MouseStatus::~MouseStatus()
     }
 }
 
-void MouseStatus::Update()
+void MouseStatus::UpdateAll()
 {
 	for(std::map<sf::Mouse::Button, MouseStatus*>::iterator it = MouseStatus::map.begin(); it != MouseStatus::map.end(); it++)
 	{

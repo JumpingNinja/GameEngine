@@ -21,7 +21,7 @@ class KeyStatus : public InputStatus {
 		static std::map<sf::Keyboard::Key, KeyStatus*> map;
 		/** @brief Met à jour la liste
 		**/
-		static void Update();
+		static void UpdateAll();
 
 		KeyStatus(sf::Keyboard::Key Key);
 		~KeyStatus();

@@ -19,7 +19,7 @@ KeyStatus::~KeyStatus()
     }
 }
 
-void KeyStatus::Update()
+void KeyStatus::UpdateAll()
 {
 	for(std::map<sf::Keyboard::Key, KeyStatus*>::iterator it = KeyStatus::map.begin(); it != KeyStatus::map.end(); it++)
 	{

@@ -17,7 +17,7 @@ class MouseStatus : public InputStatus
 		static std::map<sf::Mouse::Button, MouseStatus*> map;
 		/** @brief Met à jour la liste
 		**/
-		static void Update();
+		static void UpdateAll();
 
 		MouseStatus(sf::Mouse::Button Button);
 		~MouseStatus();

@@ -14,8 +14,12 @@
 
 #include "SplashScreen.h"
 #include "Background.h"
+
+#include "Input.h"
 #include "KeyStatus.h"
 #include "Mouse.h"
+#include "Joystick.h"
+
 #include "Game.h"
 #include "Entity.h"
 #include "Particle.h"
@@ -42,8 +46,18 @@ public:
     **/
     static inline sf::Vector2f GetMousePosition() { return myMainWindow.ConvertCoords(sf::Mouse::GetPosition(myMainWindow).x, sf::Mouse::GetPosition(myMainWindow).y); }
 
+	/** @brief Informations sur les Joysticks et leurs axes
+	**/
+	std::map<std::string, bool>* JoystickAxes;
+    /** @brief Contient les associations Action/Touche
+    *
+    **/
     static std::map<std::string, gb::Key> Bindings;
-    static const InputStatus& GetKeyState(const std::string &Action);
+	/** @brief Renvoi le status de la touche associée à l'action Action
+    *
+    * @param Action Nom de l'action
+    **/
+    static InputStatus& GetKeyState(const std::string &Action);
 
 private:
     static bool IsExiting();
@@ -60,6 +74,11 @@ private:
     static Background *myBack;
     static float myWidth, myHeight;
     static unsigned int myWinWidth, myWinHeight;
+    /** @brief Associe une action (chaîne de caractères) à une touche.
+    *
+    * @param Action Nom de l'action
+    * @param Key Touche associée
+    **/
 	static void AddKeyBinding(const std::string &Action, gb::Key Key);
 
 	static ParticleInfo pInfo;

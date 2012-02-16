@@ -39,6 +39,29 @@ void Game::Start(void)
     {
         new MouseStatus(static_cast<sf::Mouse::Button>(keyLoop - gb::LastKeyboardKey - 1));
     }
+
+	sf::Joystick::Update();
+	for(int nbJoysticks = 0;  nbJoysticks < 8;  nbJoysticks++)
+	{
+		std::cout << "Joystick " << nbJoysticks << std::endl;
+		if (sf::Joystick::IsConnected(nbJoysticks))
+		{
+			unsigned int buttons = min((int) sf::Joystick::GetButtonCount(nbJoysticks), 32);
+			for(unsigned int nbButtons = 0; nbButtons < buttons; nbButtons++)
+			{
+				new JoyButtonStatus(nbJoysticks*32 + nbButtons);
+			}
+			for(unsigned int Axis = sf::Joystick::X; Axis <= sf::Joystick::PovY; Axis++)
+			{
+				if (sf::Joystick::HasAxis(nbJoysticks,static_cast<sf::Joystick::Axis>(Axis)))
+					std::cout << "Added Axis " << Axis << std::endl,
+					new JoystickAxis(nbJoysticks, static_cast<sf::Joystick::Axis>(Axis));
+			}
+		} else {
+			break;
+		}
+	}
+
     // Quelques binds (à terme : fichier de configuration)
 	AddKeyBinding("Exit", gb::Escape);
 	AddKeyBinding("Slow", gb::E);
@@ -47,6 +70,15 @@ void Game::Start(void)
 	AddKeyBinding("P1_Jump", gb::Space);
 	AddKeyBinding("DoStuff", gb::MouseButton1);
 	AddKeyBinding("DoStuff2", gb::MouseButton2);
+	AddKeyBinding("DoStuff3", gb::Joy0_1);
+	AddKeyBinding("DoStuff4", gb::Joy0_2);
+	AddKeyBinding("DoStuff5", gb::Joy0_3);
+	AddKeyBinding("DoStuff6", gb::Joy0_4);
+	AddKeyBinding("DoStuff7", gb::Joy1_1);
+	AddKeyBinding("DoStuff8", gb::Joy1_2);
+	AddKeyBinding("DoStuff9", gb::Joy1_3);
+	AddKeyBinding("DoStuff10", gb::Joy1_4);
+	AddKeyBinding("Move", gb::Joy0_X);
 
     myMainWindow.Create(sf::VideoMode(myWinWidth , myWinHeight,32),"Pang!");
     //myMainWindow.SetFramerateLimit(60);
@@ -199,8 +231,9 @@ void Game::GameLoop()
             myGameState=Game::Exiting;
     }
 
-	KeyStatus::Update();
-	MouseStatus::Update();
+	KeyStatus::UpdateAll();
+	MouseStatus::UpdateAll();
+	JoyButtonStatus::UpdateAll();
 
 
     if (Game::GetKeyState("Exit").IsJustPressed())
@@ -298,15 +331,19 @@ const sf::View& Game::GetView()
     return myView;
 }
 
-const InputStatus& Game::GetKeyState(const std::string &Action)
+InputStatus& Game::GetKeyState(const std::string &Action)
 {
 	if (Game::Bindings[Action] < gb::LastKeyboardKey)
 		return *KeyStatus::map[static_cast<sf::Keyboard::Key>(Game::Bindings[Action])];
-	else
+	else if (Game::Bindings[Action] < gb::LastMouseButton)
 		return *MouseStatus::map[static_cast<sf::Mouse::Button>(Game::Bindings[Action] - gb::LastKeyboardKey - 1)];
+	else
+		return *JoyButtonStatus::map[static_cast<unsigned int>(Game::Bindings[Action] - gb::LastMouseButton - 1)];
 }
 
 void Game::AddKeyBinding(std::string const &Action, gb::Key Key)
 {
-	Game::Bindings.insert(std::pair<std::string, gb::Key>(Action, Key));
+	// Vérifie que le boutton du Joystick existe réélement
+	if ((Key < gb::LastMouseButton) || (JoyButtonStatus::map.count(Key - gb::LastMouseButton - 1) == 1))
+		Game::Bindings.insert(std::pair<std::string, gb::Key>(Action, Key));
 }

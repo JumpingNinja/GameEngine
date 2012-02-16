@@ -1,11 +1,11 @@
 #include "Joystick.h"
 #include <iostream>
 
-//std::map<sf::Joystick::Axis, JoystickAxis*> JoystickAxis::map;
+std::map<gb::Key, JoystickAxis*> JoystickAxis::map;
 
-JoystickAxis::JoystickAxis(unsigned int Joystick, sf::Joystick::Axis Axis) : InputStatus(static_cast<gb::Key>( (int) gb::LastJoystickButton + (int) (Joystick*8 + Axis + 1)), Joystick, Axis)
+JoystickAxis::JoystickAxis(unsigned int Joystick, sf::Joystick::Axis Axis) : myJoystick(Joystick), myAxis(Axis)
 {
-	std::cout << "Added Axis " << myAxis << " of Joystick " << myJoystick << std::endl;
+	JoystickAxis::map[static_cast<gb::Key>(gb::LastJoystickButton + myJoystick*8 + myAxis + 1)] = this;
 }
 
 float JoystickAxis::GetPosition()
@@ -15,14 +15,16 @@ float JoystickAxis::GetPosition()
 
 JoystickAxis::~JoystickAxis()
 {
-	/*std::map<unsigned int, JoystickAxis*>::iterator it;
+	std::map<gb::Key, JoystickAxis*>::iterator it;
     for (it = JoystickAxis::map.begin(); it!=JoystickAxis::map.end(); it++)
     {
         if ((*it).second == this)
 			JoystickAxis::map.erase(it);
             break;
-    }*/
+    }
 }
+
+
 
 std::map<unsigned int, JoyButtonStatus*> JoyButtonStatus::map;
 

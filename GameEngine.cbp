@@ -74,8 +74,14 @@
 		<Unit filename="Entity.h" />
 		<Unit filename="Game.cpp" />
 		<Unit filename="Game.h" />
+		<Unit filename="Input.cpp" />
+		<Unit filename="Input.h" />
+		<Unit filename="Joystick.cpp" />
+		<Unit filename="Joystick.h" />
 		<Unit filename="KeyStatus.cpp" />
 		<Unit filename="KeyStatus.h" />
+		<Unit filename="Mouse.cpp" />
+		<Unit filename="Mouse.h" />
 		<Unit filename="Particle.cpp" />
 		<Unit filename="Particle.h" />
 		<Unit filename="Playable.cpp" />

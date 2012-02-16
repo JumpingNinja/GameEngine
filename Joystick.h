@@ -1,5 +1,5 @@
-#ifndef JOYSTICK_H
-#define JOYSTICK_H
+#ifndef JOYSTICK_GE_H
+#define JOYSTICK_GE_H
 
 //
 // KeyStatus.h
@@ -12,13 +12,13 @@
 #include "Input.h"
 #include "Game.h"
 
-class JoystickAxis : public InputStatus
+class JoystickAxis
 {
 	private:
-		/*unsigned int myJoystick;
-		sf::Joystick::Axis myAxis;*/
+		unsigned int myJoystick;
+		sf::Joystick::Axis myAxis;
 	public:
-		//static std::map<sf::Joystick::Axis, JoystickAxis*> map;
+		static std::map<gb::Key, JoystickAxis*> map;
 
 		JoystickAxis(unsigned int Joystick, sf::Joystick::Axis Axis);
 		~JoystickAxis();

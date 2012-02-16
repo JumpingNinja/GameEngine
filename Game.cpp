@@ -24,6 +24,8 @@ Entity* Game::myFollow(NULL);
 Background* Game::myBack(NULL);
 float Game::myWidth(320.f*5.f), Game::myHeight(200.f*4.f);
 unsigned int Game::myWinWidth(640), Game::myWinHeight(400);
+bool Game::UseJoysticks = 1;
+InputStatus Game::InputStatusError(gb::KeyCount);
 
 void Game::Start(void)
 {
@@ -39,6 +41,8 @@ void Game::Start(void)
     {
         new MouseStatus(static_cast<sf::Mouse::Button>(keyLoop - gb::LastKeyboardKey - 1));
     }
+
+    Game::UseJoysticks = 1; // Doit être récupéré d'un fichier de configuration
 
 	sf::Joystick::Update();
 	for(int nbJoysticks = 0;  nbJoysticks < 8;  nbJoysticks++)
@@ -58,11 +62,13 @@ void Game::Start(void)
 					new JoystickAxis(nbJoysticks, static_cast<sf::Joystick::Axis>(Axis));
 			}
 		} else {
+			if(nbJoysticks <= 0) Game::UseJoysticks = 0; // Désactive la prise en compte des joysticks si aucun connecté
 			break;
 		}
 	}
 
     // Quelques binds (à terme : fichier de configuration)
+
 	AddKeyBinding("Exit", gb::Escape);
 	AddKeyBinding("Slow", gb::E);
 	AddKeyBinding("P1_MoveLeft", gb::Q);
@@ -70,15 +76,20 @@ void Game::Start(void)
 	AddKeyBinding("P1_Jump", gb::Space);
 	AddKeyBinding("DoStuff", gb::MouseButton1);
 	AddKeyBinding("DoStuff2", gb::MouseButton2);
-	AddKeyBinding("DoStuff3", gb::Joy0_1);
-	AddKeyBinding("DoStuff4", gb::Joy0_2);
-	AddKeyBinding("DoStuff5", gb::Joy0_3);
-	AddKeyBinding("DoStuff6", gb::Joy0_4);
-	AddKeyBinding("DoStuff7", gb::Joy1_1);
-	AddKeyBinding("DoStuff8", gb::Joy1_2);
-	AddKeyBinding("DoStuff9", gb::Joy1_3);
-	AddKeyBinding("DoStuff10", gb::Joy1_4);
-	AddKeyBinding("Move", gb::Joy0_X);
+
+	if(Game::UseJoysticks == 1)
+	{
+		AddKeyBinding("DoStuff3", gb::Joy0_1);
+		AddKeyBinding("DoStuff4", gb::Joy0_2);
+		AddKeyBinding("DoStuff5", gb::Joy0_3);
+		AddKeyBinding("DoStuff6", gb::Joy0_4);
+		AddKeyBinding("DoStuff7", gb::Joy1_1);
+		AddKeyBinding("DoStuff8", gb::Joy1_2);
+		AddKeyBinding("DoStuff9", gb::Joy1_3);
+		AddKeyBinding("DoStuff10", gb::Joy1_4);
+
+		AddKeyBinding("MoveAxis", gb::Joy0_X);
+	}
 
     myMainWindow.Create(sf::VideoMode(myWinWidth , myWinHeight,32),"Pang!");
     //myMainWindow.SetFramerateLimit(60);
@@ -207,7 +218,7 @@ void Game::Start(void)
     }
 
     Entity::DestroyAll(); //à cause des new
-    KeyStatus::DestroyAll();
+    InputStatus::DestroyAll();
 
     myMainWindow.Close();
 }
@@ -331,19 +342,30 @@ const sf::View& Game::GetView()
     return myView;
 }
 
-InputStatus& Game::GetKeyState(const std::string &Action)
+const InputStatus& Game::GetKeyState(const std::string &Action)
 {
+	// Vérifier que Game::Bindings[Action] existe réélement avant ? Trop cher ou pas ?
+	// (Evite le plantage si on appelle une action qui n'existe pas)
 	if (Game::Bindings[Action] < gb::LastKeyboardKey)
 		return *KeyStatus::map[static_cast<sf::Keyboard::Key>(Game::Bindings[Action])];
 	else if (Game::Bindings[Action] < gb::LastMouseButton)
 		return *MouseStatus::map[static_cast<sf::Mouse::Button>(Game::Bindings[Action] - gb::LastKeyboardKey - 1)];
-	else
+	else if (Game::Bindings[Action] < gb::LastJoystickButton)
 		return *JoyButtonStatus::map[static_cast<unsigned int>(Game::Bindings[Action] - gb::LastMouseButton - 1)];
+	else
+		return Game::InputStatusError;
+}
+
+float Game::GetAxisState(const std::string &Action)
+{
+	// Vérifier que Game::Bindings[Action] existe réélement avant ? Trop cher ou pas ?
+	// (Evite le plantage si on appelle une action qui n'existe pas)
+	return JoystickAxis::map[static_cast<gb::Key>(Game::Bindings[Action])]->GetPosition();
 }
 
 void Game::AddKeyBinding(std::string const &Action, gb::Key Key)
 {
-	// Vérifie que le boutton du Joystick existe réélement
-	if ((Key < gb::LastMouseButton) || (JoyButtonStatus::map.count(Key - gb::LastMouseButton - 1) == 1))
+	// Vérifie que le boutton du Joystick existe réélement, ou qu'on accède à un autre champ
+	if (((Key < gb::LastMouseButton) || (Key > gb::LastJoystickButton) || (JoyButtonStatus::map.count(Key - gb::LastMouseButton - 1) == 1)) && ((Key < gb::LastJoystickButton) || (JoystickAxis::map.count(Key) == 1) ))
 		Game::Bindings.insert(std::pair<std::string, gb::Key>(Action, Key));
 }

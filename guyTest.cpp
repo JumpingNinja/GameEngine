@@ -85,16 +85,18 @@ void guytest::TakeAStep(bool useFriction)
         if (Game::GetKeyState("DoStuff").IsKeyPressed()) Particle::Create(Game::GetMousePosition(), pInfo, 7.f);
         if (Game::GetKeyState("DoStuff2").IsKeyPressed()) std::cout << "Trop fort, t'as clique sur le bouton droit de la souris..." << std::endl;
 
-        if ((Game::GetKeyState("DoStuff3").IsKeyPressed())&&(CheckGround(1.f))) Jump(), PlaySound("Jump");
-        if ((Game::GetKeyState("DoStuff4").IsKeyPressed())&&(CheckGround(1.f))) Jump(), PlaySound("Jump");
-        if ((Game::GetKeyState("DoStuff5").IsKeyPressed())&&(CheckGround(1.f))) Jump(), PlaySound("Jump");
-        if ((Game::GetKeyState("DoStuff6").IsKeyPressed())&&(CheckGround(1.f))) Jump(), PlaySound("Jump");
-        if ((Game::GetKeyState("DoStuff7").IsKeyPressed())&&(CheckGround(1.f))) Jump(), PlaySound("Jump");
-        if ((Game::GetKeyState("DoStuff8").IsKeyPressed())&&(CheckGround(1.f))) Jump(), PlaySound("Jump");
-        if ((Game::GetKeyState("DoStuff9").IsKeyPressed())&&(CheckGround(1.f))) Jump(), PlaySound("Jump");
-        if ((Game::GetKeyState("DoStuff10").IsKeyPressed())&&(CheckGround(1.f))) Jump(), PlaySound("Jump");
-        std::cout << sf::Joystick::GetAxisPosition(0, sf::Joystick::X) << " " << Game::GetKeyState("Move").GetPosition() << std::endl;
-        if(abs(Game::GetKeyState("Move").GetPosition()) > 15) AddSpeed(sf::Vector2f(Game::GetKeyState("Move").GetPosition()*0.0075f, 0)); useFriction=0;
+        if(Game::UseJoysticks)
+        {
+			if ((Game::GetKeyState("DoStuff3").IsKeyPressed())&&(CheckGround(1.f))) Jump(), PlaySound("Jump");
+			if ((Game::GetKeyState("DoStuff4").IsKeyPressed())&&(CheckGround(1.f))) Jump(), PlaySound("Jump");
+			if ((Game::GetKeyState("DoStuff5").IsKeyPressed())&&(CheckGround(1.f))) Jump(), PlaySound("Jump");
+			if ((Game::GetKeyState("DoStuff6").IsKeyPressed())&&(CheckGround(1.f))) Jump(), PlaySound("Jump");
+			if ((Game::GetKeyState("DoStuff7").IsKeyPressed())&&(CheckGround(1.f))) Jump(), PlaySound("Jump");
+			if ((Game::GetKeyState("DoStuff8").IsKeyPressed())&&(CheckGround(1.f))) Jump(), PlaySound("Jump");
+			if ((Game::GetKeyState("DoStuff9").IsKeyPressed())&&(CheckGround(1.f))) Jump(), PlaySound("Jump");
+			if ((Game::GetKeyState("DoStuff10").IsKeyPressed())&&(CheckGround(1.f))) Jump(), PlaySound("Jump");
+			if(abs(Game::GetAxisState("MoveAxis")) > 15) AddSpeed(sf::Vector2f(Game::GetAxisState("MoveAxis")*0.0075f, 0)); useFriction=0;
+        }
     }
 
 

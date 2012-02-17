@@ -132,9 +132,20 @@ void ResManager::LoadResources()
     SetAnimRect("player_walk", 4, sf::IntRect(81, 0, 9, 17));
 
     AddAnimation(3, "ryu_walk");
-    SetAnimRect("ryu_walk", 0, sf::IntRect(143, 5, 162-143, 37-5));
-    SetAnimRect("ryu_walk", 1, sf::IntRect(171, 5, 190-171, 37-5));
-    SetAnimRect("ryu_walk", 2, sf::IntRect(197, 5, 219-197, 37-5));
+    SetAnimRect("ryu_walk", 0, sf::IntRect(143, 5, 19, 32));
+    SetAnimRect("ryu_walk", 1, sf::IntRect(171, 5, 19, 32));
+    SetAnimRect("ryu_walk", 2, sf::IntRect(197, 5, 19, 32));
+
+    AddAnimation(4, "ryu_jump");
+    SetAnimRect("ryu_jump", 0, sf::IntRect(251, 6, 19, 32));
+    SetAnimRect("ryu_jump", 1, sf::IntRect(281, 6, 19, 32));
+    SetAnimRect("ryu_jump", 2, sf::IntRect(305, 6, 19, 32));
+    SetAnimRect("ryu_jump", 3, sf::IntRect(333, 6, 19, 32));
+
+    AddAnimation(3, "ryu_attack");
+    SetAnimRect("ryu_attack", 0, sf::IntRect(136, 88, 19, 32));
+    SetAnimRect("ryu_attack", 1, sf::IntRect(162, 88, 19, 32));
+    SetAnimRect("ryu_attack", 2, sf::IntRect(209, 88, 19, 32));
 
 	AddAnimation(1, "block");
 	SetAnimRect("block", 0, sf::IntRect(1,1,3,3));

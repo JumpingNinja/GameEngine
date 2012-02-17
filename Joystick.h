@@ -24,6 +24,8 @@ class JoystickAxis
 		~JoystickAxis();
 
 		float GetPosition();
+
+		static void DestroyAll();
 };
 
 /** @brief Donne le status actuel d'un boutton d'un Joystick.

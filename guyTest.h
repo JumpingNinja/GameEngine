@@ -16,6 +16,7 @@
 
 class guytest : virtual public CollisionEntity, public Playable, private Animation, public SoundEmitter {
 	ParticleInfo pInfo, pStar;
+	float partRot, m_spd;
 public:
     guytest();
     ~guytest();

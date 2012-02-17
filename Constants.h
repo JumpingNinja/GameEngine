@@ -35,6 +35,7 @@ template <class T> T getSign ( const T& a ) {
 }
 
 
+
 void wobble(float &current_position, float target_position, float force,float friction, float &m_spd);
 
 ///@brief Classe d'accès global

@@ -20,9 +20,15 @@ float RandOne()
 		return -1.f;
 }
 
+float GetAngle(const sf::Vector2f &vec)
+{
+	float l(sqrt(vec.x*vec.x+vec.y*vec.y));
+	return acosf(vec.x/l)*(180.f/3.14f);
+}
+
 
 //guytest::guytest() : CollisionEntity(0), Playable(1), Animation(Game::GetTexture("nyancat"), 5.f, Game::GetAnimation("nyancat_fly")), pInfo(Game::GetTexture("nyancat"), Game::GetAnimation("nyancat_rainbow")), pStar(Game::GetTexture("nyancat"), Game::GetAnimation("nyancat_star"))
-guytest::guytest() : CollisionEntity(0), Playable(1), Animation(Game::GetTexture("ryu"), 5.f, Game::GetAnimation("ryu_walk")), pInfo(Game::GetTexture("nyancat"), Game::GetAnimation("nyancat_rainbow")), pStar(Game::GetTexture("nyancat"), Game::GetAnimation("nyancat_star"))
+guytest::guytest() : CollisionEntity(0), Playable(1), Animation(Game::GetTexture("ryu"), 5.f, Game::GetAnimation("ryu_walk")), pInfo(Game::GetTexture("nyancat"), Game::GetAnimation("nyancat_rainbow")), pStar(Game::GetTexture("nyancat"), Game::GetAnimation("nyancat_star")), partRot(0.f), m_spd(0.f)
 {
     //Width=33.f; Height=20.f;
     Width=19.f; Height=32.f;
@@ -136,6 +142,11 @@ void guytest::TakeAStep(bool useFriction)
 
     while (tmpSpeed>0.0001f)
     {
+		sf::Vector2f v(mySpeed);
+		partRot=GetAngle(v);
+		wobble(pInfo.Rotation, partRot, 0.1f, 0.6f, m_spd);
+		//pInfo.Rotation=GetAngle(v);
+		
 		Particle::Create(GetPosition()+sf::Vector2f(tmpSpeed*gb::timerate*mySpeed.x/maxSpeed, tmpSpeed*gb::timerate*mySpeed.y/maxSpeed), pInfo, 5.f);
 		tmpSpeed-=tmpStep;
     }

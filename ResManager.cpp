@@ -135,6 +135,10 @@ void ResManager::LoadResources()
     SetAnimRect("ryu_walk", 0, sf::IntRect(143, 5, 19, 32));
     SetAnimRect("ryu_walk", 1, sf::IntRect(171, 5, 19, 32));
     SetAnimRect("ryu_walk", 2, sf::IntRect(197, 5, 19, 32));
+	
+	AddAnimation(2, "ryu_stand");
+    SetAnimRect("ryu_stand", 0, sf::IntRect(12, 5, 19, 32));
+    SetAnimRect("ryu_stand", 1, sf::IntRect(39, 6, 19, 32));
 
     AddAnimation(4, "ryu_jump");
     SetAnimRect("ryu_jump", 0, sf::IntRect(251, 6, 19, 32));

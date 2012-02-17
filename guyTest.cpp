@@ -31,7 +31,7 @@ guytest::guytest() : CollisionEntity(0), Playable(1), Animation(Game::GetTexture
     //Selon l'animation cela change
     SetOrigin(15.5f, 10.f);
     //SetOrigin(GetTextureRect().Width/2.f, GetTextureRect().Height/2.f);
-    myMaxSpeed.x=5.f*4.f;
+    myMaxSpeed.x=5.f;
     //myAirFriction=sf::Vector2f(0.3f, 1.f);
 
 	//pInfo.IncrSpeed=sf::Vector2f(0.f,-0.002f);
@@ -104,8 +104,27 @@ void guytest::TakeAStep(bool useFriction)
 			if(abs(Game::GetAxisState("MoveAxis")) > 15) AddSpeed(sf::Vector2f(Game::GetAxisState("MoveAxis")*0.0075f, 0)); useFriction=0;
         }
     }
-
-	if(CheckGround(2.f)) SetRects(Game::GetAnimation("ryu_walk")); else SetRects(Game::GetAnimation("ryu_jump"));
+	
+	int state;
+	
+	if(CheckGround(2.f))
+	{
+		if (abs(mySpeed.x)<1.f && abs(mySpeed.y)<0.1f)
+			SetRects(Game::GetAnimation("ryu_stand")), state=1;
+		else
+			SetRects(Game::GetAnimation("ryu_walk")), state=0; 
+		
+	}
+	else
+	{
+		SetRects(Game::GetAnimation("ryu_jump")), state=2;
+	
+	}
+	
+	if (state==0)
+		Play(gb::timerate*abs(mySpeed.x)/myMaxSpeed.x, *this);
+	else
+		Play(gb::timerate, *this);
 
 	float maxSpeed(max(static_cast<float>(abs(mySpeed.x)), static_cast<float>(abs(mySpeed.y)))*gb::timerate), tmpStep(1.f), tmpSpeed(maxSpeed);
     //Cette vitesse temporelle permet de gérer les collisions entre objets dynamiques
@@ -119,7 +138,7 @@ void guytest::TakeAStep(bool useFriction)
 		tmpSpeed-=tmpStep;
     }
 
-    Play(gb::timerate, *this);
+   
     CollisionEntity::TakeAStep(1);
 
 	// Tourne le personnage vers sa direction

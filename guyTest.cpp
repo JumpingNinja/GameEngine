@@ -104,7 +104,6 @@ void guytest::TakeAStep(bool useFriction)
 			if ((Game::GetKeyState("DoStuff7").IsKeyPressed())&&(CheckGround(1.f))) Jump(), PlaySound("Jump");
 			if ((Game::GetKeyState("DoStuff8").IsKeyPressed())&&(CheckGround(1.f))) Jump(), PlaySound("Jump");
 			if ((Game::GetKeyState("DoStuff9").IsKeyPressed())&&(CheckGround(1.f))) Jump(), PlaySound("Jump");
-			if ((Game::GetKeyState("DoStuff10").IsKeyPressed())&&(CheckGround(1.f))) Jump(), PlaySound("Jump");
 			if ((Game::GetKeyState("DoStuff11").IsKeyPressed())&&(CheckGround(1.f))) Jump(), PlaySound("Jump");
 			if ((Game::GetKeyState("DoStuff12").IsKeyPressed())&&(CheckGround(1.f))) Jump(), PlaySound("Jump");
 			if ((Game::GetKeyState("DoStuff13").IsKeyPressed())&&(CheckGround(1.f))) Jump(), PlaySound("Jump");
@@ -112,23 +111,23 @@ void guytest::TakeAStep(bool useFriction)
 			if(abs(Game::GetAxisState("MoveAxis")) > 15) AddSpeed(sf::Vector2f(Game::GetAxisState("MoveAxis")*0.0075f, 0)); //useFriction=0;
         }
     }
-	
+
 	int state;
-	
+
 	if(CheckGround(2.f))
 	{
 		if (abs(mySpeed.x)<0.5f && abs(mySpeed.y)<0.1f)
 			SetRects(Game::GetAnimation("ryu_stand")), state=1;
 		else
-			SetRects(Game::GetAnimation("ryu_walk")), state=0; 
-		
+			SetRects(Game::GetAnimation("ryu_walk")), state=0;
+
 	}
 	else
 	{
 		SetRects(Game::GetAnimation("ryu_jump")), state=2;
-	
+
 	}
-	
+
 	if (state==0)
 		Play(gb::timerate*abs(mySpeed.x)/myMaxSpeed.x, *this);
 	else
@@ -151,7 +150,7 @@ void guytest::TakeAStep(bool useFriction)
 		tmpSpeed-=tmpStep;
     }
 
-   
+
     CollisionEntity::TakeAStep(1);
 
 	// Tourne le personnage vers sa direction

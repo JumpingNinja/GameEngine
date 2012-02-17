@@ -8,6 +8,7 @@
 
 #pragma once
 #include <map>
+#include <list>
 
 #include "SFML/Window.hpp"
 #include "SFML/Graphics.hpp"
@@ -69,10 +70,13 @@ public:
     static float GetAxisState(const std::string &Action);
     /// @brief Détermine si les axes des Joysticks doivent être pris en compte
     static bool UseJoysticks;
+    static std::list<Entity*> myFollow;
 
 private:
     static bool IsExiting();
     static void GameLoop();
+
+    static sf::Vector2f ComputeCenter();
 
     enum GameState { Uninitialized, ShowingSplash, Paused,
         ShowingMenu, Playing, Exiting };
@@ -81,7 +85,6 @@ private:
     static sf::RenderWindow myMainWindow;
     static ResManager myResManager;
     static sf::View myView;
-    static Entity *myFollow;
     static Background *myBack;
     static float myWidth, myHeight;
     static unsigned int myWinWidth, myWinHeight;

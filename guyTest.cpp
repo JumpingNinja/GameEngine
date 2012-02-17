@@ -108,7 +108,7 @@ void guytest::TakeAStep(bool useFriction)
 			if ((Game::GetKeyState("DoStuff12").IsKeyPressed())&&(CheckGround(1.f))) Jump(), PlaySound("Jump");
 			if ((Game::GetKeyState("DoStuff13").IsKeyPressed())&&(CheckGround(1.f))) Jump(), PlaySound("Jump");
 			if ((Game::GetKeyState("DoStuff14").IsKeyPressed())&&(CheckGround(1.f))) Jump(), PlaySound("Jump");
-			if(abs(Game::GetAxisState("MoveAxis")) > 15) AddSpeed(sf::Vector2f(Game::GetAxisState("MoveAxis")*0.0075f, 0)); //useFriction=0;
+			if(abs(Game::GetAxisState("MoveAxis")) > 15) AddSpeed(sf::Vector2f(Game::GetAxisState("MoveAxis")*0.0075f, 0.f)); //useFriction=0;
         }
     }
 

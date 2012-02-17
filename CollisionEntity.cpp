@@ -28,15 +28,7 @@ CollisionEntity::CollisionEntity(bool solid) : Entity::Entity(), mySolid(solid),
 
 CollisionEntity::~CollisionEntity()
 {
-    std::list<CollisionEntity*>::iterator ite;
-    for (ite=CollisionEntity::list.begin(); ite!=CollisionEntity::list.end(); ite++)
-    {
-        if ((*ite)==this)
-            break;
-    }
-
-    if ((*ite)==this)
-        CollisionEntity::list.erase(ite);
+	CollisionEntity::list.remove(this);
 }
 
 bool CollisionEntity::IsColliding(CollisionEntity &other)

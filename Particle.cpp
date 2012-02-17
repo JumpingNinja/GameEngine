@@ -66,15 +66,7 @@ Particle::Particle(const ParticleInfo& Info, float Interval) : Entity(Info.Depth
 
 Particle::~Particle()
 {
-	std::list<Particle*>::iterator ite;
-    for (ite=list.begin(); ite!=list.end(); ite++)
-    {
-        if ((*ite)==this)
-            break;
-    }
-
-    if ((*ite)==this)
-        list.erase(ite);
+	list.remove(this);
 }
 
 void Particle::TakeAStep(float timerate)

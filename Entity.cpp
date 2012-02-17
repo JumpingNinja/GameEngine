@@ -39,16 +39,7 @@ Entity::Entity(short Depth) : sf::Sprite(),  myIsVisible(1), myDestroy(0), myDep
 
 Entity::~Entity()
 {
-    std::list<Entity*>::iterator ite;
-    for (ite=Entity::list.begin(); ite!=Entity::list.end(); ite++)
-    {
-        if ((*ite)==this)
-            break;
-    }
-
-    if ((*ite)==this)
-        Entity::list.erase(ite);
-
+	Entity::list.remove(this);
 }
 
 void Entity::DestroyAll()

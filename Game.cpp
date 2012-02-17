@@ -24,7 +24,8 @@ std::list<Entity*> Game::myFollow;
 Background* Game::myBack(NULL);
 float Game::myWidth(320.f*5.f), Game::myHeight(200.f*4.f), Game::timerate(1.f), Game::timerateTo(1.f), Game::m_spd[12]={0.f};
 unsigned int Game::myWinWidth(640), Game::myWinHeight(400);
-bool Game::UseJoysticks = 1;
+bool Game::UseJoysticks(1);
+sf::Vector2f Game::viewPos, Game::viewPosTo, Game::viewSize, Game::viewSizeTo;
 
 InputStatus* Game::InputStatusError(NULL);
 
@@ -112,8 +113,12 @@ void Game::Start(void)
     //Ceci se fait normalement dans ScreenSplash::Show()
     myResManager.LoadResources();
 
-    myView.SetSize(myMainWindow.GetWidth(), myMainWindow.GetHeight());
-    myView.Zoom(1.f/2.f);
+	//parametres de la vue:
+	viewSizeTo=sf::Vector2f(myMainWindow.GetWidth()/2.f, myMainWindow.GetHeight()/2.f);
+	viewSize=sf::Vector2f(myMainWindow.GetWidth(), myMainWindow.GetHeight());
+	
+    //myView.SetSize(myMainWindow.GetWidth(), myMainWindow.GetHeight());
+    //myView.Zoom(1.f/2.f);
 
 
     myBack= new Background(Game::GetTexture("back"), 10);
@@ -395,14 +400,27 @@ sf::Vector2f Game::ComputeCenter()
 
 void Game::GlobalStep()
 {
-	// Place le centre de l'écoute sur le joueur, et un peu derrière la scène pour éviter des effets bizarres.
-	sf::Listener::SetPosition(myFollow.front()->GetPosition().x, myFollow.front()->GetPosition().y, -5);
+	viewPosTo=myFollow.front()->GetPosition();
 	
-	myView.SetCenter(myFollow.front()->GetPosition());
+	//tous les wobbles
+	wobble(timerate, timerateTo, 0.5f, 0.5f, m_spd[0]);
+	wobble(viewPos.x, viewPosTo.x, 0.6f, 0.2f, m_spd[1]);
+	wobble(viewPos.y, viewPosTo.y, 0.6f, 0.2f, m_spd[2]);
+	wobble(viewSize.x, viewSizeTo.x, 0.6f, 0.2f, m_spd[3]);
+	wobble(viewSize.y, viewSizeTo.y, 0.6f, 0.2f, m_spd[4]);
+	
+	
+	myView.SetCenter(viewPos);
 	
 	myView.SetCenter(max(myView.GetSize().x/2.f, myView.GetCenter().x), max(myView.GetSize().y/2.f, myView.GetCenter().y));
 	myView.SetCenter(min(myWidth - myView.GetSize().x/2.f, myView.GetCenter().x), min(myHeight - myView.GetSize().y/2.f, myView.GetCenter().y));
 	
-	wobble(timerate, timerateTo, 0.5f, 0.5f, m_spd[0]);
+	myView.SetSize(viewSize);
+	
+	myBack->UpdateFactor();
+	
+	// Place le centre de l'écoute sur le joueur, et un peu derrière la scène pour éviter des effets bizarres.
+	sf::Listener::SetPosition(myView.GetCenter().x, myView.GetCenter().y, -5.f);
+	
 	//à implémenter un peux mieux avec un accesseur sur Game::timerate et un set sur Game::timerate_to
 }

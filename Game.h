@@ -128,6 +128,7 @@ private:
     static sf::RenderWindow myMainWindow;
     static ResManager myResManager;
     static sf::View myView;
+	static sf::Vector2f viewPos, viewPosTo, viewSize, viewSizeTo;
     static Background *myBack;
     static float myWidth, myHeight, timerateTo, m_spd[12];
     static unsigned int myWinWidth, myWinHeight;

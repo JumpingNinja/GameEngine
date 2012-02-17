@@ -30,5 +30,8 @@ public:
     
     ///@brief Met à jour la position
     void UpdatePosition();
+	
+	///@brief met a jour le facteur pour les calculs de position
+	void UpdateFactor();
     
 };

@@ -37,7 +37,7 @@ guytest::guytest() : CollisionEntity(0), Playable(1), Animation(Game::GetTexture
 	//pInfo.IncrSpeed=sf::Vector2f(0.f,-0.002f);
 	pInfo.Life=60.f;
 	//pInfo.Size=sf::Vector2f(3.f,3.f);
-	pInfo.IncrSize=sf::Vector2f(-0.005f,-0.005f);
+	pInfo.IncrSize=sf::Vector2f(0,-0.005f);
 	pInfo.Origin=sf::Vector2f(2.f, 8.5f);
 	//pInfo.Rotation=15.f;
 	//pInfo.IncrRotation=10.f;

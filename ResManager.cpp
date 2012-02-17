@@ -155,7 +155,7 @@ void ResManager::LoadResources()
 		SetAnimRect("nyancat_fly", i, sf::IntRect(i*33,18,33,20));
 
 	AddAnimation(1, "nyancat_rainbow");
-	SetAnimRect("nyancat_rainbow", 0, sf::IntRect(0,0,4,17));
+	SetAnimRect("nyancat_rainbow", 0, sf::IntRect(0,0,1,17));
 
 	AddAnimation(6, "nyancat_star");
 	for (int i=0; i<6; i++)

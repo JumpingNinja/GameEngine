@@ -20,7 +20,7 @@ sf::RenderWindow Game::myMainWindow;
 SplashScreen Game::mySplash;
 ResManager Game::myResManager;
 sf::View Game::myView;
-Entity* Game::myFollow(NULL);
+std::list<Entity*> Game::myFollow;
 Background* Game::myBack(NULL);
 float Game::myWidth(320.f*5.f), Game::myHeight(200.f*4.f);
 unsigned int Game::myWinWidth(640), Game::myWinHeight(400);
@@ -36,7 +36,7 @@ void Game::Start(void)
 
 	//Clé nulle pour gérer les touches non reconues
 	InputStatusError=new InputStatus(gb::KeyCount);
-	
+
     // Préparation de la gestion des inputs
     for(int keyLoop = gb::A; keyLoop != gb::LastKeyboardKey; keyLoop++)
     {
@@ -92,13 +92,13 @@ void Game::Start(void)
 		AddKeyBinding("DoStuff7", gb::Joy1_1);
 		AddKeyBinding("DoStuff8", gb::Joy1_2);
 		AddKeyBinding("DoStuff9", gb::Joy1_3);
-		AddKeyBinding("DoStuff10", gb::Joy1_4);
+		AddKeyBinding("SlowDown", gb::Joy1_4);
 		AddKeyBinding("DoStuff11", gb::Joy3_1);
 		AddKeyBinding("DoStuff12", gb::Joy3_2);
 		AddKeyBinding("DoStuff13", gb::Joy3_3);
 		AddKeyBinding("DoStuff14", gb::Joy3_4);
 
-		AddKeyBinding("MoveAxis", gb::Joy0_X);
+		AddKeyBinding("MoveAxis", gb::Joy1_X);
 	}
 
     myMainWindow.Create(sf::VideoMode(myWinWidth , myWinHeight,32),"Pang!");
@@ -188,8 +188,8 @@ void Game::Start(void)
 	guytest *pg2;
     pg2=new guytest;
     pg2->SetPosition(200.f, 45.f);*/
-    myFollow=new guytest;
-    myFollow->SetPosition(300.f, 50.f);
+    myFollow.push_back(new guytest);
+    myFollow.front()->SetPosition(300.f, 50.f);
 
 
 
@@ -260,7 +260,7 @@ void Game::GameLoop()
 
     if (Game::GetKeyState("Exit").IsJustPressed())
         myGameState=Game::Exiting;
-    if (Game::GetKeyState("Slow").IsJustPressed())
+    if ((Game::GetKeyState("Slow").IsJustPressed())||(Game::GetKeyState("SlowDown").IsJustPressed()))
     {
         if (gb::timerate_to>0.25f)
             gb::timerate_to=0.25f;
@@ -285,9 +285,9 @@ void Game::GameLoop()
             //myView.SetCenter(myView.GetCenter()+addPos);
 
             // Place le centre de l'écoute sur le joueur, et un peu derrière la scène pour éviter des effets bizarres.
-            sf::Listener::SetPosition(myFollow->GetPosition().x, myFollow->GetPosition().y, -5);
+            sf::Listener::SetPosition(myFollow.front()->GetPosition().x, myFollow.front()->GetPosition().y, -5);
 
-            myView.SetCenter(myFollow->GetPosition());
+            myView.SetCenter(myFollow.front()->GetPosition());
 
             myView.SetCenter(max(myView.GetSize().x/2.f, myView.GetCenter().x), max(myView.GetSize().y/2.f, myView.GetCenter().y));
             myView.SetCenter(min(myWidth - myView.GetSize().x/2.f, myView.GetCenter().x), min(myHeight - myView.GetSize().y/2.f, myView.GetCenter().y));
@@ -380,4 +380,24 @@ void Game::AddKeyBinding(std::string const &Action, gb::Key Key)
 	// Vérifie que le boutton du Joystick existe réélement, ou qu'on accède à un autre champ
 	if (((Key < gb::LastMouseButton) || (Key > gb::LastJoystickButton) || (JoyButtonStatus::map.count(Key - gb::LastMouseButton - 1) == 1)) && ((Key < gb::LastJoystickButton) || (JoystickAxis::map.count(Key) == 1) ))
 		Game::Bindings.insert(std::pair<std::string, gb::Key>(Action, Key));
+}
+
+static sf::Vector2f ComputeCenter()
+{
+	std::list<std::pair<float, sf::Vector2f> > List;
+	std::list<Entity*>::iterator it;
+	for(it = Game::myFollow.begin(); it != Game::myFollow.end(); it++)
+	{
+		List.push_back(std::pair<float, sf::Vector2f>(1, (*it)->GetPosition()));
+	}
+	while(List.size() > 1)
+	{
+		std::pair<float, sf::Vector2f> temp1 = List.front();
+		List.pop_front();
+		std::pair<float, sf::Vector2f> temp2 = List.front();
+		List.pop_front();
+		temp1 = std::pair<float, sf::Vector2f>(temp1.first + temp2.first, (temp1.first*temp1.second + temp2.first*temp2.second)/(temp1.first + temp2.first));
+		List.push_back(temp1);
+	}
+	return List.front().second;
 }

@@ -40,6 +40,12 @@ public:
     ///@brief Retourne le frame actuel de l'animation
     ///@return le frame où se trouve l'animation
     float GetFrame() const;
+	///@brief change l'interval de l'animation
+	///@param interval nouvel interval
+	void SetInterval(float interval);
+	///@brief retourne l'interval de l'animation
+	///@return l'interval de l'animation
+	float GetInterval() const;
     ///@brief Change l'animation (donc les rectangles)
     ///@param Rects vector de rectangles
     void SetRects(const std::vector<sf::IntRect>& Rects);

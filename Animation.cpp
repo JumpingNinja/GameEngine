@@ -45,6 +45,16 @@ float Animation::GetFrame() const
     return myFrame;
 }
 
+void Animation::SetInterval(float interval)
+{
+	myInterval=interval;
+}
+
+float Animation::GetInterval() const
+{
+	return myInterval;
+}
+
 void Animation::SetRects(const std::vector<sf::IntRect> &Rects)
 {
     myRects=&Rects;

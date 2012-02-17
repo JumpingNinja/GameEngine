@@ -470,6 +470,7 @@ public:
         Joy7_PovX,
         Joy7_PovY,
 
-        KeyCount      ///< Le nombre total de touches.
+		NullKey,
+        KeyCount ///< Le nombre total de touches.
     };
 };

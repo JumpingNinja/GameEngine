@@ -85,7 +85,7 @@ private:
     static Background *myBack;
     static float myWidth, myHeight;
     static unsigned int myWinWidth, myWinHeight;
-    static InputStatus InputStatusError;
+    static InputStatus *InputStatusError;
     /** @brief Associe une action (chaîne de caractères) à une touche.
     *
     * @param Action Nom de l'action

@@ -25,15 +25,18 @@ Background* Game::myBack(NULL);
 float Game::myWidth(320.f*5.f), Game::myHeight(200.f*4.f);
 unsigned int Game::myWinWidth(640), Game::myWinHeight(400);
 bool Game::UseJoysticks = 1;
-InputStatus Game::InputStatusError(gb::KeyCount);
+InputStatus *Game::InputStatusError(NULL);
 
 void Game::Start(void)
 {
     if(myGameState != Uninitialized)
         return;
 
+	//Clé nulle pour gérer les touches non reconues
+	InputStatusError=new InputStatus(gb::NullKey);
+	
     // Préparation de la gestion des inputs
-    for(int keyLoop = sf::Keyboard::A; keyLoop != sf::Keyboard::KeyCount; keyLoop++)
+    for(int keyLoop = gb::A; keyLoop != gb::LastKeyboardKey; keyLoop++)
     {
         new KeyStatus(static_cast<sf::Keyboard::Key>(keyLoop));
     }
@@ -53,6 +56,7 @@ void Game::Start(void)
 			unsigned int buttons = min((int) sf::Joystick::GetButtonCount(nbJoysticks), 32);
 			for(unsigned int nbButtons = 0; nbButtons < buttons; nbButtons++)
 			{
+				std::cout<<"Nb Joys: "<<nbJoysticks<<" nbButton: "<<nbButtons<<std::endl;
 				new JoyButtonStatus(nbJoysticks*32 + nbButtons);
 			}
 			for(unsigned int Axis = sf::Joystick::X; Axis <= sf::Joystick::PovY; Axis++)
@@ -79,10 +83,10 @@ void Game::Start(void)
 
 	if(Game::UseJoysticks == 1)
 	{
-		AddKeyBinding("DoStuff3", gb::Joy0_1);
-		AddKeyBinding("DoStuff4", gb::Joy0_2);
-		AddKeyBinding("DoStuff5", gb::Joy0_3);
-		AddKeyBinding("DoStuff6", gb::Joy0_4);
+		AddKeyBinding("DoStuff3", gb::Joy0_5);
+		AddKeyBinding("DoStuff4", gb::Joy0_6);
+		AddKeyBinding("DoStuff5", gb::Joy0_7);
+		AddKeyBinding("DoStuff6", gb::Joy0_8);
 		AddKeyBinding("DoStuff7", gb::Joy1_1);
 		AddKeyBinding("DoStuff8", gb::Joy1_2);
 		AddKeyBinding("DoStuff9", gb::Joy1_3);
@@ -352,8 +356,7 @@ const InputStatus& Game::GetKeyState(const std::string &Action)
 		return *MouseStatus::map[static_cast<sf::Mouse::Button>(Game::Bindings[Action] - gb::LastKeyboardKey - 1)];
 	else if (Game::Bindings[Action] < gb::LastJoystickButton)
 		return *JoyButtonStatus::map[static_cast<unsigned int>(Game::Bindings[Action] - gb::LastMouseButton - 1)];
-	else
-		return Game::InputStatusError;
+	else return *InputStatusError;
 }
 
 float Game::GetAxisState(const std::string &Action)

@@ -291,7 +291,8 @@ void Game::GameLoop()
 
 			Game::GlobalStep();
 
-            myBack->UpdatePosition();
+			//c'était à faire après la mise à jour de la vue! d'où le morceaux noir
+            //myBack->UpdatePosition();
 
             //drawing
             myMainWindow.Clear();
@@ -403,11 +404,12 @@ void Game::GlobalStep()
 	viewPosTo=myFollow.front()->GetPosition();
 	
 	//tous les wobbles
+	float force(0.85f), friction(0.6f);
 	wobble(timerate, timerateTo, 0.5f, 0.5f, m_spd[0]);
-	wobble(viewPos.x, viewPosTo.x, 0.6f, 0.2f, m_spd[1]);
-	wobble(viewPos.y, viewPosTo.y, 0.6f, 0.2f, m_spd[2]);
-	wobble(viewSize.x, viewSizeTo.x, 0.6f, 0.2f, m_spd[3]);
-	wobble(viewSize.y, viewSizeTo.y, 0.6f, 0.2f, m_spd[4]);
+	wobble(viewPos.x, viewPosTo.x, force, friction, m_spd[1]);
+	wobble(viewPos.y, viewPosTo.y, force, friction, m_spd[2]);
+	wobble(viewSize.x, viewSizeTo.x, force, friction, m_spd[3]);
+	wobble(viewSize.y, viewSizeTo.y, force, friction, m_spd[4]);
 	
 	
 	myView.SetCenter(viewPos);
@@ -418,9 +420,11 @@ void Game::GlobalStep()
 	myView.SetSize(viewSize);
 	
 	myBack->UpdateFactor();
+	myBack->UpdatePosition();
 	
 	// Place le centre de l'écoute sur le joueur, et un peu derrière la scène pour éviter des effets bizarres.
-	sf::Listener::SetPosition(myView.GetCenter().x, myView.GetCenter().y, -5.f);
+	//ne pas prendre directement la vue car le centre est modifié pour éviter sortir de la scène
+	sf::Listener::SetPosition(viewPos.x,viewPos.y, -5.f);
 	
 	//à implémenter un peux mieux avec un accesseur sur Game::timerate et un set sur Game::timerate_to
 }

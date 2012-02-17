@@ -36,6 +36,14 @@ class InputStatus
 		bool IsJustReleased() const { return myJustReleased; }
 
 		static void DestroyAll();
+	
+	/**
+	 @brief Donne la valeur associée à un bouton d'un Joystick
+	 @param iJoy index du joystick 0-7
+	 @param iBut index du boutons 0-31
+	 @return valeur associé au bouton spécifié
+	 **/
+	static inline gb::Key JoystickButton(unsigned short iJoy, unsigned short iBut) { return static_cast<gb::Key>(gb::Joy0_1+32*iJoy+iBut); }
 };
 
 #endif

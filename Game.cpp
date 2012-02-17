@@ -85,10 +85,10 @@ void Game::Start(void)
 
 	if(Game::UseJoysticks == 1)
 	{
-		AddKeyBinding("DoStuff3", gb::Joy0_15);
-		AddKeyBinding("DoStuff4", gb::Joy0_16);
-		AddKeyBinding("DoStuff5", gb::Joy0_17);
-		AddKeyBinding("DoStuff6", gb::Joy0_18);
+		AddKeyBinding("DoStuff3", gb::Joy0_17);
+		AddKeyBinding("DoStuff4", gb::Joy0_18);
+		AddKeyBinding("DoStuff5", gb::Joy0_19);
+		AddKeyBinding("DoStuff6", gb::Joy0_20);
 		AddKeyBinding("DoStuff7", gb::Joy1_1);
 		AddKeyBinding("DoStuff8", gb::Joy1_2);
 		AddKeyBinding("DoStuff9", gb::Joy1_3);

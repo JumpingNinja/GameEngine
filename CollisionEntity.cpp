@@ -7,6 +7,7 @@
 //
 
 #include "CollisionEntity.h"
+#include "Game.h"
 #include <iostream>
 
 std::list<CollisionEntity*> CollisionEntity::list;
@@ -91,7 +92,7 @@ void CollisionEntity::TakeAStep(bool useFriction)
     //std::cout<<"Step staken\n";
 	float GroundFriction = GetGroundFriction();
     if(GroundFriction < 0.f)
-        mySpeed.y+=myGravity*gb::timerate;
+        mySpeed.y+=myGravity*Game::timerate;
     else if (useFriction)
         mySpeed.x *= 1.f - myFriction*GroundFriction;
 
@@ -100,7 +101,7 @@ void CollisionEntity::TakeAStep(bool useFriction)
       //  mySpeed.y=0.f;
 
     //else if (mySpeed.x>0.1f && mySpeed.y<0.1f) MoveOutside();
-    //std::cout<<"grav:"<<myGravity*gb::timerate<<std::endl;
+    //std::cout<<"grav:"<<myGravity*Game::timerate<<std::endl;
 
     //On limite la vitesse
     mySpeed.y=min(mySpeed.y, myMaxSpeed.y);
@@ -111,8 +112,8 @@ void CollisionEntity::TakeAStep(bool useFriction)
 
 
     //Stoppe quand la vitesse est très petite, il faut prendre la valeur de myGravity pour y!
-    if (abs(mySpeed.x)<0.2f*gb::timerate) mySpeed.x=0.f;
-    if (abs(mySpeed.y)<0.2f*gb::timerate) mySpeed.y=0.f;
+    if (abs(mySpeed.x)<0.2f*Game::timerate) mySpeed.x=0.f;
+    if (abs(mySpeed.y)<0.2f*Game::timerate) mySpeed.y=0.f;
 
     mySpeed.x*=myAirFriction.x;
     mySpeed.y*=myAirFriction.y;
@@ -128,9 +129,9 @@ void CollisionEntity::TakeAStep(bool useFriction)
     while (tmpSpeed>0.0001f)
     {
         if (tmpSpeed>=1.f)
-            Move(gb::timerate*mySpeed.x/maxSpeed, gb::timerate*mySpeed.y/maxSpeed);
+            Move(Game::timerate*mySpeed.x/maxSpeed, Game::timerate*mySpeed.y/maxSpeed);
         else
-            Move(gb::timerate*tmpSpeed*mySpeed.x/maxSpeed, gb::timerate*tmpSpeed*mySpeed.y/maxSpeed);
+            Move(Game::timerate*tmpSpeed*mySpeed.x/maxSpeed, Game::timerate*tmpSpeed*mySpeed.y/maxSpeed);
 
         Collide();
         //if (Collide())

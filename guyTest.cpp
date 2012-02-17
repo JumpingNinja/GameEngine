@@ -129,11 +129,11 @@ void guytest::TakeAStep(bool useFriction)
 	}
 
 	if (state==0)
-		Play(gb::timerate*abs(mySpeed.x)/myMaxSpeed.x, *this);
+		Play(Game::timerate*abs(mySpeed.x)/myMaxSpeed.x, *this);
 	else
-		Play(gb::timerate, *this);
+		Play(Game::timerate, *this);
 
-	float maxSpeed(max(static_cast<float>(abs(mySpeed.x)), static_cast<float>(abs(mySpeed.y)))*gb::timerate), tmpStep(1.f), tmpSpeed(maxSpeed);
+	float maxSpeed(max(static_cast<float>(abs(mySpeed.x)), static_cast<float>(abs(mySpeed.y)))*Game::timerate), tmpStep(1.f), tmpSpeed(maxSpeed);
     //Cette vitesse temporelle permet de gérer les collisions entre objets dynamiques
     myStepSpeed=mySpeed;
     //if (!isPositive(maxSpeed)) tmpStep*=-1.f;
@@ -146,7 +146,7 @@ void guytest::TakeAStep(bool useFriction)
 		wobble(pInfo.Rotation, partRot, 0.1f, 0.6f, m_spd);
 		//pInfo.Rotation=GetAngle(v);
 		
-		Particle::Create(GetPosition()+sf::Vector2f(tmpSpeed*gb::timerate*mySpeed.x/maxSpeed, tmpSpeed*gb::timerate*mySpeed.y/maxSpeed), pInfo, 5.f);
+		Particle::Create(GetPosition()+sf::Vector2f(tmpSpeed*Game::timerate*mySpeed.x/maxSpeed, tmpSpeed*Game::timerate*mySpeed.y/maxSpeed), pInfo, 5.f);
 		tmpSpeed-=tmpStep;
     }
 

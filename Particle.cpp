@@ -7,6 +7,7 @@
 //
 
 #include "Particle.h"
+#include "Game.h"
 #include <iostream>
 #include <cmath>
 
@@ -82,7 +83,7 @@ void Particle::TakeAStep(float timerate)
 
 	if (myLife<=0.f) myDestroy=1;
 
-	Play(gb::timerate, *this);
+	Play(Game::timerate, *this);
 
 	Rotate(myInfo.IncrRotation*timerate);
 

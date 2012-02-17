@@ -7,6 +7,7 @@
 //
 
 #include "Playable.h"
+#include "Game.h"
 
 bool Playable::IsControled() const
 { return myControled; }
@@ -30,10 +31,10 @@ void Playable::Jump()
 
 void Playable::MoveLeft()
 {
-    AddSpeed(sf::Vector2f(-0.75f*gb::timerate, 0));
+    AddSpeed(sf::Vector2f(-0.75f*Game::timerate, 0));
 }
 
 void Playable::MoveRight()
 {
-    AddSpeed(sf::Vector2f(0.75f*gb::timerate, 0));
+    AddSpeed(sf::Vector2f(0.75f*Game::timerate, 0));
 }

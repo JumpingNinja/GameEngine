@@ -5,7 +5,7 @@ std::list<Sound*>::iterator Sound::mySoundsIt;
 
 Sound::Sound(std::string key) : sf::Sound(Game::GetSoundBuffer(key))
 {
-	this->SetPitch(gb::timerate);
+	this->SetPitch(Game::timerate);
 	Sound::mySounds.push_back(this);
 }
 

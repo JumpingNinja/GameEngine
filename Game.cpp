@@ -56,6 +56,7 @@ void Game::Start(void)
 		std::cout << "Joystick " << nbJoysticks << std::endl;
 		if (sf::Joystick::IsConnected(nbJoysticks))
 		{
+			//on le laisse en 32 plutot, non?
 			unsigned int buttons = min((int) sf::Joystick::GetButtonCount(nbJoysticks), 32);
 			for(unsigned int nbButtons = 0; nbButtons < buttons; nbButtons++)
 			{
@@ -427,4 +428,10 @@ void Game::GlobalStep()
 	sf::Listener::SetPosition(viewPos.x,viewPos.y, -5.f);
 	
 	//à implémenter un peux mieux avec un accesseur sur Game::timerate et un set sur Game::timerate_to
+}
+
+
+void Game::CheckJoysticks()
+{
+	
 }

@@ -108,6 +108,8 @@ public:
     static bool UseJoysticks;
 	///@brief Entités que suit la vue
     static std::list<Entity*> myFollow;
+	///@brief cherche les joysticks connectés
+	static void CheckJoysticks();
 
 private:
     static bool IsExiting();

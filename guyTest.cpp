@@ -20,9 +20,11 @@ float RandOne()
 }
 
 
-guytest::guytest() : CollisionEntity(0), Playable(1), Animation(Game::GetTexture("nyancat"), 5.f, Game::GetAnimation("nyancat_fly")), pInfo(Game::GetTexture("nyancat"), Game::GetAnimation("nyancat_rainbow")), pStar(Game::GetTexture("nyancat"), Game::GetAnimation("nyancat_star"))
+//guytest::guytest() : CollisionEntity(0), Playable(1), Animation(Game::GetTexture("nyancat"), 5.f, Game::GetAnimation("nyancat_fly")), pInfo(Game::GetTexture("nyancat"), Game::GetAnimation("nyancat_rainbow")), pStar(Game::GetTexture("nyancat"), Game::GetAnimation("nyancat_star"))
+guytest::guytest() : CollisionEntity(0), Playable(1), Animation(Game::GetTexture("ryu"), 5.f, Game::GetAnimation("ryu_walk")), pInfo(Game::GetTexture("nyancat"), Game::GetAnimation("nyancat_rainbow")), pStar(Game::GetTexture("nyancat"), Game::GetAnimation("nyancat_star"))
 {
-    Width=33.f; Height=20.f;
+    //Width=33.f; Height=20.f;
+    Width=19.f; Height=32.f;
     SetSpeed(sf::Vector2f(3.f, 4.f));
     SetFriction(0.1f), SetBounce(0.f);
     SetDepth(-2);
@@ -95,10 +97,15 @@ void guytest::TakeAStep(bool useFriction)
 			if ((Game::GetKeyState("DoStuff8").IsKeyPressed())&&(CheckGround(1.f))) Jump(), PlaySound("Jump");
 			if ((Game::GetKeyState("DoStuff9").IsKeyPressed())&&(CheckGround(1.f))) Jump(), PlaySound("Jump");
 			if ((Game::GetKeyState("DoStuff10").IsKeyPressed())&&(CheckGround(1.f))) Jump(), PlaySound("Jump");
+			if ((Game::GetKeyState("DoStuff11").IsKeyPressed())&&(CheckGround(1.f))) Jump(), PlaySound("Jump");
+			if ((Game::GetKeyState("DoStuff12").IsKeyPressed())&&(CheckGround(1.f))) Jump(), PlaySound("Jump");
+			if ((Game::GetKeyState("DoStuff13").IsKeyPressed())&&(CheckGround(1.f))) Jump(), PlaySound("Jump");
+			if ((Game::GetKeyState("DoStuff14").IsKeyPressed())&&(CheckGround(1.f))) Jump(), PlaySound("Jump");
 			if(abs(Game::GetAxisState("MoveAxis")) > 15) AddSpeed(sf::Vector2f(Game::GetAxisState("MoveAxis")*0.0075f, 0)); useFriction=0;
         }
     }
 
+	if(CheckGround(2.f)) SetRects(Game::GetAnimation("ryu_walk")); else SetRects(Game::GetAnimation("ryu_jump"));
 
 	float maxSpeed(max(static_cast<float>(abs(mySpeed.x)), static_cast<float>(abs(mySpeed.y)))*gb::timerate), tmpStep(1.f), tmpSpeed(maxSpeed);
     //Cette vitesse temporelle permet de gérer les collisions entre objets dynamiques

@@ -24,7 +24,13 @@ JoystickAxis::~JoystickAxis()
     }
 }
 
-
+void JoystickAxis::DestroyAll()
+{
+	while(!JoystickAxis::map.empty())
+	{
+		delete JoystickAxis::map.begin()->second;
+	}
+}
 
 std::map<unsigned int, JoyButtonStatus*> JoyButtonStatus::map;
 

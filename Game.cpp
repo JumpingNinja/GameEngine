@@ -25,7 +25,9 @@ Background* Game::myBack(NULL);
 float Game::myWidth(320.f*5.f), Game::myHeight(200.f*4.f);
 unsigned int Game::myWinWidth(640), Game::myWinHeight(400);
 bool Game::UseJoysticks = 1;
-InputStatus *Game::InputStatusError(NULL);
+
+InputStatus* Game::InputStatusError(NULL);
+
 
 void Game::Start(void)
 {
@@ -33,7 +35,7 @@ void Game::Start(void)
         return;
 
 	//Clé nulle pour gérer les touches non reconues
-	InputStatusError=new InputStatus(gb::NullKey);
+	InputStatusError=new InputStatus(gb::KeyCount);
 	
     // Préparation de la gestion des inputs
     for(int keyLoop = gb::A; keyLoop != gb::LastKeyboardKey; keyLoop++)
@@ -91,6 +93,10 @@ void Game::Start(void)
 		AddKeyBinding("DoStuff8", gb::Joy1_2);
 		AddKeyBinding("DoStuff9", gb::Joy1_3);
 		AddKeyBinding("DoStuff10", gb::Joy1_4);
+		AddKeyBinding("DoStuff11", gb::Joy3_1);
+		AddKeyBinding("DoStuff12", gb::Joy3_2);
+		AddKeyBinding("DoStuff13", gb::Joy3_3);
+		AddKeyBinding("DoStuff14", gb::Joy3_4);
 
 		AddKeyBinding("MoveAxis", gb::Joy0_X);
 	}
@@ -223,6 +229,7 @@ void Game::Start(void)
 
     Entity::DestroyAll(); //à cause des new
     InputStatus::DestroyAll();
+    JoystickAxis::DestroyAll();
 
     myMainWindow.Close();
 }
@@ -356,7 +363,9 @@ const InputStatus& Game::GetKeyState(const std::string &Action)
 		return *MouseStatus::map[static_cast<sf::Mouse::Button>(Game::Bindings[Action] - gb::LastKeyboardKey - 1)];
 	else if (Game::Bindings[Action] < gb::LastJoystickButton)
 		return *JoyButtonStatus::map[static_cast<unsigned int>(Game::Bindings[Action] - gb::LastMouseButton - 1)];
-	else return *InputStatusError;
+	else
+		return *Game::InputStatusError;
+
 }
 
 float Game::GetAxisState(const std::string &Action)

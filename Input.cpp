@@ -18,13 +18,13 @@ InputStatus::~InputStatus()
     }
 }
 
-void InputStatus::UpdateAll()
+/*void InputStatus::UpdateAll()
 {
 	// Pas possible comme ça :p
 	//KeyStatus::UpdateAll();
 	//MouseStatus::UpdateAll();
 	//JoyButtonStatus::UpdateAll();
-}
+}*/
 
 void InputStatus::DestroyAll()
 {

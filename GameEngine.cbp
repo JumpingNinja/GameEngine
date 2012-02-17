@@ -74,6 +74,8 @@
 		<Unit filename="Entity.h" />
 		<Unit filename="Game.cpp" />
 		<Unit filename="Game.h" />
+		<Unit filename="IniFile.cpp" />
+		<Unit filename="IniFile.h" />
 		<Unit filename="Input.cpp" />
 		<Unit filename="Input.h" />
 		<Unit filename="Joystick.cpp" />

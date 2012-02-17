@@ -25,7 +25,7 @@ class InputStatus
 		bool myJustReleased;
 
 		static std::map<gb::Key, InputStatus*> map;
-		static void UpdateAll();
+		//static void UpdateAll();
 
 		InputStatus(gb::Key Key);
 

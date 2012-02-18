@@ -281,7 +281,7 @@ void Game::GameLoop()
         case Game::Playing:
         {
 
-            myMainWindow.SetView(myView);
+            //myMainWindow.SetView(myView);
             //Step
             CollisionEntity::Step();
 			Particle::Step(Game::timerate);
@@ -419,6 +419,9 @@ void Game::GlobalStep()
 	myView.SetCenter(min(myWidth - myView.GetSize().x/2.f, myView.GetCenter().x), min(myHeight - myView.GetSize().y/2.f, myView.GetCenter().y));
 	
 	myView.SetSize(viewSize);
+	
+	//On applique la ue avant de tout dessiner
+	myMainWindow.SetView(myView);
 	
 	myBack->UpdateFactor();
 	myBack->UpdatePosition();

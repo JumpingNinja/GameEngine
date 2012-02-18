@@ -22,9 +22,10 @@ ResManager Game::myResManager;
 sf::View Game::myView;
 std::list<Entity*> Game::myFollow;
 Background* Game::myBack(NULL);
-float Game::myWidth(320.f*5.f), Game::myHeight(200.f*4.f);
+float Game::myWidth(320.f*5.f), Game::myHeight(200.f*4.f), Game::timerate(1.f), Game::timerateTo(1.f), Game::m_spd[12]={0.f};
 unsigned int Game::myWinWidth(640), Game::myWinHeight(400);
-bool Game::UseJoysticks = 1;
+bool Game::UseJoysticks(1);
+sf::Vector2f Game::viewPos, Game::viewPosTo, Game::viewSize, Game::viewSizeTo;
 
 InputStatus* Game::InputStatusError(NULL);
 
@@ -55,6 +56,7 @@ void Game::Start(void)
 		std::cout << "Joystick " << nbJoysticks << std::endl;
 		if (sf::Joystick::IsConnected(nbJoysticks))
 		{
+			//on le laisse en 32 plutot, non?
 			unsigned int buttons = min((int) sf::Joystick::GetButtonCount(nbJoysticks), 32);
 			for(unsigned int nbButtons = 0; nbButtons < buttons; nbButtons++)
 			{
@@ -112,8 +114,12 @@ void Game::Start(void)
     //Ceci se fait normalement dans ScreenSplash::Show()
     myResManager.LoadResources();
 
-    myView.SetSize(myMainWindow.GetWidth(), myMainWindow.GetHeight());
-    myView.Zoom(1.f/2.f);
+	//parametres de la vue:
+	viewSizeTo=sf::Vector2f(myMainWindow.GetWidth()/2.f, myMainWindow.GetHeight()/2.f);
+	viewSize=sf::Vector2f(myMainWindow.GetWidth(), myMainWindow.GetHeight());
+	
+    //myView.SetSize(myMainWindow.GetWidth(), myMainWindow.GetHeight());
+    //myView.Zoom(1.f/2.f);
 
 
     myBack= new Background(Game::GetTexture("back"), 10);
@@ -216,7 +222,7 @@ void Game::Start(void)
 
 
     //On ralentie le temps
-    //gb::timerate=0.25f;
+    //Game::timerate=0.25f;
 
     //sf::Clock clock; unsigned int counter(0);
     while(!IsExiting())
@@ -262,13 +268,13 @@ void Game::GameLoop()
         myGameState=Game::Exiting;
     if ((Game::GetKeyState("Slow").IsJustPressed())||(Game::GetKeyState("SlowDown").IsJustPressed()))
     {
-        if (gb::timerate_to>0.25f)
-            gb::timerate_to=0.25f;
+        if (Game::timerateTo>0.25f)
+            Game::timerateTo=0.25f;
         else
-            gb::timerate_to=1.f;
+            Game::timerateTo=1.f;
     }
 
-	Sound::UpdateAll(gb::timerate);
+	Sound::UpdateAll(Game::timerate);
 
     switch(myGameState)
     {
@@ -278,24 +284,16 @@ void Game::GameLoop()
             myMainWindow.SetView(myView);
             //Step
             CollisionEntity::Step();
-			Particle::Step(gb::timerate);
+			Particle::Step(Game::timerate);
             //sf::Vector2f addPos;
             //addPos.x=(sf::Keyboard::IsKeyPressed(sf::Keyboard::Right)-sf::Keyboard::IsKeyPressed(sf::Keyboard::Left))*10.f;
             //addPos.y=(sf::Keyboard::IsKeyPressed(sf::Keyboard::Down)-sf::Keyboard::IsKeyPressed(sf::Keyboard::Up))*4.f;
             //myView.SetCenter(myView.GetCenter()+addPos);
 
-            // Place le centre de l'écoute sur le joueur, et un peu derrière la scène pour éviter des effets bizarres.
-            sf::Listener::SetPosition(myFollow.front()->GetPosition().x, myFollow.front()->GetPosition().y, -5);
+			Game::GlobalStep();
 
-            myView.SetCenter(myFollow.front()->GetPosition());
-
-            myView.SetCenter(max(myView.GetSize().x/2.f, myView.GetCenter().x), max(myView.GetSize().y/2.f, myView.GetCenter().y));
-            myView.SetCenter(min(myWidth - myView.GetSize().x/2.f, myView.GetCenter().x), min(myHeight - myView.GetSize().y/2.f, myView.GetCenter().y));
-
-            wobble(gb::timerate, gb::timerate_to, 0.5f, 0.5f, gb::m_spdTR);
-            //à implémenter un peux mieux avec un accesseur sur gb::timerate et un set sur gb::timerate_to
-
-            myBack->UpdatePosition();
+			//c'était à faire après la mise à jour de la vue! d'où le morceaux noir
+            //myBack->UpdatePosition();
 
             //drawing
             myMainWindow.Clear();
@@ -382,7 +380,7 @@ void Game::AddKeyBinding(std::string const &Action, gb::Key Key)
 		Game::Bindings.insert(std::pair<std::string, gb::Key>(Action, Key));
 }
 
-static sf::Vector2f ComputeCenter()
+sf::Vector2f Game::ComputeCenter()
 {
 	std::list<std::pair<float, sf::Vector2f> > List;
 	std::list<Entity*>::iterator it;
@@ -400,4 +398,40 @@ static sf::Vector2f ComputeCenter()
 		List.push_back(temp1);
 	}
 	return List.front().second;
+}
+
+void Game::GlobalStep()
+{
+	viewPosTo=myFollow.front()->GetPosition();
+	
+	//tous les wobbles
+	float force(0.85f), friction(0.6f);
+	wobble(timerate, timerateTo, 0.5f, 0.5f, m_spd[0]);
+	wobble(viewPos.x, viewPosTo.x, force, friction, m_spd[1]);
+	wobble(viewPos.y, viewPosTo.y, force, friction, m_spd[2]);
+	wobble(viewSize.x, viewSizeTo.x, force, friction, m_spd[3]);
+	wobble(viewSize.y, viewSizeTo.y, force, friction, m_spd[4]);
+	
+	
+	myView.SetCenter(viewPos);
+	
+	myView.SetCenter(max(myView.GetSize().x/2.f, myView.GetCenter().x), max(myView.GetSize().y/2.f, myView.GetCenter().y));
+	myView.SetCenter(min(myWidth - myView.GetSize().x/2.f, myView.GetCenter().x), min(myHeight - myView.GetSize().y/2.f, myView.GetCenter().y));
+	
+	myView.SetSize(viewSize);
+	
+	myBack->UpdateFactor();
+	myBack->UpdatePosition();
+	
+	// Place le centre de l'écoute sur le joueur, et un peu derrière la scène pour éviter des effets bizarres.
+	//ne pas prendre directement la vue car le centre est modifié pour éviter sortir de la scène
+	sf::Listener::SetPosition(viewPos.x,viewPos.y, -5.f);
+	
+	//à implémenter un peux mieux avec un accesseur sur Game::timerate et un set sur Game::timerate_to
+}
+
+
+void Game::CheckJoysticks()
+{
+	
 }

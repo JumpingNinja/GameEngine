@@ -2,7 +2,7 @@
 
 unsigned int IniFile::nbChar = 256;
 
-IniFile::IniFile(std::string File) : myName(File), myStream(File.c_str(), std::fstream::in | std::fstream::out)
+IniFile::IniFile(const std::string &File) : myName(File), myStream(File.c_str(), std::fstream::in | std::fstream::out)
 {
 	if(!myStream.good()) std::cerr << "Error opening ini File" << std::endl;
 }
@@ -12,7 +12,7 @@ IniFile::~IniFile()
 	myStream.close();
 }
 
-std::string IniFile::GetValue(std::string Section, std::string Key)
+std::string IniFile::GetValue(std::string const &Section, std::string const &Key, const std::string Default)
 {
 	myStream.seekg(0);
 	char temp[IniFile::nbChar];
@@ -39,14 +39,14 @@ std::string IniFile::GetValue(std::string Section, std::string Key)
 				}
 
 				if(strcmp(tmp_key, Key.c_str()) == 0) return tmp_value;
-				else return "";
+				else return Default;
 			}
 		}
 	}
-	return "";
+	return Default;
 }
 
-void IniFile::ReadPairs(std::string Section, std::map<std::string, std::string> &map)
+void IniFile::ReadPairs(std::string const &Section, std::map<std::string, std::string> &map)
 {
 	myStream.seekg(0);
 	map.clear();

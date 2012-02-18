@@ -46,7 +46,7 @@ guytest::guytest() : CollisionEntity(0), Playable(1), Animation(Game::GetTexture
 	//pInfo.Size=sf::Vector2f(3.f,3.f);
 	//pInfo.IncrSize=sf::Vector2f(0,-0.005f);
 	pInfo.IncrSize=sf::Vector2f(0.f,-0.0005f);
-	pInfo.Origin=sf::Vector2f(2.f, 8.5f);
+	pInfo.Origin=sf::Vector2f(1.f, 8.5f);
 	//pInfo.Rotation=15.f;
 	//pInfo.IncrRotation=10.f;
 	pInfo.Blend=sf::BlendNone;
@@ -129,11 +129,11 @@ void guytest::TakeAStep(bool useFriction)
 	}
 
 	if (state==0)
-		Play(gb::timerate*abs(mySpeed.x)/myMaxSpeed.x, *this);
+		Play(Game::timerate*abs(mySpeed.x)/myMaxSpeed.x, *this);
 	else
-		Play(gb::timerate, *this);
+		Play(Game::timerate, *this);
 
-	float maxSpeed(max(static_cast<float>(abs(mySpeed.x)), static_cast<float>(abs(mySpeed.y)))*gb::timerate), tmpStep(1.f), tmpSpeed(maxSpeed);
+	float maxSpeed(max(static_cast<float>(abs(mySpeed.x)), static_cast<float>(abs(mySpeed.y)))*Game::timerate), tmpStep(1.f), tmpSpeed(maxSpeed);
     //Cette vitesse temporelle permet de gérer les collisions entre objets dynamiques
     myStepSpeed=mySpeed;
     //if (!isPositive(maxSpeed)) tmpStep*=-1.f;
@@ -145,8 +145,13 @@ void guytest::TakeAStep(bool useFriction)
 		partRot=GetAngle(v);
 		wobble(pInfo.Rotation, partRot, 0.1f, 0.6f, m_spd);
 		//pInfo.Rotation=GetAngle(v);
+<<<<<<< HEAD
 
 		Particle::Create(GetPosition()+sf::Vector2f(tmpSpeed*gb::timerate*mySpeed.x/maxSpeed, tmpSpeed*gb::timerate*mySpeed.y/maxSpeed), pInfo, 5.f);
+=======
+
+		Particle::Create(GetPosition()+sf::Vector2f(tmpSpeed*Game::timerate*mySpeed.x/maxSpeed, tmpSpeed*Game::timerate*mySpeed.y/maxSpeed), pInfo, 5.f);
+>>>>>>> 3a7e141e0bccd4b2c9690a31e196a1b83c5abc5e
 		tmpSpeed-=tmpStep;
     }
 

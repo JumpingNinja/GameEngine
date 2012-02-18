@@ -16,13 +16,15 @@ void SplashScreen::Show(sf::RenderWindow & renderWindow)
 	renderWindow.Display();
     
 	sf::Event event;
-	while(true)
+	//on sort pour faire plus vite
+	while(false)
 	{
 		while(renderWindow.PollEvent(event))
 		{
 			if(event.Type == sf::Event::KeyPressed 
                || event.Type == sf::Event::MouseButtonPressed
-               || event.Type == sf::Event::Closed )
+               || event.Type == sf::Event::Closed 
+			   || event.Type == sf::Event::JoystickButtonPressed)
 			{
 				return;
 			}

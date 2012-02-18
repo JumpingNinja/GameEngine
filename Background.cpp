@@ -35,3 +35,8 @@ void Background::UpdatePosition()
 {    
     SetPosition((Game::GetView().GetCenter().x-Game::GetView().GetSize().x/2.f)*(myFactor.x), (Game::GetView().GetCenter().y-Game::GetView().GetSize().y/2.f)*(myFactor.y));
 }
+
+void Background::UpdateFactor()
+{
+	myFactor=sf::Vector2f((Game::GetWidth()-sf::Sprite::GetTexture()->GetWidth())/(Game::GetWidth()-Game::GetView().GetSize().x),(Game::GetHeight()-sf::Sprite::GetTexture()->GetHeight())/(Game::GetHeight()-Game::GetView().GetSize().y));
+}

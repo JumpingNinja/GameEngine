@@ -428,7 +428,7 @@ void Game::GlobalStep()
 	
 	// Place le centre de l'écoute sur le joueur, et un peu derrière la scène pour éviter des effets bizarres.
 	//ne pas prendre directement la vue car le centre est modifié pour éviter sortir de la scène
-	sf::Listener::SetPosition(viewPos.x,viewPos.y, -5.f);
+	sf::Listener::SetPosition(viewPosTo.x,viewPosTo.y, -5.f);
 	
 	//à implémenter un peux mieux avec un accesseur sur Game::timerate et un set sur Game::timerate_to
 }

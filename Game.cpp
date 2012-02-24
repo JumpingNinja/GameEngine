@@ -289,7 +289,7 @@ void Game::GameLoop()
         case Game::Playing:
         {
 
-            myMainWindow.SetView(myView);
+            //myMainWindow.SetView(myView);
             //Step
             CollisionEntity::Step();
 			Particle::Step(Game::timerate);
@@ -427,13 +427,20 @@ void Game::GlobalStep()
 	myView.SetCenter(min(myWidth - myView.GetSize().x/2.f, myView.GetCenter().x), min(myHeight - myView.GetSize().y/2.f, myView.GetCenter().y));
 
 	myView.SetSize(viewSize);
+<<<<<<< HEAD
+
+=======
+
+	//On applique la ue avant de tout dessiner
+	myMainWindow.SetView(myView);
 
 	myBack->UpdateFactor();
 	myBack->UpdatePosition();
 
 	// Place le centre de l'écoute sur le joueur, et un peu derrière la scène pour éviter des effets bizarres.
 	//ne pas prendre directement la vue car le centre est modifié pour éviter sortir de la scène
-	sf::Listener::SetPosition(viewPos.x,viewPos.y, -5.f);
+
+	sf::Listener::SetPosition(viewPosTo.x,viewPosTo.y, -5.f);
 
 	//à implémenter un peux mieux avec un accesseur sur Game::timerate et un set sur Game::timerate_to
 }

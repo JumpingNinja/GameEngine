@@ -88,28 +88,39 @@ void guytest::TakeAStep(bool useFriction)
 {
     if(IsControled())
     {
-        if (Game::GetKeyState("P1_MoveLeft").IsKeyPressed()) MoveLeft(), useFriction=0;
-        if (Game::GetKeyState("P1_MoveRight").IsKeyPressed()) MoveRight(), useFriction=0;
-        if ((Game::GetKeyState("P1_Jump").IsJustPressed())&&(CheckGround(1.f))) Jump(), PlaySound("Jump");
+    	if(CheckGround(1.f))
+    	{
+			if (Game::GetKeyState("P1_MoveLeft").IsKeyPressed()) MoveLeft(), useFriction=0;
+			if (Game::GetKeyState("P1_MoveRight").IsKeyPressed()) MoveRight(), useFriction=0;
+			if ((Game::GetKeyState("P1_Jump").IsJustPressed())&&(CheckGround(1.f) || CheckSurroundings(sf::Vector2f(1.f, 0), 1))) Jump(), PlaySound("Jump");
 
-        if (Game::GetKeyState("DoStuff").IsKeyPressed()) Particle::Create(Game::GetMousePosition(), pInfo, 7.f);
-        if (Game::GetKeyState("DoStuff2").IsKeyPressed()) std::cout << "Trop fort, t'as clique sur le bouton droit de la souris..." << std::endl;
+			if(Game::UseJoysticks)
+			{
+				if ((Game::GetKeyState("DoStuff3").IsKeyPressed())) Jump(), PlaySound("Jump");
+				if ((Game::GetKeyState("DoStuff4").IsKeyPressed())) Jump(), PlaySound("Jump");
+				if ((Game::GetKeyState("DoStuff5").IsKeyPressed())) Jump(), PlaySound("Jump");
+				if ((Game::GetKeyState("DoStuff6").IsKeyPressed())) Jump(), PlaySound("Jump");
 
-        if(Game::UseJoysticks)
-        {
-			if ((Game::GetKeyState("DoStuff3").IsKeyPressed())&&(CheckGround(1.f))) Jump(), PlaySound("Jump");
-			if ((Game::GetKeyState("DoStuff4").IsKeyPressed())&&(CheckGround(1.f))) Jump(), PlaySound("Jump");
-			if ((Game::GetKeyState("DoStuff5").IsKeyPressed())&&(CheckGround(1.f))) Jump(), PlaySound("Jump");
-			if ((Game::GetKeyState("DoStuff6").IsKeyPressed())&&(CheckGround(1.f))) Jump(), PlaySound("Jump");
-			if ((Game::GetKeyState("DoStuff7").IsKeyPressed())&&(CheckGround(1.f))) Jump(), PlaySound("Jump");
-			if ((Game::GetKeyState("DoStuff8").IsKeyPressed())&&(CheckGround(1.f))) Jump(), PlaySound("Jump");
-			if ((Game::GetKeyState("DoStuff9").IsKeyPressed())&&(CheckGround(1.f))) Jump(), PlaySound("Jump");
-			if ((Game::GetKeyState("DoStuff11").IsKeyPressed())&&(CheckGround(1.f))) Jump(), PlaySound("Jump");
-			if ((Game::GetKeyState("DoStuff12").IsKeyPressed())&&(CheckGround(1.f))) Jump(), PlaySound("Jump");
-			if ((Game::GetKeyState("DoStuff13").IsKeyPressed())&&(CheckGround(1.f))) Jump(), PlaySound("Jump");
-			if ((Game::GetKeyState("DoStuff14").IsKeyPressed())&&(CheckGround(1.f))) Jump(), PlaySound("Jump");
-			if(abs(Game::GetAxisState("MoveAxis")) > 15) AddSpeed(sf::Vector2f(Game::GetAxisState("MoveAxis")*0.0075f, 0.f)); //useFriction=0;
+				if ((Game::GetKeyState("DoStuff7").IsJustPressed())) Jump(), PlaySound("Jump");
+				if ((Game::GetKeyState("DoStuff8").IsKeyPressed())) Jump(), PlaySound("Jump");
+				if ((Game::GetKeyState("DoStuff9").IsKeyPressed())) Jump(), PlaySound("Jump");
+				if ((Game::GetKeyState("DoStuff11").IsKeyPressed())) Jump(), PlaySound("Jump");
+				if ((Game::GetKeyState("DoStuff12").IsKeyPressed())) Jump(), PlaySound("Jump");
+				if ((Game::GetKeyState("DoStuff13").IsKeyPressed())) Jump(), PlaySound("Jump");
+				if ((Game::GetKeyState("DoStuff14").IsKeyPressed())) Jump(), PlaySound("Jump");
+				if(abs(Game::GetAxisState("MoveAxis")) > 1) AddSpeed(sf::Vector2f(Game::GetAxisState("MoveAxis")*0.0075f, 0.f)); //useFriction=0;
+			}
+        } else {
+			if (Game::GetKeyState("P1_MoveLeft").IsKeyPressed()) AirControlLeft(), useFriction=0;
+			if (Game::GetKeyState("P1_MoveRight").IsKeyPressed()) AirControlRight(), useFriction=0;
+			if(abs(Game::GetAxisState("MoveAxis")) > 1) AddSpeed(sf::Vector2f(Game::GetAxisState("MoveAxis")*0.0050f, 0.f));
+			if ((Game::GetKeyState("DoStuff7").IsJustPressed()))
+				Jump(CheckSurroundings(sf::Vector2f(-1.f, 0), 1)),
+				PlaySound("Jump");
         }
+
+		if (Game::GetKeyState("DoStuff").IsKeyPressed()) Particle::Create(Game::GetMousePosition(), pInfo, 7.f);
+		if (Game::GetKeyState("DoStuff2").IsKeyPressed()) std::cout << "Trop fort, t'as clique sur le bouton droit de la souris..." << std::endl;
     }
 
 	int state;
@@ -128,6 +139,9 @@ void guytest::TakeAStep(bool useFriction)
 
 	}
 
+//	if(CheckSurroundings(sf::Vector2f(1.f, 0), 1))
+//		std::cout << "Ceci est un mur..." << std::endl;
+
 	if (state==0)
 		Play(Game::timerate*abs(mySpeed.x)/myMaxSpeed.x, *this);
 	else
@@ -145,13 +159,7 @@ void guytest::TakeAStep(bool useFriction)
 		partRot=GetAngle(v);
 		wobble(pInfo.Rotation, partRot, 0.1f, 0.6f, m_spd);
 		//pInfo.Rotation=GetAngle(v);
-<<<<<<< HEAD
-
-		Particle::Create(GetPosition()+sf::Vector2f(tmpSpeed*gb::timerate*mySpeed.x/maxSpeed, tmpSpeed*gb::timerate*mySpeed.y/maxSpeed), pInfo, 5.f);
-=======
-
 		Particle::Create(GetPosition()+sf::Vector2f(tmpSpeed*Game::timerate*mySpeed.x/maxSpeed, tmpSpeed*Game::timerate*mySpeed.y/maxSpeed), pInfo, 5.f);
->>>>>>> 3a7e141e0bccd4b2c9690a31e196a1b83c5abc5e
 		tmpSpeed-=tmpStep;
     }
 

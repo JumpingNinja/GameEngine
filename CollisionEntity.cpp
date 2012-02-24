@@ -157,6 +157,7 @@ void CollisionEntity::Step()
 
 bool CollisionEntity::Collide()
 {
+	// Utiliser SetSpeed ?
     UpdateRect();
     bool finish(0);
     //On teste les collisions
@@ -281,6 +282,50 @@ bool CollisionEntity::CheckGround(float offsetY)
     return 0;
 }
 
+short int CollisionEntity::CheckSurroundings(sf::Vector2f v, bool bothSide)
+{
+	sf::FloatRect r = GetGlobalBounds();
+	r.Top += v.y;
+	r.Left += v.x;
+
+	if(bothSide)
+	{
+		sf::FloatRect r2 = GetGlobalBounds();
+		r2.Top -= v.y;
+		r2.Left -= v.x;
+
+		for (std::list<CollisionEntity*>::iterator ite=list.begin(); ite!=list.end(); ite++)
+		{
+			if ((*ite)!=this)
+			{
+				if (r.Intersects(**ite))
+				{
+					return 1;
+				}
+				if (r2.Intersects(**ite))
+				{
+					return -1;
+				}
+			}
+		}
+
+	} else {
+
+		for (std::list<CollisionEntity*>::iterator ite=list.begin(); ite!=list.end(); ite++)
+		{
+			if ((*ite)!=this)
+			{
+				if(r.Intersects(**ite))
+				{
+					return 1;
+				}
+			}
+		}
+
+	}
+    return 0;
+}
+
 float CollisionEntity::GetGroundFriction()
 {
     Top+=1.f; //Left+=1.2f; Width-=2.4f;
@@ -314,12 +359,14 @@ void CollisionEntity::SetPosition(float x, float y)
 
 void CollisionEntity::AddSpeed(const sf::Vector2f &aSpeed)
 {
-    mySpeed += aSpeed;
+    mySpeed.x = getSign(mySpeed.x + aSpeed.x)*min(abs(myMaxSpeed.x), abs(mySpeed.x + aSpeed.x));
+    mySpeed.y = getSign(mySpeed.y + aSpeed.y)*min(abs(myMaxSpeed.y), abs(mySpeed.y + aSpeed.y));
 }
 
 void CollisionEntity::SetSpeed(const sf::Vector2f &aSpeed)
 {
-    mySpeed=aSpeed;
+    mySpeed.x = getSign(aSpeed.x)*min(abs(myMaxSpeed.x), abs(aSpeed.x));
+    mySpeed.y = getSign(aSpeed.y)*min(abs(myMaxSpeed.y), abs(aSpeed.y));
 }
 
 void CollisionEntity::SetPosition(sf::Vector2f const &vec)

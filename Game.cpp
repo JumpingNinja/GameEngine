@@ -117,7 +117,7 @@ void Game::Start(void)
 	//parametres de la vue:
 	viewSizeTo=sf::Vector2f(myMainWindow.GetWidth()/2.f, myMainWindow.GetHeight()/2.f);
 	viewSize=sf::Vector2f(myMainWindow.GetWidth(), myMainWindow.GetHeight());
-	
+
     //myView.SetSize(myMainWindow.GetWidth(), myMainWindow.GetHeight());
     //myView.Zoom(1.f/2.f);
 
@@ -143,6 +143,14 @@ void Game::Start(void)
     p->SetTexture(tx);
     p->SetTextureRect(sf::IntRect(0, 0, 20, 700));
     p->Width=20.f, p->Height=700.f;
+	p->SetBounce(20.f);
+	p->SetFriction(friction);
+
+    p=new CollisionEntity(1);
+    p->SetPosition(940.f, 200.f);
+    p->SetTexture(tx);
+    p->SetTextureRect(sf::IntRect(0, 0, 20, 460));
+    p->Width=20.f, p->Height=460.f;
 	p->SetBounce(20.f);
 	p->SetFriction(friction);
 
@@ -403,7 +411,7 @@ sf::Vector2f Game::ComputeCenter()
 void Game::GlobalStep()
 {
 	viewPosTo=myFollow.front()->GetPosition();
-	
+
 	//tous les wobbles
 	float force(0.85f), friction(0.6f);
 	wobble(timerate, timerateTo, 0.5f, 0.5f, m_spd[0]);
@@ -411,27 +419,27 @@ void Game::GlobalStep()
 	wobble(viewPos.y, viewPosTo.y, force, friction, m_spd[2]);
 	wobble(viewSize.x, viewSizeTo.x, force, friction, m_spd[3]);
 	wobble(viewSize.y, viewSizeTo.y, force, friction, m_spd[4]);
-	
-	
+
+
 	myView.SetCenter(viewPos);
-	
+
 	myView.SetCenter(max(myView.GetSize().x/2.f, myView.GetCenter().x), max(myView.GetSize().y/2.f, myView.GetCenter().y));
 	myView.SetCenter(min(myWidth - myView.GetSize().x/2.f, myView.GetCenter().x), min(myHeight - myView.GetSize().y/2.f, myView.GetCenter().y));
-	
+
 	myView.SetSize(viewSize);
-	
+
 	myBack->UpdateFactor();
 	myBack->UpdatePosition();
-	
+
 	// Place le centre de l'écoute sur le joueur, et un peu derrière la scène pour éviter des effets bizarres.
 	//ne pas prendre directement la vue car le centre est modifié pour éviter sortir de la scène
 	sf::Listener::SetPosition(viewPos.x,viewPos.y, -5.f);
-	
+
 	//à implémenter un peux mieux avec un accesseur sur Game::timerate et un set sur Game::timerate_to
 }
 
 
 void Game::CheckJoysticks()
 {
-	
+
 }

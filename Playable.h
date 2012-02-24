@@ -30,14 +30,17 @@ class Playable : virtual public CollisionEntity {
         *
         **/
 		virtual void Jump();
+		virtual void Jump(short int factor);
         /** @brief Fonction générique de mouvement à gauche
         *
         **/
 		virtual void MoveLeft();
+		virtual void AirControlLeft();
         /** @brief Fonction générique de mouvement à droite
         *
         **/
 		virtual void MoveRight();
+		virtual void AirControlRight();
 };
 
 #endif

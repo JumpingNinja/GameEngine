@@ -30,8 +30,8 @@ template <class T> bool sign ( const T& a ) {
     return (a >= static_cast<T>(0));
 }
 
-template <class T> T getSign ( const T& a ) {
-    return (a >= static_cast<T>(0));
+template <class T> short int getSign ( const T& a ) {
+    return (a >= static_cast<T>(0)) ? 1 : -1;
 }
 
 

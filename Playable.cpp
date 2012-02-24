@@ -29,6 +29,11 @@ void Playable::Jump()
     AddSpeed(sf::Vector2f(0, -5.f));
 }
 
+void Playable::Jump(short int factor)
+{
+    AddSpeed(sf::Vector2f(3*factor, -5.f*abs(factor)));
+}
+
 void Playable::MoveLeft()
 {
     AddSpeed(sf::Vector2f(-0.75f*Game::timerate, 0));
@@ -37,4 +42,14 @@ void Playable::MoveLeft()
 void Playable::MoveRight()
 {
     AddSpeed(sf::Vector2f(0.75f*Game::timerate, 0));
+}
+
+void Playable::AirControlLeft()
+{
+    AddSpeed(sf::Vector2f(-0.50f*Game::timerate, 0));
+}
+
+void Playable::AirControlRight()
+{
+    AddSpeed(sf::Vector2f(0.50f*Game::timerate, 0));
 }

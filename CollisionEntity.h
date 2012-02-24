@@ -45,6 +45,13 @@ public:
     ///@param other une autre entité
     ///@return vrai s'il elles collisionnent, faux sinon
     bool IsColliding(CollisionEntity &other);
+    /** @brief Teste la présence d'obstacle dans la direction v [-v]
+     *
+	 * @param v Vector de déplacement
+	 * @param bothSide Spécifie si le test doit être effectué sur -v aussi
+	 * @return 0 si aucun obstacle, 1 si dans la direction de v, -1 si dans la direction de -v
+	 **/
+	short int CheckSurroundings(sf::Vector2f v, bool bothSide = 0);
     ///@brief Donne si la position relative d'une autre entité
     ///@param other une autre entité
     ///@return Relative position

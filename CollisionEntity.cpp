@@ -175,26 +175,26 @@ bool CollisionEntity::Collide()
                     switch (GetRelativePosition(**ite)) {
                         case kLeft:
                             Move(off, 0.f);
-                            mySpeed.x=-mySpeed.x*myBounce*(*ite)->myBounce;
+                            mySpeed.x=-mySpeed.x*max(myBounce, (*ite)->myBounce);
                             mySpeed.y=mySpeed.y*(1.f-myFriction);
                             finish=1;
                             break;
                         case kRight:
                             Move(-off, 0.f);
-                            mySpeed.x=-mySpeed.x*myBounce*(*ite)->myBounce;
+                            mySpeed.x=-mySpeed.x*max(myBounce, (*ite)->myBounce);
                             mySpeed.y=mySpeed.y*(1.f-myFriction);
                             finish=1;
                             break;
                         case kBottom:
                             Move(0.f, -off);
                             mySpeed.x=mySpeed.x*(1.f-myFriction);
-                            mySpeed.y=-mySpeed.y*myBounce;
+                            mySpeed.y=-mySpeed.y*max(myBounce, (*ite)->myBounce);
                             finish=1;
                             break;
                         case kTop:
                             Move(0.f, off);
                             mySpeed.x=mySpeed.x*(1.f-myFriction);
-                            mySpeed.y=-mySpeed.y*myBounce;
+                            mySpeed.y=-mySpeed.y*max(myBounce, (*ite)->myBounce);
                             finish=1;
                             break;
 

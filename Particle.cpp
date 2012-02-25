@@ -90,7 +90,7 @@ void Particle::TakeAStep(float timerate)
 	SetScale(mySize);
 
 	//On modifie la couleur
-	if (myInfo.Color.size()>0)
+	if (myInfo.Color.size()>1)
 	{
 		myCurrentColor+=((myInfo.Color.size()-1)/myInfo.Life)*timerate;
 		unsigned int lower(static_cast<unsigned int>(myCurrentColor));
@@ -103,7 +103,7 @@ void Particle::TakeAStep(float timerate)
 	}
 
 	//On modifie le alpha
-	if (myInfo.Alpha.size()>0)
+	if (myInfo.Alpha.size()>1)
 	{
 		myCurrentAlpha+=((myInfo.Alpha.size()-1)/myInfo.Life)*timerate;
 		unsigned int lower(static_cast<unsigned int>(myCurrentAlpha));
@@ -117,7 +117,6 @@ void Particle::Step(float timerate)
     for (it=list.begin(); it!=list.end(); it++)
 	{
 		(*it)->TakeAStep(timerate);
-
 	}
 
 }

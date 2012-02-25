@@ -113,7 +113,7 @@ void guytest::TakeAStep(bool useFriction)
         } else {
 			if (Game::GetKeyState("P1_MoveLeft").IsKeyPressed()) AirControlLeft(), useFriction=0;
 			if (Game::GetKeyState("P1_MoveRight").IsKeyPressed()) AirControlRight(), useFriction=0;
-			if(abs(Game::GetAxisState("MoveAxis")) > 1) AddSpeed(sf::Vector2f(Game::GetAxisState("MoveAxis")*0.0050f, 0.f));
+			//if(abs(Game::GetAxisState("MoveAxis")) > 1) AddSpeed(sf::Vector2f(Game::GetAxisState("MoveAxis")*0.0050f, 0.f));
 			if ((Game::GetKeyState("DoStuff7").IsJustPressed()))
 				Jump(CheckSurroundings(sf::Vector2f(-1.f, 0), 1)),
 				PlaySound("Jump");

@@ -77,26 +77,6 @@ void Game::Start(void)
 		}
 	}
 
-    // Quelques binds (à terme : fichier de configuration)
-
-/*
-	AddKeyBinding("Exit", gb::Escape);
-	AddKeyBinding("Slow", gb::E);
-	AddKeyBinding("P1_MoveLeft", gb::Q);
-	AddKeyBinding("P1_MoveRight", gb::D);
-	AddKeyBinding("P1_Jump", gb::Space);
-	AddKeyBinding("DoStuff", gb::MouseButton1);
-	AddKeyBinding("DoStuff2", gb::MouseButton2);
-
-	if(Game::UseJoysticks == 1)
-	{
-		AddKeyBinding("JoyJump", gb::Joy0_17);
-		AddKeyBinding("WallWalk", gb::Joy0_14);
-		AddKeyBinding("SlowDown", gb::Joy0_1);
-
-		AddKeyBinding("MoveAxis", gb::Joy0_X);
-	}
-*/
 	IniParser Config;
 	// Chargement du fichier de configuration
 	if(!Config.LoadFromFile("config.ini"))
@@ -105,6 +85,11 @@ void Game::Start(void)
 
 		// Bindings
 		Config.SeekSection("Bindinds");
+		Config.Set("Exit", "Escape");
+		Config.Set("Slow", "E");
+		Config.Set("P1_MoveLeft", "Q");
+		Config.Set("P1_MoveRight", "D");
+		Config.Set("P1_Jump", "Space");
 		Config.Set("JoyJump", "Joy0_3");
 		Config.Set("WallWalk", "Joy0_8");
 		Config.Set("SlowDown", "Joy0_1");

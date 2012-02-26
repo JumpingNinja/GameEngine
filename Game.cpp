@@ -87,8 +87,8 @@ void Game::Start(void)
 
 	if(Game::UseJoysticks == 1)
 	{
-		AddKeyBinding("JoyJump", gb::Joy0_3);
-		AddKeyBinding("WallWalk", gb::Joy0_8);
+		AddKeyBinding("JoyJump", gb::Joy0_17);
+		AddKeyBinding("WallWalk", gb::Joy0_14);
 		AddKeyBinding("SlowDown", gb::Joy0_1);
 
 		AddKeyBinding("MoveAxis", gb::Joy0_X);

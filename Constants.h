@@ -6,7 +6,8 @@
 //  Copyright 2012 Posva Games. All rights reserved.
 //
 #pragma once
-
+#include <map>
+#include <string>
 /**
  Déclare des constantes
 **/
@@ -478,4 +479,13 @@ public:
 
         KeyCount ///< Le nombre total de touches.
     };
+	
+	static std::map<std::string, gb::Key> KeyMap;
+	
+	static void InitKeyMap();
+	
+	
+
 };
+
+gb::Key KeyIndex(const std::string &keyStr);

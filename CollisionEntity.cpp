@@ -43,6 +43,7 @@ RelativePosition CollisionEntity::GetRelativePosition(CollisionEntity &other)
 {
     //Top et Left donnent déjà la position
     sf::Vector2f relPos(other.Left-Left, other.Top-Top);
+    sf::Vector2f relSpeed = sf::Vector2f(abs(mySpeed.x + other.mySpeed.x), abs(mySpeed.y + other.mySpeed.y));
     //std::cout<<"vect: "<<relPos.x<<", "<<relPos.y<<std::endl;
 
     if (!isPositive(relPos.x)) //on est sur la droite
@@ -50,14 +51,14 @@ RelativePosition CollisionEntity::GetRelativePosition(CollisionEntity &other)
         if (!isPositive(relPos.y)) //on est en bas
         {
             //on regarde la penetration horizontale et verticale dans le rectangle
-            if (relPos.x+other.Width<relPos.y+other.Height)
+            if ((relPos.x+other.Width)/relSpeed.x<(relPos.y+other.Height)/relSpeed.y)
                 return kLeft;
             else
                 return kTop;
         }
         else
         {
-            if (relPos.x+other.Width<abs(relPos.y-other.Height))
+            if ((relPos.x+other.Width)/relSpeed.x<(abs(relPos.y-other.Height))/relSpeed.y)
                 return kLeft;
             else
                 return kBottom;
@@ -68,14 +69,14 @@ RelativePosition CollisionEntity::GetRelativePosition(CollisionEntity &other)
         if (!isPositive(relPos.y)) //on est en bas
         {
             //on calcule aussi la penetration
-            if (Width-relPos.x<relPos.y+other.Height)
+            if ((Width-relPos.x)/relSpeed.x<(relPos.y+other.Height)/relSpeed.y)
                 return kRight;
             else
                 return kTop;
         }
         else
         {
-            if (Width-relPos.x<abs(relPos.y-other.Height)) //on est en haut :)
+            if ((Width-relPos.x)/relSpeed.x<(abs(relPos.y-other.Height))/relSpeed.y) //on est en haut :)
                 return kRight;
             else
                 return kBottom;

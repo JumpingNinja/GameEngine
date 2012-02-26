@@ -105,7 +105,7 @@ void guytest::TakeAStep(bool useFriction)
 			if(Game::UseJoysticks)
 			{
 				if ((Game::GetKeyState("DoStuff4").IsKeyPressed()))
-					Jump(CheckSurroundings(sf::Vector2f(-1.f, 0), 1)),
+					WallJump(CheckSurroundings(sf::Vector2f(-1.f, 0), 1)),
 					PlaySound("Jump");
 
 				if ((Game::GetKeyState("DoStuff3").IsKeyPressed())) Jump(), PlaySound("Jump");

@@ -87,18 +87,10 @@ void Game::Start(void)
 
 	if(Game::UseJoysticks == 1)
 	{
-		AddKeyBinding("DoStuff3", gb::Joy0_17);
-		AddKeyBinding("DoStuff4", gb::Joy0_18);
-		AddKeyBinding("DoStuff5", gb::Joy0_19);
-		AddKeyBinding("DoStuff6", gb::Joy0_20);
-		AddKeyBinding("JoyJump", gb::Joy1_1);
-		AddKeyBinding("WallWalk", gb::Joy1_7);
-		AddKeyBinding("DoStuff9", gb::Joy1_3);
-		AddKeyBinding("SlowDown", gb::Joy1_4);
-		AddKeyBinding("DoStuff11", gb::Joy3_1);
-		AddKeyBinding("DoStuff12", gb::Joy3_2);
-		AddKeyBinding("DoStuff13", gb::Joy3_3);
-		AddKeyBinding("DoStuff14", gb::Joy3_4);
+		AddKeyBinding("JoyJump", gb::Joy0_3);
+		AddKeyBinding("WallWalk", gb::Joy0_8);
+		AddKeyBinding("DoStuff9", gb::Joy0_4);
+		AddKeyBinding("SlowDown", gb::Joy0_1);
 
 		AddKeyBinding("MoveAxis", gb::Joy0_X);
 	}
@@ -152,7 +144,7 @@ void Game::Start(void)
     p->SetTexture(tx);
     p->SetTextureRect(sf::IntRect(0, 0, 20, 460));
     p->Width=20.f, p->Height=460.f;
-	p->SetBounce(20.f);
+	p->SetBounce(0.f);
 	p->SetFriction(friction);
 	p->SetBounce(0.f);
 
@@ -161,7 +153,7 @@ void Game::Start(void)
     p->SetTexture(tx);
     p->SetTextureRect(sf::IntRect(0, 0, 20, 260));
     p->Width=20.f, p->Height=260.f;
-	p->SetBounce(20.f);
+	p->SetBounce(0.f);
 	p->SetFriction(friction);
 
     p=new CollisionEntity(1);
@@ -169,7 +161,7 @@ void Game::Start(void)
     p->SetTexture(tx);
     p->SetTextureRect(sf::IntRect(0, 0, 200, 20));
     p->Width=200.f, p->Height=20.f;
-	p->SetBounce(20.f);
+	p->SetBounce(0.f);
 	p->SetFriction(friction);
 
     p=new CollisionEntity(1);

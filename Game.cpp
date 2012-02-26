@@ -89,7 +89,6 @@ void Game::Start(void)
 	{
 		AddKeyBinding("JoyJump", gb::Joy0_3);
 		AddKeyBinding("WallWalk", gb::Joy0_8);
-		AddKeyBinding("DoStuff9", gb::Joy0_4);
 		AddKeyBinding("SlowDown", gb::Joy0_1);
 
 		AddKeyBinding("MoveAxis", gb::Joy0_X);
@@ -307,7 +306,7 @@ void Game::GameLoop()
 
     if (Game::GetKeyState("Exit").IsJustPressed())
         myGameState=Game::Exiting;
-	/*
+
     if ((Game::GetKeyState("Slow").IsJustPressed())||(Game::GetKeyState("SlowDown").IsJustPressed()))
     {
         if (Game::timerateTo>0.25f)
@@ -315,7 +314,6 @@ void Game::GameLoop()
         else
             Game::timerateTo=1.f;
     }
-	 */
 
 	Sound::UpdateAll(Game::timerate);
 

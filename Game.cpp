@@ -27,7 +27,7 @@ void triggerBoxes()
     p->SetTextureRect(sf::IntRect(0, 0, 20, 20));
     p->Width=20.f, p->Height=20.f;
 	p->SetFriction(0.f);
-	//p->SetBounce(1.f);
+	p->SetBounce(0.f);
 	//p->SetSpeed(sf::Vector2f(0.f, -55.f+rand()%5));
 }
 
@@ -106,27 +106,32 @@ void Game::Start(void)
 
 	IniParser Config;
 	// Chargement du fichier de configuration
-	if(!Config.LoadFromFile("config.ini"))
+	if(!Config.LoadFromFile(ResourcePath()+"config.ini"))
 	{
 		// Insérer configuration par défaut
 
 		// Bindings
-		Config.SeekSection("Bindinds");
+		Config.SeekSection("Keyboard");
 		Config.Set("Exit", "Escape");
 		Config.Set("Slow", "E");
 		Config.Set("P1_MoveLeft", "Q");
 		Config.Set("P1_MoveRight", "D");
 		Config.Set("P1_Jump", "Space");
+		Config.SeekSection("Joystick");
 		Config.Set("JoyJump", "Joy0_3");
 		Config.Set("WallWalk", "Joy0_8");
 		Config.Set("SlowDown", "Joy0_1");
 		Config.Set("MoveAxis", "Joy0_X");
 
-		if(Config.SaveToFile("config.ini")) std::cout << "Fichier de configuration cree." << std::endl;
+		if(Config.SaveToFile(ResourcePath()+"config.ini")) std::cout << "Fichier de configuration cree." << std::endl;
 	}
 
 	// Récupération des binds
-	Config.SeekSection("Bindinds");
+	Config.SeekSection("Keyboard");
+	for(std::map<std::string, std::string>::iterator it = Config.GetCurrentSection()->begin(); it != Config.GetCurrentSection()->end(); ++it)
+		AddKeyBinding(it->first, GetKey(it->second));
+	
+	Config.SeekSection("Joystick");
 	for(std::map<std::string, std::string>::iterator it = Config.GetCurrentSection()->begin(); it != Config.GetCurrentSection()->end(); ++it)
 		AddKeyBinding(it->first, GetKey(it->second));
 
@@ -435,14 +440,20 @@ const sf::View& Game::GetView()
 
 const InputStatus& Game::GetKeyState(const std::string &Action)
 {
+	//if (Action!="Debug" && Game::GetKeyState("Debug").IsKeyPressed())
+	//	std::cout<<"key: "<<Action<<" = "<<Game::Bindings[Action]<<std::endl;
 	// Vérifier que Game::Bindings[Action] existe réélement avant ? Trop cher ou pas ?
 	// (Evite le plantage si on appelle une action qui n'existe pas)
-	if (Game::Bindings[Action] < gb::LastKeyboardKey)
-		return *KeyStatus::map[static_cast<sf::Keyboard::Key>(Game::Bindings[Action])];
-	else if (Game::Bindings[Action] < gb::LastMouseButton)
-		return *MouseStatus::map[static_cast<sf::Mouse::Button>(Game::Bindings[Action] - gb::LastKeyboardKey - 1)];
-	else if (Game::Bindings[Action] < gb::LastJoystickButton)
-		return *JoyButtonStatus::map[static_cast<unsigned int>(Game::Bindings[Action] - gb::LastMouseButton - 1)];
+	std::map<std::string, gb::Key>::iterator tmp_it(Game::Bindings.find(Action));
+	if (tmp_it==Game::Bindings.end())
+		return *Game::InputStatusError;
+	
+	if (tmp_it->second < gb::LastKeyboardKey)
+		return *KeyStatus::map[static_cast<sf::Keyboard::Key>(tmp_it->second)];
+	else if (tmp_it->second < gb::LastMouseButton)
+		return *MouseStatus::map[static_cast<sf::Mouse::Button>(tmp_it->second - gb::LastKeyboardKey - 1)];
+	else if (tmp_it->second < gb::LastJoystickButton)
+		return *JoyButtonStatus::map[static_cast<unsigned int>(tmp_it->second - gb::LastMouseButton - 1)];
 	else
 		return *Game::InputStatusError;
 

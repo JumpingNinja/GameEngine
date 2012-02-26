@@ -11,6 +11,7 @@
 
 #include <SFML/Audio.hpp>
 #include <SFML/Graphics.hpp>
+#include "ResourcePath.h"
 #include <map>
 #include <vector>
 #include <string>

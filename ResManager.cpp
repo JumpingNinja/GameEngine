@@ -8,7 +8,7 @@
 
 #include "ResManager.h"
 #include <iostream>
-#include "ResourcePath.h"
+
 
 
 ResManager::ResManager() : mySoundBuffers(), myMusics(), myTextures(), myTexturesIt(), myAnimations(), myAnimationsIt(), txError(), animError()

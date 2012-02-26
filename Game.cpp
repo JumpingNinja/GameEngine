@@ -100,10 +100,10 @@ void Game::Start(void)
 		AddKeyBinding("DoStuff13", gb::Joy3_3);
 		AddKeyBinding("DoStuff14", gb::Joy3_4);
 
-		AddKeyBinding("MoveAxis", gb::Joy1_X);
+		AddKeyBinding("MoveAxis", gb::Joy0_X);
 	}
 
-    myMainWindow.Create(sf::VideoMode(myWinWidth , myWinHeight,32),"Pang!");
+    myMainWindow.Create(sf::VideoMode(myWinWidth , myWinHeight,32),"Jumping Ninja");
     //myMainWindow.SetFramerateLimit(60);
     myMainWindow.EnableVerticalSync(1);
 	// Ignore la répétition des inputs par l'OS, pourrait être activé dans les menus...
@@ -137,13 +137,14 @@ void Game::Start(void)
     p->SetTextureRect(sf::IntRect(0, 0, 20, 700));
     p->Width=20.f, p->Height=700.f;
 	p->SetFriction(friction);
+	p->SetBounce(0.f);
 
     p=new CollisionEntity(1);
     p->SetPosition(1014.f, 20.f);
     p->SetTexture(tx);
     p->SetTextureRect(sf::IntRect(0, 0, 20, 700));
     p->Width=20.f, p->Height=700.f;
-	p->SetBounce(20.f);
+	p->SetBounce(0.f);
 	p->SetFriction(friction);
 
     p=new CollisionEntity(1);
@@ -153,6 +154,7 @@ void Game::Start(void)
     p->Width=20.f, p->Height=460.f;
 	p->SetBounce(20.f);
 	p->SetFriction(friction);
+	p->SetBounce(0.f);
 
     p=new CollisionEntity(1);
     p->SetPosition(880.f, 400.f);
@@ -176,6 +178,7 @@ void Game::Start(void)
     p->SetTextureRect(sf::IntRect(0, 0, 1024, 20));
     p->Width=1024.f, p->Height=20.f;
 	p->SetFriction(0.5f);
+	p->SetBounce(0.f);
 
     p=new CollisionEntity(1);
     p->SetPosition(10.f, 10.f);
@@ -183,6 +186,7 @@ void Game::Start(void)
     p->SetTextureRect(sf::IntRect(0, 0, 1024, 20));
     p->Width=1024.f, p->Height=20.f;
 	p->SetFriction(friction);
+	p->SetBounce(0.f);
 
     p=new CollisionEntity(1);
     p->SetPosition(10.f, 700.f);
@@ -311,6 +315,7 @@ void Game::GameLoop()
 
     if (Game::GetKeyState("Exit").IsJustPressed())
         myGameState=Game::Exiting;
+	/*
     if ((Game::GetKeyState("Slow").IsJustPressed())||(Game::GetKeyState("SlowDown").IsJustPressed()))
     {
         if (Game::timerateTo>0.25f)
@@ -318,6 +323,7 @@ void Game::GameLoop()
         else
             Game::timerateTo=1.f;
     }
+	 */
 
 	Sound::UpdateAll(Game::timerate);
 
@@ -464,7 +470,6 @@ void Game::GlobalStep()
 	myView.SetCenter(min(myWidth - myView.GetSize().x/2.f, myView.GetCenter().x), min(myHeight - myView.GetSize().y/2.f, myView.GetCenter().y));
 
 	myView.SetSize(viewSize);
-
 
 	//On applique la ue avant de tout dessiner
 	myMainWindow.SetView(myView);

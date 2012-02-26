@@ -22,7 +22,8 @@
 #include "Joystick.h"
 
 #include "Game.h"
-#include "Entity.h"
+//Ne pas les inclure car ils ont besoin de game.h ! et ça peut donner quelques erreurs de compilation
+//#include "Entity.h"
 #include "Particle.h"
 
 class Entity;

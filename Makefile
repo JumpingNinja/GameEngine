@@ -78,6 +78,6 @@ doc: dummy.file
 	@$(MKDIR) doc
 	@doxygen Doxyfile 
 	@$(DEL) dummy.file
-	@$(OPEN) doc/html/index.html
+	@$(OPENFILE) doc/html/index.html
 dummy.file:
 	@$(NEWFILE) dummy.file

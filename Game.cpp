@@ -58,7 +58,7 @@ void Game::Start(void)
 {
     if(myGameState != Uninitialized)
         return;
-	
+
 	new VoidTrigger(&triggerBoxes, &triggerCheck, 500);
 	//T.Launch();
 
@@ -130,10 +130,13 @@ void Game::Start(void)
 	Config.SeekSection("Keyboard");
 	for(std::map<std::string, std::string>::iterator it = Config.GetCurrentSection()->begin(); it != Config.GetCurrentSection()->end(); ++it)
 		AddKeyBinding(it->first, GetKey(it->second));
-	
-	Config.SeekSection("Joystick");
-	for(std::map<std::string, std::string>::iterator it = Config.GetCurrentSection()->begin(); it != Config.GetCurrentSection()->end(); ++it)
-		AddKeyBinding(it->first, GetKey(it->second));
+
+	if(UseJoysticks)
+	{
+		Config.SeekSection("Joystick");
+		for(std::map<std::string, std::string>::iterator it = Config.GetCurrentSection()->begin(); it != Config.GetCurrentSection()->end(); ++it)
+			AddKeyBinding(it->first, GetKey(it->second));
+	}
 
     myMainWindow.Create(sf::VideoMode(myWinWidth , myWinHeight,32),"Jumping Ninja");
     //myMainWindow.SetFramerateLimit(60);
@@ -447,7 +450,7 @@ const InputStatus& Game::GetKeyState(const std::string &Action)
 	std::map<std::string, gb::Key>::iterator tmp_it(Game::Bindings.find(Action));
 	if (tmp_it==Game::Bindings.end())
 		return *Game::InputStatusError;
-	
+
 	if (tmp_it->second < gb::LastKeyboardKey)
 		return *KeyStatus::map[static_cast<sf::Keyboard::Key>(tmp_it->second)];
 	else if (tmp_it->second < gb::LastMouseButton)

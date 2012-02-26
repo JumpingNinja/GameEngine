@@ -6,11 +6,11 @@
 //  Copyright 2012 Posva Games. All rights reserved.
 //
 
+#include <cstdlib>
+
 #include "Trigger.h"
 
 std::list<TriggerImpl*> TriggerImpl::list;
-
-
 
 void TriggerImpl::UpdateAll(float timerate)
 {

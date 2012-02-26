@@ -103,7 +103,7 @@ void Game::Start(void)
 		AddKeyBinding("MoveAxis", gb::Joy0_X);
 	}
 
-    myMainWindow.Create(sf::VideoMode(myWinWidth , myWinHeight,32),"Pang!");
+    myMainWindow.Create(sf::VideoMode(myWinWidth , myWinHeight,32),"Jumping Ninja");
     //myMainWindow.SetFramerateLimit(60);
     myMainWindow.EnableVerticalSync(1);
 	// Ignore la répétition des inputs par l'OS, pourrait être activé dans les menus...
@@ -278,6 +278,7 @@ void Game::GameLoop()
 
     if (Game::GetKeyState("Exit").IsJustPressed())
         myGameState=Game::Exiting;
+	/*
     if ((Game::GetKeyState("Slow").IsJustPressed())||(Game::GetKeyState("SlowDown").IsJustPressed()))
     {
         if (Game::timerateTo>0.25f)
@@ -285,6 +286,7 @@ void Game::GameLoop()
         else
             Game::timerateTo=1.f;
     }
+	 */
 
 	Sound::UpdateAll(Game::timerate);
 

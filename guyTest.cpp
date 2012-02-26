@@ -42,7 +42,7 @@ guytest::guytest() : CollisionEntity(0), Playable(1), Animation(Game::GetTexture
     //myAirFriction=sf::Vector2f(0.3f, 1.f);
 
 	//pInfo.IncrSpeed=sf::Vector2f(0.f,-0.002f);
-	pInfo.Life=600.f;
+	pInfo.Life=60.f;
 	//pInfo.Size=sf::Vector2f(3.f,3.f);
 	//pInfo.IncrSize=sf::Vector2f(0,-0.005f);
 	pInfo.IncrSize=sf::Vector2f(0.f,-0.0005f);
@@ -92,12 +92,15 @@ void guytest::TakeAStep(bool useFriction)
     	{
 			if (Game::GetKeyState("P1_MoveLeft").IsKeyPressed()) MoveLeft(), useFriction=0;
 			if (Game::GetKeyState("P1_MoveRight").IsKeyPressed()) MoveRight(), useFriction=0;
-			if ((Game::GetKeyState("P1_Jump").IsJustPressed())&&(CheckGround(1.f) || CheckSurroundings(sf::Vector2f(1.f, 0), 1))) Jump(), PlaySound("Jump");
+			if (Game::GetKeyState("P1_Jump").IsJustPressed() && (CheckGround(1.f) || CheckSurroundings(sf::Vector2f(1.f, 0), 1))) Jump(), PlaySound("Jump");
 
 			if(Game::UseJoysticks)
 			{
+				if ((Game::GetKeyState("DoStuff4").IsKeyPressed()))
+					Jump(CheckSurroundings(sf::Vector2f(-1.f, 0), 1)),
+					PlaySound("Jump");
+					
 				if ((Game::GetKeyState("DoStuff3").IsKeyPressed())) Jump(), PlaySound("Jump");
-				if ((Game::GetKeyState("DoStuff4").IsKeyPressed())) Jump(), PlaySound("Jump");
 				if ((Game::GetKeyState("DoStuff5").IsKeyPressed())) Jump(), PlaySound("Jump");
 				if ((Game::GetKeyState("DoStuff6").IsKeyPressed())) Jump(), PlaySound("Jump");
 
@@ -110,13 +113,18 @@ void guytest::TakeAStep(bool useFriction)
 				if ((Game::GetKeyState("DoStuff14").IsKeyPressed())) Jump(), PlaySound("Jump");
 				if(abs(Game::GetAxisState("MoveAxis")) > 1) AddSpeed(sf::Vector2f(Game::GetAxisState("MoveAxis")*0.0075f, 0.f)); //useFriction=0;
 			}
-        } else {
+        }
+		else
+		{
 			if (Game::GetKeyState("P1_MoveLeft").IsKeyPressed()) AirControlLeft(), useFriction=0;
 			if (Game::GetKeyState("P1_MoveRight").IsKeyPressed()) AirControlRight(), useFriction=0;
-			//if(abs(Game::GetAxisState("MoveAxis")) > 1) AddSpeed(sf::Vector2f(Game::GetAxisState("MoveAxis")*0.0050f, 0.f));
-			if ((Game::GetKeyState("DoStuff7").IsJustPressed()))
+			if (Game::UseJoysticks)
+			if(abs(Game::GetAxisState("MoveAxis")) > 1) AddSpeed(sf::Vector2f(Game::GetAxisState("MoveAxis")*0.0050f, 0.f));
+			if ((Game::GetKeyState("DoStuff4").IsJustPressed()))
 				Jump(CheckSurroundings(sf::Vector2f(-1.f, 0), 1)),
 				PlaySound("Jump");
+			
+			
         }
 
 		if (Game::GetKeyState("DoStuff").IsKeyPressed()) Particle::Create(Game::GetMousePosition(), pInfo, 7.f);

@@ -77,6 +77,7 @@ void Game::Start(void)
 
     // Quelques binds (à terme : fichier de configuration)
 
+/*
 	AddKeyBinding("Exit", gb::Escape);
 	AddKeyBinding("Slow", gb::E);
 	AddKeyBinding("P1_MoveLeft", gb::Q);
@@ -93,6 +94,27 @@ void Game::Start(void)
 
 		AddKeyBinding("MoveAxis", gb::Joy0_X);
 	}
+*/
+	IniParser Config;
+	// Chargement du fichier de configuration
+	if(!Config.LoadFromFile("config.ini"))
+	{
+		// Insérer configuration par défaut
+
+		// Bindings
+		Config.SeekSection("Bindinds");
+		Config.Set("JoyJump", "Joy0_3");
+		Config.Set("WallWalk", "Joy0_8");
+		Config.Set("SlowDown", "Joy0_1");
+		Config.Set("MoveAxis", "Joy0_X");
+
+		if(Config.SaveToFile("config.ini")) std::cout << "Fichier de configuration cree." << std::endl;
+	}
+
+	// Récupération des binds
+	Config.SeekSection("Bindinds");
+	for(std::map<std::string, std::string>::iterator it = Config.GetCurrentSection()->begin(); it != Config.GetCurrentSection()->end(); ++it)
+		AddKeyBinding(it->first, KeyIndex(it->second));
 
     myMainWindow.Create(sf::VideoMode(myWinWidth , myWinHeight,32),"Jumping Ninja");
     //myMainWindow.SetFramerateLimit(60);

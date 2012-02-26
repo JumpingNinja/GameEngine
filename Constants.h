@@ -7,6 +7,8 @@
 //
 #pragma once
 
+#include <string>
+
 /**
  Déclare des constantes
 **/
@@ -479,3 +481,5 @@ public:
         KeyCount ///< Le nombre total de touches.
     };
 };
+
+gb::Key KeyIndex(const std::string &keyStr);

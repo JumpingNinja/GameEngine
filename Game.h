@@ -13,6 +13,8 @@
 #include "SFML/Window.hpp"
 #include "SFML/Graphics.hpp"
 
+#include "IniParser.hpp"
+
 #include "SplashScreen.h"
 #include "Background.h"
 
@@ -36,7 +38,7 @@ class Game
     static SplashScreen mySplash;
 public:
 	static float timerate;
-	
+
 	///@brief lance le jeu
     static void Start();
 	/**
@@ -116,7 +118,7 @@ private:
     static bool IsExiting();
 	///@brief Loop principal du jeu
     static void GameLoop();
-	
+
 	///@brief met à jour quelques paramètres du jeu comme la vue (je me sens pas très orginel pour les noms)
 	static void GlobalStep();
 

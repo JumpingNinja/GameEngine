@@ -7,6 +7,7 @@
 //
 #pragma once
 
+#include <map>
 #include <string>
 
 /**
@@ -480,6 +481,13 @@ public:
 
         KeyCount ///< Le nombre total de touches.
     };
+
+	static std::map<std::string, gb::Key> KeyMap;
+
+	static void InitKeyMap();
+
+
+
 };
 
-gb::Key KeyIndex(const std::string &keyStr);
+gb::Key GetKey(const std::string &keyStr);

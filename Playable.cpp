@@ -15,10 +15,10 @@ bool Playable::IsControled() const
 void Playable::SetControled(bool aControled)
 { myControled = aControled; }
 
-Playable::Playable() : myControled(1)
+Playable::Playable() : myControled(1), myGroundControl(0.75f), myAirControl(0.5f)
 {}
 
-Playable::Playable(bool aControled) : myControled(aControled)
+Playable::Playable(bool aControled) : myControled(aControled), myGroundControl(0.75f), myAirControl(0.5f)
 {}
 
 Playable::~Playable()
@@ -29,27 +29,37 @@ void Playable::Jump()
     AddSpeed(sf::Vector2f(0, -5.f));
 }
 
-void Playable::Jump(short int factor)
+void Playable::WallJump(short int factor)
 {
-    AddSpeed(sf::Vector2f(3*factor, -5.f*abs(factor)));
+    SetSpeed(sf::Vector2f(4*factor, max(-6.f, mySpeed.y - 5.f)));
 }
 
 void Playable::MoveLeft()
 {
-    AddSpeed(sf::Vector2f(-0.75f*Game::timerate, 0));
+    AddSpeed(sf::Vector2f(-myGroundControl*Game::timerate, 0));
 }
 
 void Playable::MoveRight()
 {
-    AddSpeed(sf::Vector2f(0.75f*Game::timerate, 0));
+    AddSpeed(sf::Vector2f(myGroundControl*Game::timerate, 0));
+}
+
+void Playable::MoveAxis(float Axis)
+{
+	AddSpeed(sf::Vector2f(Axis*0.01f*myGroundControl*Game::timerate, 0.f));
 }
 
 void Playable::AirControlLeft()
 {
-    AddSpeed(sf::Vector2f(-0.50f*Game::timerate, 0));
+    AddSpeed(sf::Vector2f(-myAirControl*Game::timerate, 0));
 }
 
 void Playable::AirControlRight()
 {
-    AddSpeed(sf::Vector2f(0.50f*Game::timerate, 0));
+    AddSpeed(sf::Vector2f(myAirControl*Game::timerate, 0));
+}
+
+void Playable::AirControlAxis(float Axis)
+{
+	AddSpeed(sf::Vector2f(Axis*0.01f*myAirControl*Game::timerate, 0.f));
 }

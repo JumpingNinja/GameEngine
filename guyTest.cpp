@@ -28,7 +28,7 @@ float GetAngle(const sf::Vector2f &vec)
 
 
 //guytest::guytest() : CollisionEntity(0), Playable(1), Animation(Game::GetTexture("nyancat"), 5.f, Game::GetAnimation("nyancat_fly")), pInfo(Game::GetTexture("nyancat"), Game::GetAnimation("nyancat_rainbow")), pStar(Game::GetTexture("nyancat"), Game::GetAnimation("nyancat_star"))
-guytest::guytest() : CollisionEntity(0), Playable(1), Animation(Game::GetTexture("ryu"), 5.f, Game::GetAnimation("ryu_walk")), pInfo(Game::GetTexture("nyancat"), Game::GetAnimation("nyancat_rainbow")), pStar(Game::GetTexture("nyancat"), Game::GetAnimation("nyancat_star")), partRot(0.f), m_spd(0.f)
+guytest::guytest() : CollisionEntity(0), Playable(1), Animation(Game::GetTexture("ryu"), 5.f, Game::GetAnimation("ryu_walk")), pInfo(Game::GetTexture("nyancat"), Game::GetAnimation("nyancat_rainbow")), pStar(Game::GetTexture("nyancat"), Game::GetAnimation("nyancat_star")), partRot(0.f), m_spd(0.f), wallWalkTimer(0)
 {
     //Width=33.f; Height=20.f;
     Width=19.f; Height=32.f;
@@ -39,6 +39,7 @@ guytest::guytest() : CollisionEntity(0), Playable(1), Animation(Game::GetTexture
     SetOrigin(15.5f, 10.f);
     //SetOrigin(GetTextureRect().Width/2.f, GetTextureRect().Height/2.f);
     myMaxSpeed.x=5.f;
+    //myMaxSpeed.y=10.f;
     //myAirFriction=sf::Vector2f(0.3f, 1.f);
 
 	//pInfo.IncrSpeed=sf::Vector2f(0.f,-0.002f);
@@ -71,7 +72,8 @@ guytest::guytest() : CollisionEntity(0), Playable(1), Animation(Game::GetTexture
 	pStar.SetAlpha(1, 255);
 	pStar.SetAlpha(2, 0);
 
-
+	wallWalkFactor = 3;
+	wallWalking = 0;
 }
 /*
 guytest::guytest() : CollisionEntity(0), Animation(Game::GetTexture("ryu"), 6.f, Game::GetAnimation("ryu_walk"))
@@ -86,10 +88,16 @@ guytest::~guytest()
 
 void guytest::TakeAStep(bool useFriction)
 {
+	int tmpSurroundings = CheckSurroundings(sf::Vector2f(-1.f*max(1.f, abs(mySpeed.x)), 0), 1);
     if(IsControled())
     {
+		if(tmpDebug != wallWalkTimer) std::cout << "wallWalkTimer : " << wallWalkTimer << " Speed : " << mySpeed.x << " " << mySpeed.y << std::endl;
+		tmpDebug = wallWalkTimer;
     	if(CheckGround(1.f))
     	{
+    		wallWalking = 0;
+    		wallWalkTimer = wallWalkFactor*abs(mySpeed.x);
+
 			if (Game::GetKeyState("P1_MoveLeft").IsKeyPressed()) MoveLeft(), useFriction=0;
 			if (Game::GetKeyState("P1_MoveRight").IsKeyPressed()) MoveRight(), useFriction=0;
 			if ((Game::GetKeyState("P1_Jump").IsJustPressed())&&(CheckGround(1.f) || CheckSurroundings(sf::Vector2f(1.f, 0), 1))) Jump(), PlaySound("Jump");
@@ -101,23 +109,29 @@ void guytest::TakeAStep(bool useFriction)
 				if ((Game::GetKeyState("DoStuff5").IsKeyPressed())) Jump(), PlaySound("Jump");
 				if ((Game::GetKeyState("DoStuff6").IsKeyPressed())) Jump(), PlaySound("Jump");
 
-				if ((Game::GetKeyState("DoStuff7").IsJustPressed())) Jump(), PlaySound("Jump");
-				if ((Game::GetKeyState("DoStuff8").IsKeyPressed())) Jump(), PlaySound("Jump");
+				if ((Game::GetKeyState("JoyJump").IsJustPressed())) Jump(), PlaySound("Jump");
+				//if ((Game::GetKeyState("DoStuff8").IsKeyPressed())) Jump(), PlaySound("Jump");
 				if ((Game::GetKeyState("DoStuff9").IsKeyPressed())) Jump(), PlaySound("Jump");
 				if ((Game::GetKeyState("DoStuff11").IsKeyPressed())) Jump(), PlaySound("Jump");
 				if ((Game::GetKeyState("DoStuff12").IsKeyPressed())) Jump(), PlaySound("Jump");
 				if ((Game::GetKeyState("DoStuff13").IsKeyPressed())) Jump(), PlaySound("Jump");
 				if ((Game::GetKeyState("DoStuff14").IsKeyPressed())) Jump(), PlaySound("Jump");
-				if(abs(Game::GetAxisState("MoveAxis")) > 1) AddSpeed(sf::Vector2f(Game::GetAxisState("MoveAxis")*0.0075f, 0.f)); //useFriction=0;
+				if(abs(Game::GetAxisState("MoveAxis")) > 1) MoveAxis(Game::GetAxisState("MoveAxis")); //useFriction=0;
 			}
         } else {
 			if (Game::GetKeyState("P1_MoveLeft").IsKeyPressed()) AirControlLeft(), useFriction=0;
 			if (Game::GetKeyState("P1_MoveRight").IsKeyPressed()) AirControlRight(), useFriction=0;
-			if(abs(Game::GetAxisState("MoveAxis")) > 1) AddSpeed(sf::Vector2f(Game::GetAxisState("MoveAxis")*0.0050f, 0.f));
-			if ((Game::GetKeyState("DoStuff7").IsJustPressed()))
-				Jump(CheckSurroundings(sf::Vector2f(-1.f, 0), 1)),
-				PlaySound("Jump");
+			if(abs(Game::GetAxisState("MoveAxis")) > 1) AirControlAxis(Game::GetAxisState("MoveAxis"));
+			if ((Game::GetKeyState("JoyJump").IsJustPressed()) && tmpSurroundings )
+				WallJump(tmpSurroundings),
+				std::cout << "Wall Jump with :" << tmpSurroundings << " Speed : " << mySpeed.x << " " << mySpeed.y << std::endl;
+
+			if(!Game::GetKeyState("WallWalk").IsKeyPressed() || (wallWalking)&&!tmpSurroundings)
+				wallWalkTimer = 0;
         }
+		if (tmpSurroundings && Game::GetKeyState("WallWalk").IsKeyPressed() && wallWalkTimer)
+			AddSpeed(sf::Vector2f(0, -wallWalkTimer*0.1f)),
+			wallWalkTimer--, wallWalking = 1;
 
 		if (Game::GetKeyState("DoStuff").IsKeyPressed()) Particle::Create(Game::GetMousePosition(), pInfo, 7.f);
 		if (Game::GetKeyState("DoStuff2").IsKeyPressed()) std::cout << "Trop fort, t'as clique sur le bouton droit de la souris..." << std::endl;
@@ -132,11 +146,10 @@ void guytest::TakeAStep(bool useFriction)
 		else
 			SetRects(Game::GetAnimation("ryu_walk")), state=0;
 
-	}
-	else
-	{
+	} else if(wallWalking && tmpSurroundings && Game::GetKeyState("WallWalk").IsKeyPressed() && wallWalkTimer) {
+		SetRects(Game::GetAnimation("ryu_stand")), state=0;
+	} else {
 		SetRects(Game::GetAnimation("ryu_jump")), state=2;
-
 	}
 
 //	if(CheckSurroundings(sf::Vector2f(1.f, 0), 1))

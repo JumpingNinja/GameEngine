@@ -19,6 +19,11 @@ class Playable : virtual public CollisionEntity {
 	/** @brief myControled Spécifie si l'objet doit prendre en compte les entrées de l'utilisateur.
 	**/
 		bool myControled;
+
+		/// @brief Coefficient de contrôle au sol
+		float myGroundControl;
+		/// @brief Coefficient de contrôle aérien
+		float myAirControl;
 	public:
 		Playable();
 		Playable(bool);
@@ -30,7 +35,7 @@ class Playable : virtual public CollisionEntity {
         *
         **/
 		virtual void Jump();
-		virtual void Jump(short int factor);
+		virtual void WallJump(short int factor);
         /** @brief Fonction générique de mouvement à gauche
         *
         **/
@@ -41,6 +46,8 @@ class Playable : virtual public CollisionEntity {
         **/
 		virtual void MoveRight();
 		virtual void AirControlRight();
+		void MoveAxis(float Axis);
+		void AirControlAxis(float Axis);
 };
 
 #endif

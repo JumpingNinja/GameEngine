@@ -91,8 +91,8 @@ void Game::Start(void)
 		AddKeyBinding("DoStuff4", gb::Joy0_18);
 		AddKeyBinding("DoStuff5", gb::Joy0_19);
 		AddKeyBinding("DoStuff6", gb::Joy0_20);
-		AddKeyBinding("DoStuff7", gb::Joy1_1);
-		AddKeyBinding("DoStuff8", gb::Joy1_2);
+		AddKeyBinding("JoyJump", gb::Joy1_1);
+		AddKeyBinding("WallWalk", gb::Joy1_7);
 		AddKeyBinding("DoStuff9", gb::Joy1_3);
 		AddKeyBinding("SlowDown", gb::Joy1_4);
 		AddKeyBinding("DoStuff11", gb::Joy3_1);
@@ -155,6 +155,22 @@ void Game::Start(void)
 	p->SetFriction(friction);
 
     p=new CollisionEntity(1);
+    p->SetPosition(880.f, 400.f);
+    p->SetTexture(tx);
+    p->SetTextureRect(sf::IntRect(0, 0, 20, 260));
+    p->Width=20.f, p->Height=260.f;
+	p->SetBounce(20.f);
+	p->SetFriction(friction);
+
+    p=new CollisionEntity(1);
+    p->SetPosition(680.f, 400.f);
+    p->SetTexture(tx);
+    p->SetTextureRect(sf::IntRect(0, 0, 200, 20));
+    p->Width=200.f, p->Height=20.f;
+	p->SetBounce(20.f);
+	p->SetFriction(friction);
+
+    p=new CollisionEntity(1);
     p->SetPosition(10.f, 720.f);
     p->SetTexture(tx);
     p->SetTextureRect(sf::IntRect(0, 0, 1024, 20));
@@ -195,6 +211,27 @@ void Game::Start(void)
     p->SetTextureRect(sf::IntRect(0, 0, 50, 20));
     p->Width=50.f, p->Height=20.f;
 	p->SetFriction(friction);
+
+    p=new CollisionEntity(0);
+    p->SetPosition(350.f, 50.f);
+    p->SetTexture(tx);
+    p->SetTextureRect(sf::IntRect(0, 0, 20, 20));
+    p->Width=20.f, p->Height=20.f;
+	p->SetFriction(0);
+
+    p=new CollisionEntity(0);
+    p->SetPosition(300.f, 100.f);
+    p->SetTexture(tx);
+    p->SetTextureRect(sf::IntRect(0, 0, 20, 20));
+    p->Width=20.f, p->Height=20.f;
+	p->SetFriction(0);
+
+    p=new CollisionEntity(0);
+    p->SetPosition(300.f, 150.f);
+    p->SetTexture(tx);
+    p->SetTextureRect(sf::IntRect(0, 0, 20, 20));
+    p->Width=20.f, p->Height=20.f;
+	p->SetFriction(0);
 
 	/*guytest *pg;
     pg=new guytest;
@@ -427,9 +464,7 @@ void Game::GlobalStep()
 	myView.SetCenter(min(myWidth - myView.GetSize().x/2.f, myView.GetCenter().x), min(myHeight - myView.GetSize().y/2.f, myView.GetCenter().y));
 
 	myView.SetSize(viewSize);
-<<<<<<< HEAD
 
-=======
 
 	//On applique la ue avant de tout dessiner
 	myMainWindow.SetView(myView);

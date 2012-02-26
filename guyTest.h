@@ -17,6 +17,10 @@
 class guytest : virtual public CollisionEntity, public Playable, private Animation, public SoundEmitter {
 	ParticleInfo pInfo, pStar;
 	float partRot, m_spd;
+	int wallWalkTimer;
+	int wallWalkFactor;
+	bool wallWalking;
+	int tmpDebug;
 public:
     guytest();
     ~guytest();

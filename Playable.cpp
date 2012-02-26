@@ -26,7 +26,7 @@ Playable::~Playable()
 
 void Playable::Jump()
 {
-    AddSpeed(sf::Vector2f(0, -5.f));
+    AddSpeed(sf::Vector2f(0.f, -5.f));
 }
 
 void Playable::WallJump(short int factor)

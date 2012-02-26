@@ -20,7 +20,6 @@ class guytest : virtual public CollisionEntity, public Playable, private Animati
 	int wallWalkTimer;
 	int wallWalkFactor;
 	bool wallWalking;
-	int tmpDebug;
 public:
     guytest();
     ~guytest();

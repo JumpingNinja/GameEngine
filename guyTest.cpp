@@ -39,6 +39,7 @@ guytest::guytest() : CollisionEntity(0), Playable(1), Animation(Game::GetTexture
     SetOrigin(15.5f, 10.f);
     //SetOrigin(GetTextureRect().Width/2.f, GetTextureRect().Height/2.f);
     myMaxSpeed.x=5.f;
+	myMass=10.f;
     //myMaxSpeed.y=10.f;
     //myAirFriction=sf::Vector2f(0.3f, 1.f);
 
@@ -91,8 +92,6 @@ void guytest::TakeAStep(bool useFriction)
 	int tmpSurroundings = CheckSurroundings(sf::Vector2f(-1.f*max(1.f, abs(mySpeed.x)), 0), 1);
     if(IsControled())
     {
-		if(tmpDebug != wallWalkTimer) std::cout << "wallWalkTimer : " << wallWalkTimer << " Speed : " << mySpeed.x << " " << mySpeed.y << std::endl;
-		tmpDebug = wallWalkTimer;
     	if(CheckGround(1.f))
     	{
     		wallWalking = 0;
@@ -104,21 +103,7 @@ void guytest::TakeAStep(bool useFriction)
 
 			if(Game::UseJoysticks)
 			{
-				if ((Game::GetKeyState("DoStuff4").IsKeyPressed()))
-					WallJump(CheckSurroundings(sf::Vector2f(-1.f, 0), 1)),
-					PlaySound("Jump");
-
-				if ((Game::GetKeyState("DoStuff3").IsKeyPressed())) Jump(), PlaySound("Jump");
-				if ((Game::GetKeyState("DoStuff5").IsKeyPressed())) Jump(), PlaySound("Jump");
-				if ((Game::GetKeyState("DoStuff6").IsKeyPressed())) Jump(), PlaySound("Jump");
-
 				if ((Game::GetKeyState("JoyJump").IsJustPressed())) Jump(), PlaySound("Jump");
-				//if ((Game::GetKeyState("DoStuff8").IsKeyPressed())) Jump(), PlaySound("Jump");
-				if ((Game::GetKeyState("DoStuff9").IsKeyPressed())) Jump(), PlaySound("Jump");
-				if ((Game::GetKeyState("DoStuff11").IsKeyPressed())) Jump(), PlaySound("Jump");
-				if ((Game::GetKeyState("DoStuff12").IsKeyPressed())) Jump(), PlaySound("Jump");
-				if ((Game::GetKeyState("DoStuff13").IsKeyPressed())) Jump(), PlaySound("Jump");
-				if ((Game::GetKeyState("DoStuff14").IsKeyPressed())) Jump(), PlaySound("Jump");
 				if(abs(Game::GetAxisState("MoveAxis")) > 1) MoveAxis(Game::GetAxisState("MoveAxis")); //useFriction=0;
 			}
         }
@@ -128,9 +113,9 @@ void guytest::TakeAStep(bool useFriction)
 			if (Game::GetKeyState("P1_MoveRight").IsKeyPressed()) AirControlRight(), useFriction=0;
 
 			if(abs(Game::GetAxisState("MoveAxis")) > 1) AirControlAxis(Game::GetAxisState("MoveAxis"));
-			if ((Game::GetKeyState("JoyJump").IsJustPressed()) && tmpSurroundings )
-				WallJump(tmpSurroundings),
-				std::cout << "Wall Jump with :" << tmpSurroundings << " Speed : " << mySpeed.x << " " << mySpeed.y << std::endl;
+			if ((Game::GetKeyState("JoyJump").IsKeyPressed()) && tmpSurroundings )
+				WallJump(tmpSurroundings);
+				//std::cout << "Wall Jump with :" << tmpSurroundings << " Speed : " << mySpeed.x << " " << mySpeed.y << std::endl;
 
 			if(!Game::GetKeyState("WallWalk").IsKeyPressed() || (wallWalking)&&!tmpSurroundings)
 				wallWalkTimer = 0;

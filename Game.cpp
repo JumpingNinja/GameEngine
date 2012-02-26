@@ -11,6 +11,30 @@
 #include "CollisionEntity.h"
 #include "guyTest.h"
 #include <iostream>
+#include "IniParser.hpp"
+#include "Trigger.h"
+void triggerFunc()
+{
+	std::cout<<"Trigger!!\n";
+}
+
+void triggerBoxes()
+{
+	CollisionEntity* p;
+	p=new CollisionEntity(0);
+    p->SetPosition(Game::GetMousePosition());
+    p->SetTexture(Game::GetTexture(""));
+    p->SetTextureRect(sf::IntRect(0, 0, 20, 20));
+    p->Width=20.f, p->Height=20.f;
+	p->SetFriction(0.f);
+	//p->SetBounce(1.f);
+	//p->SetSpeed(sf::Vector2f(0.f, -55.f+rand()%5));
+}
+
+bool triggerCheck()
+{
+	return Game::GetKeyState("Box").IsJustPressed();
+}
 
 //Initialization des membres statiques*
 std::map<std::string, gb::Key> Game::Bindings;
@@ -34,6 +58,9 @@ void Game::Start(void)
 {
     if(myGameState != Uninitialized)
         return;
+	
+	new VoidTrigger(&triggerBoxes, &triggerCheck, 500);
+	//T.Launch();
 
 	gb::InitKeyMap();
 
@@ -167,7 +194,6 @@ void Game::Start(void)
     p->SetTexture(tx);
     p->SetTextureRect(sf::IntRect(0, 0, 20, 460));
     p->Width=20.f, p->Height=460.f;
-	p->SetBounce(0.f);
 	p->SetFriction(friction);
 	p->SetBounce(0.f);
 
@@ -209,6 +235,7 @@ void Game::Start(void)
     p->SetTextureRect(sf::IntRect(0, 0, 100, 20));
     p->Width=100.f, p->Height=20.f;
 	p->SetFriction(friction);
+	p->SetBounce(0.f);
 
     p=new CollisionEntity(1);
     p->SetPosition(10.f, 680.f);
@@ -216,6 +243,7 @@ void Game::Start(void)
     p->SetTextureRect(sf::IntRect(0, 0, 50, 20));
     p->Width=50.f, p->Height=20.f;
 	p->SetFriction(friction);
+	p->SetBounce(0.f);
 
     p=new CollisionEntity(1);
     p->SetPosition(300.f, 640.f);
@@ -223,6 +251,7 @@ void Game::Start(void)
     p->SetTextureRect(sf::IntRect(0, 0, 50, 20));
     p->Width=50.f, p->Height=20.f;
 	p->SetFriction(friction);
+	p->SetBounce(0.f);
 
     p=new CollisionEntity(1);
     p->SetPosition(350.f, 660.f);
@@ -230,6 +259,7 @@ void Game::Start(void)
     p->SetTextureRect(sf::IntRect(0, 0, 50, 20));
     p->Width=50.f, p->Height=20.f;
 	p->SetFriction(friction);
+	p->SetBounce(0.f);
 
     p=new CollisionEntity(0);
     p->SetPosition(350.f, 50.f);
@@ -300,6 +330,7 @@ void Game::Start(void)
     Entity::DestroyAll(); //à cause des new
     InputStatus::DestroyAll();
     JoystickAxis::DestroyAll();
+	TriggerImpl::DestroyAll();
 
     myMainWindow.Close();
 }
@@ -348,6 +379,7 @@ void Game::GameLoop()
 
             //myMainWindow.SetView(myView);
             //Step
+			TriggerImpl::UpdateAll(Game::timerate);
             CollisionEntity::Step();
 			Particle::Step(Game::timerate);
             //sf::Vector2f addPos;

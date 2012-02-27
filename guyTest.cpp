@@ -112,10 +112,13 @@ void guytest::TakeAStep(bool useFriction)
 			if (Game::GetKeyState("P1_MoveLeft").IsKeyPressed()) AirControlLeft(), useFriction=0;
 			if (Game::GetKeyState("P1_MoveRight").IsKeyPressed()) AirControlRight(), useFriction=0;
 
-			if(abs(Game::GetAxisState("MoveAxis")) > 1) AirControlAxis(Game::GetAxisState("MoveAxis"));
-			if ((Game::GetKeyState("JoyJump").IsJustPressed()) && tmpSurroundings )
-				WallJump(tmpSurroundings);
-				//std::cout << "Wall Jump with :" << tmpSurroundings << " Speed : " << mySpeed.x << " " << mySpeed.y << std::endl;
+			if(Game::UseJoysticks)
+			{
+                if(abs(Game::GetAxisState("MoveAxis")) > 1) AirControlAxis(Game::GetAxisState("MoveAxis"));
+                if ((Game::GetKeyState("JoyJump").IsJustPressed()) && tmpSurroundings )
+                    WallJump(tmpSurroundings);
+                    //std::cout << "Wall Jump with :" << tmpSurroundings << " Speed : " << mySpeed.x << " " << mySpeed.y << std::endl;
+			}
 
 			if(!Game::GetKeyState("WallWalk").IsKeyPressed() || (wallWalking)&&!tmpSurroundings)
 				wallWalkTimer = 0;

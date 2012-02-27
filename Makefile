@@ -37,7 +37,9 @@ CPP := g++
 C := $(wildcard *.cpp)
 _O := $(C:.cpp=.o)
 O := $(patsubst %,$(OBJ_DIR)/%,$(_O)) #Ça permet de mettre les .o dans le dossier obj/
-H := $(C:.cpp=.h)
+#H := $(C:.cpp=.h)
+H := $(wildcard *.h)
+HPP := $(wildcard *.hpp)
 OPTION := -pedantic -Wall -Wextra -Wold-style-cast -Woverloaded-virtual -Wfloat-equal -Wwrite-strings -Wpointer-arith -Wcast-qual -Wcast-align -Wconversion -Wshadow -Weffc++ -Wredundant-decls -Winit-self -Wswitch-default -Wswitch-enum -Wundef -Winline -s
 
 ifeq ($(OS), Win)
@@ -48,6 +50,11 @@ endif
 #$(DEL) *.o
 	./$(BIN_DIR)/$(EXE)
 	
+debug: debug_option all
+
+debug_option:
+OPTION := -pedantic -Wall -Wextra -Wold-style-cast -Woverloaded-virtual -Wfloat-equal -Wwrite-strings -Wpointer-arith -Wcast-qual -Wcast-align -Wconversion -Wshadow -Weffc++ -Wredundant-decls -Winit-self -Wswitch-default -Wswitch-enum -Wundef -Winline -s -ggdb
+	
 dirs: #Permet de creer des dossiers pour mettre les obj et les bin. L'option -p permet de créer les dossier que s'ils n'existent pas (elle crée aussi tous les dossier intermediaires). Le @ sert à ne pas afficher l'appel de la commande
 	@$(MKDIR) obj
 	@$(MKDIR) bin
@@ -56,6 +63,9 @@ $(EXE) : $(O)
 	$(CPP) $^ -o $(BIN_DIR)/$@ $(LIBS)
 
 $(OBJ_DIR)/%.o : %.cpp %.h
+	$(CPP) $(OPTION) -c $< -o $@
+	
+$(OBJ_DIR)/IniParser.o : IniParser.cpp IniParser.hpp
 	$(CPP) $(OPTION) -c $< -o $@
 	
 #On a besoin de spécifier manuellement pour main.o (sinon erreur)

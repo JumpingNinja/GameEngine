@@ -1,9 +1,9 @@
 //
-//  CollisionEntity.cpp
-//  GameEngine
+// CollisionEntity.cpp
+// GameEngine
 //
-//  Created by Edu San Martin Morote on 31/01/12.
-//  Copyright 2012 Posva Games. All rights reserved.
+// Created by Edu San Martin Morote on 31/01/12.
+// Copyright 2012 Posva Games. All rights reserved.
 //
 
 #include "CollisionEntity.h"
@@ -45,20 +45,20 @@ RelativePosition CollisionEntity::GetRelativePosition(CollisionEntity &other)
     sf::Vector2f relPos(other.Left-Left, other.Top-Top);
     sf::Vector2f relSpeed = sf::Vector2f(abs(mySpeed.x + other.mySpeed.x), abs(mySpeed.y + other.mySpeed.y));
     //std::cout<<"vect: "<<relPos.x<<", "<<relPos.y<<std::endl;
-
+	
     if (relPos.x<0.f) //on est sur la droite
     {
         if (relPos.y<0.f) //on est en bas
         {
             //on regarde la penetration horizontale et verticale dans le rectangle
-            if (relPos.x+other.Width<relPos.y+other.Height)
+            if ((relPos.x+other.Width)/relSpeed.x<(relPos.y+other.Height)/relSpeed.y)
                 return kLeft;
             else
                 return kTop;
         }
         else
         {
-            if (relPos.x+other.Width<abs(relPos.y-other.Height))
+            if ((relPos.x+other.Width)/relSpeed.x<(abs(relPos.y-other.Height))/relSpeed.y)
                 return kLeft;
             else
                 return kBottom;
@@ -69,21 +69,21 @@ RelativePosition CollisionEntity::GetRelativePosition(CollisionEntity &other)
         if (relPos.y<0.f) //on est en bas
         {
             //on calcule aussi la penetration
-            if (Width-relPos.x<relPos.y+other.Height)
+            if ((Width-relPos.x)/relSpeed.x<(relPos.y+other.Height)/relSpeed.y)
                 return kRight;
             else
                 return kTop;
         }
         else
         {
-            if (Width-relPos.x<abs(relPos.y-other.Height)) //on est en haut :)
+            if ((Width-relPos.x)/relSpeed.x<(abs(relPos.y-other.Height))/relSpeed.y) //on est en haut :)
                 return kRight;
             else
                 return kBottom;
         }
     }
-
-
+	
+	
     //On considere que si ce n'es pas l'une c'est l'autre car cette fonction doit être utilisée lorsqu'il y a collision
 }
 
@@ -96,51 +96,51 @@ void CollisionEntity::TakeAStep(bool useFriction)
         mySpeed.y+=myGravity*Game::timerate;
     else if (useFriction)
         mySpeed.x *= 1.f - myFriction*GroundFriction;
-
-
+	
+	
     //else if (mySpeed.y>0.f)
-      //  mySpeed.y=0.f;
-
+	// mySpeed.y=0.f;
+	
     //else if (mySpeed.x>0.1f && mySpeed.y<0.1f) MoveOutside();
     //std::cout<<"grav:"<<myGravity*Game::timerate<<std::endl;
-
+	
     //On limite la vitesse
     mySpeed.y=min(mySpeed.y, myMaxSpeed.y);
     if (mySpeed.x<=0)
         mySpeed.x=max(mySpeed.x, -myMaxSpeed.x);
     else
         mySpeed.x=min(mySpeed.x, myMaxSpeed.x);
-
-
+	
+	
     //Stoppe quand la vitesse est très petite, il faut prendre la valeur de myGravity pour y!
     if (abs(mySpeed.x)<0.2f*Game::timerate) mySpeed.x=0.f;
     if (abs(mySpeed.y)<0.2f*Game::timerate) mySpeed.y=0.f;
-
+	
     mySpeed.x*=myAirFriction.x;
     mySpeed.y*=myAirFriction.y;
-
+	
     //Move(mySpeed);
-
+	
     float maxSpeed(max(static_cast<float>(abs(mySpeed.x)), static_cast<float>(abs(mySpeed.y)))), tmpStep(1.f), tmpSpeed(maxSpeed);
     //Cette vitesse temporelle permet de gérer les collisions entre objets dynamiques
     myStepSpeed=mySpeed;
     //if (!isPositive(maxSpeed)) tmpStep*=-1.f;
     //std::cout<<"Max: "<<max(static_cast<float>(abs(5.f)), static_cast<float>(abs(12.f)))<<std::endl;
-
+	
     while (tmpSpeed>0.0001f)
     {
         if (tmpSpeed>=1.f)
             Move(Game::timerate*mySpeed.x/maxSpeed, Game::timerate*mySpeed.y/maxSpeed);
         else
             Move(Game::timerate*tmpSpeed*mySpeed.x/maxSpeed, Game::timerate*tmpSpeed*mySpeed.y/maxSpeed);
-
+		
         Collide();
         //if (Collide())
-          //  tmpSpeed=0.f;
+		// tmpSpeed=0.f;
         //else
-            tmpSpeed-=tmpStep;
+		tmpSpeed-=tmpStep;
     }
-
+	
     //std::cout<<this<<": mySpeed: "<<mySpeed.x<<", "<<mySpeed.y<<" myStepSpeed: "<<myStepSpeed.x<<", "<<myStepSpeed.y<<std::endl;
 }
 
@@ -153,7 +153,7 @@ void CollisionEntity::Step()
     std::list<CollisionEntity*>::iterator ite;
     for (ite=list.begin(); ite!=list.end(); ite++)
         (*ite)->TakeAStep();
-
+	
 }
 
 bool CollisionEntity::Collide()
@@ -198,18 +198,18 @@ bool CollisionEntity::Collide()
                             mySpeed.y=-mySpeed.y*max(myBounce, (*ite)->myBounce);
                             finish=1;
                             break;
-
+							
                         default:
                             break;
                     }
-
+					
                 }
             }
             else
             {
                 if (IsColliding(**ite))
                 {
-
+					
                     //std::cout<<"Dynamic collision\n";
                     switch (GetRelativePosition(**ite)) {
                         case kLeft:
@@ -250,13 +250,13 @@ bool CollisionEntity::Collide()
                             (*ite)->mySpeed.y=(-(*ite)->mySpeed.y/((myMass+(*ite)->myMass)/(*ite)->myMass)+myStepSpeed.y/((myMass+(*ite)->myMass)/myMass))*(*ite)->myBounce;
                             finish=1;
                             break;
-
+							
                         default:
                             break;
                     }
                 }
             }
-
+			
             if (finish)
                 return 1;
         }
@@ -288,13 +288,13 @@ short int CollisionEntity::CheckSurroundings(sf::Vector2f v, bool bothSide)
 	sf::FloatRect r = GetGlobalBounds();
 	r.Top += v.y;
 	r.Left += v.x;
-
+	
 	if(bothSide)
 	{
 		sf::FloatRect r2 = GetGlobalBounds();
 		r2.Top -= v.y;
 		r2.Left -= v.x;
-
+		
 		for (std::list<CollisionEntity*>::iterator ite=list.begin(); ite!=list.end(); ite++)
 		{
 			if ((*ite)!=this)
@@ -309,9 +309,9 @@ short int CollisionEntity::CheckSurroundings(sf::Vector2f v, bool bothSide)
 				}
 			}
 		}
-
+		
 	} else {
-
+		
 		for (std::list<CollisionEntity*>::iterator ite=list.begin(); ite!=list.end(); ite++)
 		{
 			if ((*ite)!=this)
@@ -322,7 +322,7 @@ short int CollisionEntity::CheckSurroundings(sf::Vector2f v, bool bothSide)
 				}
 			}
 		}
-
+		
 	}
     return 0;
 }
@@ -448,7 +448,7 @@ void CollisionEntity::MoveOutside()
                 if (relPos==kRight)
                     Move(hDiff, 0.f);
             }
-
+			
             vDiff=Top-(*ite)->Top+Height;
             if (vDiff<0.f)
             {
@@ -462,13 +462,13 @@ void CollisionEntity::MoveOutside()
     }
 }
 
-        /*
-void CollisionEntity::GetMaxStep()
-{
-    float maxStepSpeed(0.f);
-    for (it=list.begin(); it!=list.end(); it++)
-    {
-        maxStepSpeed=max(maxStepSpeed, max(static_cast<float>(abs((*it)->mySpeed.x)), static_cast<float>(abs((*it)->mySpeed.y))));
-    }
-    return maxStepSpeed;
-}*/
+/*
+ void CollisionEntity::GetMaxStep()
+ {
+ float maxStepSpeed(0.f);
+ for (it=list.begin(); it!=list.end(); it++)
+ {
+ maxStepSpeed=max(maxStepSpeed, max(static_cast<float>(abs((*it)->mySpeed.x)), static_cast<float>(abs((*it)->mySpeed.y))));
+ }
+ return maxStepSpeed;
+ }*/

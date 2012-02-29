@@ -98,6 +98,8 @@
 		<Unit filename="SoundEmitter.h" />
 		<Unit filename="SplashScreen.cpp" />
 		<Unit filename="SplashScreen.h" />
+		<Unit filename="Trigger.cpp" />
+		<Unit filename="Trigger.h" />
 		<Unit filename="guyTest.cpp" />
 		<Unit filename="guyTest.h" />
 		<Unit filename="main.cpp" />

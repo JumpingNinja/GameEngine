@@ -17,8 +17,19 @@ class VerletConstraint
 		VerletPoint* P2;
 		float myLength; ///< Longueur à l'équilibre
 		float mySpring; ///< Constante de ressort
+
 	public:
-		VerletConstraint(VerletPoint* P1, VerletPoint* P2, float Length, float Spring = 1);
+		/// @brief Liste des VerletConstraint créés
+		static std::list<VerletConstraint*> VCList;
+
+		/// @brief Appelle Resolve pour tout les VerletConstraint
+		static void ResolveAll();
+
+		/// @brief Détruit tout les VC
+		static void DeleteAll();
+
+		VerletConstraint(VerletPoint* P1, VerletPoint* P2,
+						float Length, float Spring = 1);
 		~VerletConstraint();
 
 		/** @brief Applique la contrainte

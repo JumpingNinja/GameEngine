@@ -2,6 +2,7 @@
 #define _VERLETPOINT_H_
 
 #include <cmath>
+#include <list>
 #include <SFML/System/Vector2.hpp>
 
 /** @class VerletPoint
@@ -23,6 +24,7 @@ class VerletPoint
 		sf::Vector2f myAcceleration; ///< Acceleration courante
 		// sf::Vector2f myOldAcceleration; ///< Pourrait être utilisé pour
 		// calculer la dérivée de l'accélération (approx. rang 3)
+		float myRadius; ///< Rayon, utilisé pour les collisions
 		float myMass; ///< Masse
 		float myBounce; ///< Coefficient de restitution
 		bool myFixe; ///< Détermine si le point est fixe ou non (ApplyForce n'aura alors aucun effet)
@@ -34,6 +36,25 @@ class VerletPoint
 		/// @brief Destructeur par défaut
 		~VerletPoint();
 
+		/// @brief Liste des VerletPoint créés
+		static std::list<VerletPoint*> VPList;
+
+		/** @brief Appelle ApplyMomentum pour tout les VerletPoints
+		 *
+		 * @param prevdt Intervalle de temps lors de la frame précédente
+		 * @param dt Intervalle de temps
+		**/
+		static void UpdateAll(float prevdt, float dt);
+
+		/** @brief Applique une force à tout les VP
+		 *
+		 * Usage typique : Gravité
+		 * @param Force Force à appliquer
+		**/
+		static void ForceAll(sf::Vector2f Force);
+
+		/// @brief Détruit tout les VP
+		static void DeleteAll();
 
 		/** @brief Accesseur de la position
 		 *
@@ -57,6 +78,12 @@ class VerletPoint
 		 *
 		 * @return float Masse
 		**/
+		float GetRadius() { return myRadius; }
+
+		/** @brief Accesseur de la Masse
+		 *
+		 * @return float Masse
+		**/
 		float GetMass() { return myMass; }
 
 		/// @brief Accesseur de myFixe
@@ -72,21 +99,38 @@ class VerletPoint
 
 		/** @brief Mutateur de l'accélération
 		 *
-		 * @return Vrai si la position a effectivement été changée, faux sinon
+		 * @return Vrai si l'accélération effectivement été changée, faux sinon
 		**/
 		bool SetAcceleration(sf::Vector2f newAcc);
 
+		/** @brief Mutateur du rayon
+		 *
+		 * @return Vrai si le rayon a effectivement été changée, faux sinon
+		**/
+		bool SetRadius(float newRadius);
+
+		/** @brief Mutateur de la masse
+		 *
+		 * @return Vrai si la masse a effectivement été changée, faux sinon
+		**/
+		bool SetMass(float newMass);
+
+		/// @brief Mutateur de myFixe
+		void SetFixe(bool newFixe = true) { myFixe = newFixe; }
+
 		/** @brief Applique une force à la particule
 		 *
+		 * La force n'est appliquée qu'à partir du seuil
+		 * @param Force Force à ajouter/appliquer à la particule
+		 * @param threshold Permet d'outrepasser le seuil par défaut
 		 * @return Vrai si la force a été prise en compte
 		**/
-		bool ApplyForce(sf::Vector2f Force);
+		bool ApplyForce(sf::Vector2f Force, float threshold = 0.1f);
 
 		/** @brief Déplace la particule selon son momentum
 		 *
-		 * @param prevdt Intervalle de temps lors de la fram précédente
+		 * @param prevdt Intervalle de temps lors de la frame précédente
 		 * @param dt Intervalle de temps
-		 * @return Nouvelle position
 		**/
 		void ApplyMomentum(float prevdt, float dt);
 };

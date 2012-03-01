@@ -41,9 +41,16 @@ void VerletPoint::DeleteAll()
 
 bool VerletPoint::SetPosition(sf::Vector2f newPos, bool oldToo)
 {
-	// Tests...
+	//if(myFixe) return false;
 	myPosition = newPos;
 	if(oldToo) myOldPosition = newPos;
+	return true;
+}
+
+bool VerletPoint::CorrectPosition(sf::Vector2f add)
+{
+	//if(myFixe) return false;
+	myPosition += add;
 	return true;
 }
 
@@ -71,7 +78,7 @@ bool VerletPoint::SetMass(float newMass)
 
 bool VerletPoint::ApplyForce(sf::Vector2f Force, float threshold)
 {
-	if (!myFixe && Length(Force) > threshold) {
+	if (!myFixe && ComputeLength(Force) > threshold) {
 		myAcceleration += Force;
 		return true;
 	} else return false;

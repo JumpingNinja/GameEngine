@@ -6,7 +6,7 @@
 #include "VerletPoint.h"
 
 /** @class VerletConstraint
- * @brief Lien entre deux VerletPoints
+ * @brief Lien élastique entre deux VerletPoints
  *
  * Implémente la loi de Hooke
 **/
@@ -29,7 +29,9 @@ class VerletConstraint
 		static void DeleteAll();
 
 		VerletConstraint(VerletPoint* P1, VerletPoint* P2,
-						float Length, float Spring = 1);
+						float Length = -1, float Spring = 1);
+		VerletConstraint(VerletPoint &P1, VerletPoint &P2,
+						float Length = -1, float Spring = 1);
 		~VerletConstraint();
 
 		/** @brief Applique la contrainte

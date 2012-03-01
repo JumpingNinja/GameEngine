@@ -97,6 +97,13 @@ class VerletPoint
 		**/
 		bool SetPosition(sf::Vector2f newPos, bool oldToo = 1);
 
+		/** @brief Corrige la position actuelle par un vecteur
+		 *
+		 * @param add Vecteur à ajouter (déplacement)
+		 * @return Vrai si la position a effectivement été changée, faux sinon
+		**/
+		bool CorrectPosition(sf::Vector2f add);
+
 		/** @brief Mutateur de l'accélération
 		 *
 		 * @return Vrai si l'accélération effectivement été changée, faux sinon
@@ -136,7 +143,7 @@ class VerletPoint
 };
 
 // A fouttre ailleurs, probablement
-inline float Length(sf::Vector2f v) { return sqrt(v.x*v.x + v.y*v.y); }
-inline sf::Vector2f Normalize(sf::Vector2f v) { return v/Length(v); }
+inline float ComputeLength(sf::Vector2f v) { return sqrt(v.x*v.x + v.y*v.y); }
+inline sf::Vector2f Normalize(sf::Vector2f v) { return v/ComputeLength(v); }
 
 #endif

@@ -100,6 +100,11 @@
 		<Unit filename="SplashScreen.h" />
 		<Unit filename="Trigger.cpp" />
 		<Unit filename="Trigger.h" />
+		<Unit filename="Verlet.h" />
+		<Unit filename="VerletConstraint.cpp" />
+		<Unit filename="VerletConstraint.h" />
+		<Unit filename="VerletPoint.cpp" />
+		<Unit filename="VerletPoint.h" />
 		<Unit filename="guyTest.cpp" />
 		<Unit filename="guyTest.h" />
 		<Unit filename="main.cpp" />

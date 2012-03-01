@@ -86,3 +86,15 @@ void VerletPoint::ApplyMomentum(float prevdt, float dt)
 	myOldPosition = tmp;
 	myAcceleration = sf::Vector2f(0,0);
 }
+
+void VerletPoint::Collide(VerletPoint* other)
+{
+    sf::Vector2f Vect = myPosition - other->GetPosition();
+    float acLength = Lenght(Vect);
+    if(acLength < myRadius + other->GetRadius())
+    {
+        Vect = Vect/acLength;
+        this->ApplyForce(myRadius - (acLength - other->GetRadius()));
+        other->ApplyForce(other->GetRadius() - (acLength - myRadius));
+    }
+}

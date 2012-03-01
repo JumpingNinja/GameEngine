@@ -31,9 +31,16 @@
 		<Compiler>
 			<Add option="-Wall" />
 		</Compiler>
+		<Unit filename="MainVerlet.cpp" />
+		<Unit filename="Verlet.h" />
+		<Unit filename="VerletConstraint.cpp" />
+		<Unit filename="VerletConstraint.h" />
+		<Unit filename="VerletPoint.cpp" />
+		<Unit filename="VerletPoint.h" />
 		<Extensions>
 			<code_completion />
 			<debugger />
+			<envvars />
 		</Extensions>
 	</Project>
 </CodeBlocks_project_file>

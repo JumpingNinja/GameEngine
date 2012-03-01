@@ -133,12 +133,6 @@ class VerletPoint
 		 * @param dt Intervalle de temps
 		**/
 		void ApplyMomentum(float prevdt, float dt);
-
-		/** @brief Test et Réaction aux collisions
-		 *
-		 * @param other Autre VerletPoint à tester
-        **/
-        void Collide(VerletPoint* other);
 };
 
 // A fouttre ailleurs, probablement

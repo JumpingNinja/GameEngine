@@ -1,6 +1,7 @@
 # Exclue des fichiers #
-bin/*.*
-obj/*.*
-doc/*.*
+bin/*
+obj/*
+doc/*
 #Un dossier pour Xcode
-GameEngine/*.*
+GameEngine/*
+Verlet/*

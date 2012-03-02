@@ -14,6 +14,7 @@ class Constraint
 		Point*	P1;
 		Point*	P2;
 		float	myLength; ///< Longueur à l'équilibre
+	static std::list<Constraint*> list;
 
 	public:
 		Constraint(Point* P1, Point* P2, float Length = -1);
@@ -30,6 +31,9 @@ class Constraint
 
 		/// @brief Retourne le vecteur associé à la contrainte (dans le sens P1 vers P2)
 		Vec2 GetVector() { return (P2->GetPosition() - P1->GetPosition()); }
+	
+	void glDraw();
+	static void DrawAll();
 };
 
 #endif

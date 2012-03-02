@@ -1,0 +1,383 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		34837FC5150119AE000A778A /* Vec2.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 34837FC3150119AE000A778A /* Vec2.cpp */; };
+		34837FD2150119C9000A778A /* PhysicsConstraint.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 34837FC7150119C9000A778A /* PhysicsConstraint.cpp */; };
+		34837FD3150119C9000A778A /* PhysicsElastic.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 34837FC9150119C9000A778A /* PhysicsElastic.cpp */; };
+		34837FD4150119C9000A778A /* PhysicsMain.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 34837FCB150119C9000A778A /* PhysicsMain.cpp */; };
+		34837FD5150119C9000A778A /* PhysicsPoint.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 34837FCC150119C9000A778A /* PhysicsPoint.cpp */; };
+		34837FD6150119C9000A778A /* PhysicsPolygon.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 34837FCE150119C9000A778A /* PhysicsPolygon.cpp */; };
+		34837FD7150119C9000A778A /* PhysicsRigid.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 34837FD0150119C9000A778A /* PhysicsRigid.cpp */; };
+		34837FDD15011BEF000A778A /* OpenGL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 34837FDC15011BEF000A778A /* OpenGL.framework */; };
+		34E63E2A14FF5D4B00A7BA42 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 34E63E2914FF5D4B00A7BA42 /* Foundation.framework */; };
+		34E63E2F14FF5D4B00A7BA42 /* ResourcePath.mm in Sources */ = {isa = PBXBuildFile; fileRef = 34E63E2E14FF5D4B00A7BA42 /* ResourcePath.mm */; };
+		34E63E3314FF5D4B00A7BA42 /* sansation.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 34E63E3214FF5D4B00A7BA42 /* sansation.ttf */; };
+		34E63E3514FF5D4B00A7BA42 /* cute_image.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 34E63E3414FF5D4B00A7BA42 /* cute_image.jpg */; };
+		34E63E3A14FF5D4B00A7BA42 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 34E63E3814FF5D4B00A7BA42 /* InfoPlist.strings */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		34837FC3150119AE000A778A /* Vec2.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Vec2.cpp; path = ../../Vec2.cpp; sourceTree = "<group>"; };
+		34837FC4150119AE000A778A /* Vec2.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Vec2.h; path = ../../Vec2.h; sourceTree = "<group>"; };
+		34837FC6150119C9000A778A /* Physics.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Physics.h; path = ../../Physics.h; sourceTree = "<group>"; };
+		34837FC7150119C9000A778A /* PhysicsConstraint.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = PhysicsConstraint.cpp; path = ../../PhysicsConstraint.cpp; sourceTree = "<group>"; };
+		34837FC8150119C9000A778A /* PhysicsConstraint.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = PhysicsConstraint.h; path = ../../PhysicsConstraint.h; sourceTree = "<group>"; };
+		34837FC9150119C9000A778A /* PhysicsElastic.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = PhysicsElastic.cpp; path = ../../PhysicsElastic.cpp; sourceTree = "<group>"; };
+		34837FCA150119C9000A778A /* PhysicsElastic.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = PhysicsElastic.h; path = ../../PhysicsElastic.h; sourceTree = "<group>"; };
+		34837FCB150119C9000A778A /* PhysicsMain.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = PhysicsMain.cpp; path = ../../PhysicsMain.cpp; sourceTree = "<group>"; };
+		34837FCC150119C9000A778A /* PhysicsPoint.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = PhysicsPoint.cpp; path = ../../PhysicsPoint.cpp; sourceTree = "<group>"; };
+		34837FCD150119C9000A778A /* PhysicsPoint.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = PhysicsPoint.h; path = ../../PhysicsPoint.h; sourceTree = "<group>"; };
+		34837FCE150119C9000A778A /* PhysicsPolygon.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = PhysicsPolygon.cpp; path = ../../PhysicsPolygon.cpp; sourceTree = "<group>"; };
+		34837FCF150119C9000A778A /* PhysicsPolygon.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = PhysicsPolygon.h; path = ../../PhysicsPolygon.h; sourceTree = "<group>"; };
+		34837FD0150119C9000A778A /* PhysicsRigid.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = PhysicsRigid.cpp; path = ../../PhysicsRigid.cpp; sourceTree = "<group>"; };
+		34837FD1150119C9000A778A /* PhysicsRigid.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = PhysicsRigid.h; path = ../../PhysicsRigid.h; sourceTree = "<group>"; };
+		34837FDC15011BEF000A778A /* OpenGL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGL.framework; path = System/Library/Frameworks/OpenGL.framework; sourceTree = SDKROOT; };
+		34E63E2514FF5D4B00A7BA42 /* Verlet.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Verlet.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		34E63E2914FF5D4B00A7BA42 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
+		34E63E2E14FF5D4B00A7BA42 /* ResourcePath.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = ResourcePath.mm; sourceTree = "<group>"; };
+		34E63E3014FF5D4B00A7BA42 /* ResourcePath.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = ResourcePath.hpp; sourceTree = "<group>"; };
+		34E63E3214FF5D4B00A7BA42 /* sansation.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = sansation.ttf; sourceTree = "<group>"; };
+		34E63E3414FF5D4B00A7BA42 /* cute_image.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = cute_image.jpg; sourceTree = "<group>"; };
+		34E63E3714FF5D4B00A7BA42 /* Verlet-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "Verlet-Info.plist"; sourceTree = "<group>"; };
+		34E63E3914FF5D4B00A7BA42 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		34E63E2214FF5D4B00A7BA42 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				34837FDD15011BEF000A778A /* OpenGL.framework in Frameworks */,
+				34E63E2A14FF5D4B00A7BA42 /* Foundation.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		34E63E1914FF5D4B00A7BA42 = {
+			isa = PBXGroup;
+			children = (
+				34E63E2B14FF5D4B00A7BA42 /* Verlet */,
+				34E63E2814FF5D4B00A7BA42 /* Frameworks */,
+				34E63E2614FF5D4B00A7BA42 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		34E63E2614FF5D4B00A7BA42 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				34E63E2514FF5D4B00A7BA42 /* Verlet.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		34E63E2814FF5D4B00A7BA42 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				34837FDC15011BEF000A778A /* OpenGL.framework */,
+				34E63E2914FF5D4B00A7BA42 /* Foundation.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		34E63E2B14FF5D4B00A7BA42 /* Verlet */ = {
+			isa = PBXGroup;
+			children = (
+				34837FCB150119C9000A778A /* PhysicsMain.cpp */,
+				34837FC6150119C9000A778A /* Physics.h */,
+				34837FC7150119C9000A778A /* PhysicsConstraint.cpp */,
+				34837FC8150119C9000A778A /* PhysicsConstraint.h */,
+				34837FC9150119C9000A778A /* PhysicsElastic.cpp */,
+				34837FCA150119C9000A778A /* PhysicsElastic.h */,
+				34837FCC150119C9000A778A /* PhysicsPoint.cpp */,
+				34837FCD150119C9000A778A /* PhysicsPoint.h */,
+				34837FCE150119C9000A778A /* PhysicsPolygon.cpp */,
+				34837FCF150119C9000A778A /* PhysicsPolygon.h */,
+				34837FD0150119C9000A778A /* PhysicsRigid.cpp */,
+				34837FD1150119C9000A778A /* PhysicsRigid.h */,
+				34837FC3150119AE000A778A /* Vec2.cpp */,
+				34837FC4150119AE000A778A /* Vec2.h */,
+				34E63E2E14FF5D4B00A7BA42 /* ResourcePath.mm */,
+				34E63E3014FF5D4B00A7BA42 /* ResourcePath.hpp */,
+				34E63E3114FF5D4B00A7BA42 /* Resources */,
+				34E63E3614FF5D4B00A7BA42 /* Supporting Files */,
+			);
+			path = Verlet;
+			sourceTree = "<group>";
+		};
+		34E63E3114FF5D4B00A7BA42 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				34E63E3214FF5D4B00A7BA42 /* sansation.ttf */,
+				34E63E3414FF5D4B00A7BA42 /* cute_image.jpg */,
+			);
+			name = Resources;
+			sourceTree = "<group>";
+		};
+		34E63E3614FF5D4B00A7BA42 /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				34E63E3714FF5D4B00A7BA42 /* Verlet-Info.plist */,
+				34E63E3814FF5D4B00A7BA42 /* InfoPlist.strings */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		34E63E2414FF5D4B00A7BA42 /* Verlet */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 34E63E3D14FF5D4B00A7BA42 /* Build configuration list for PBXNativeTarget "Verlet" */;
+			buildPhases = (
+				34E63E2014FF5D4B00A7BA42 /* ShellScript */,
+				34E63E2114FF5D4B00A7BA42 /* Sources */,
+				34E63E2214FF5D4B00A7BA42 /* Frameworks */,
+				34E63E2314FF5D4B00A7BA42 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = Verlet;
+			productName = Verlet;
+			productReference = 34E63E2514FF5D4B00A7BA42 /* Verlet.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		34E63E1B14FF5D4B00A7BA42 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 0420;
+				ORGANIZATIONNAME = "Posva Games";
+			};
+			buildConfigurationList = 34E63E1E14FF5D4B00A7BA42 /* Build configuration list for PBXProject "Verlet" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+			);
+			mainGroup = 34E63E1914FF5D4B00A7BA42;
+			productRefGroup = 34E63E2614FF5D4B00A7BA42 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				34E63E2414FF5D4B00A7BA42 /* Verlet */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		34E63E2314FF5D4B00A7BA42 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				34E63E3314FF5D4B00A7BA42 /* sansation.ttf in Resources */,
+				34E63E3514FF5D4B00A7BA42 /* cute_image.jpg in Resources */,
+				34E63E3A14FF5D4B00A7BA42 /* InfoPlist.strings in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		34E63E2014FF5D4B00A7BA42 /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "# This shell script simply copies required sfml dylibs/frameworks into the application bundle frameworks folder.\n# If you're using static libraries (which is not recommended) you should remove this script from your project.\n\n# Are we building a project that uses framework or dylibs ?\nif [ $SFML_LINK_PREFIX = $SFML_LINK_FRAMEWORKS_PREFIX ]\nthen\n    frameworks=1\nelse\n    frameworks=0\nfi\n\nrequire () # $1 is a SFML module like 'system' or 'audio'\n{\n    dest=$BUILT_PRODUCTS_DIR/$PRODUCT_NAME.app/Contents/Frameworks\n    \n    if [ -z $1 ]\n    then\n        echo \"no parameter! ERROR!\"\n        exit\n    else\n        # clean potentially old stuff\n        rm -f $dest/libsfml-$1.2.dylib\n        rm -f $dest/libsfml-$1-d.2.dylib\n        rm -fr $dest/sfml-$1.framework\n    \n        # copy SFML libraries\n        if [ $frameworks ]\n        then\n            ditto \"/Library/Frameworks/sfml-$1.framework\" \"$dest/sfml-$1.framework\"\n        elif [ $CONFIGURATION = \"Debug\" ]\n        then\n            ditto \"/usr/local/lib/libsfml-$1-d.2.dylib\" \"$dest/libsfml-$1-d.2.dylib\"\n        else\n            ditto \"/usr/local/lib/libsfml-$1.2.dylib\" \"$dest/libsfml-$1.2.dylib\"\n        fi\n        \n        if [ $1 = \"audio\" ]\n        then\n            # copy sndfile framework too\n            ditto \"/Library/Frameworks/sndfile.framework\" \"$dest/sndfile.framework\"\n        fi\n    fi\n}\n\nif [ -n \"$SFML_SYSTEM\" ]\nthen\n    require \"system\"\nfi\n\nif [ -n \"$SFML_AUDIO\" ]\nthen\n    require \"audio\"\nfi\n\nif [ -n \"$SFML_NETWORK\" ]\nthen\n    require \"network\"\nfi\n\nif [ -n \"$SFML_WINDOW\" ]\nthen\n    require \"window\"\nfi\n\nif [ -n \"$SFML_GRAPHICS\" ]\nthen\n    require \"graphics\"\nfi\n\t\t\t\t\t";
+		};
+/* End PBXShellScriptBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		34E63E2114FF5D4B00A7BA42 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				34E63E2F14FF5D4B00A7BA42 /* ResourcePath.mm in Sources */,
+				34837FC5150119AE000A778A /* Vec2.cpp in Sources */,
+				34837FD2150119C9000A778A /* PhysicsConstraint.cpp in Sources */,
+				34837FD3150119C9000A778A /* PhysicsElastic.cpp in Sources */,
+				34837FD4150119C9000A778A /* PhysicsMain.cpp in Sources */,
+				34837FD5150119C9000A778A /* PhysicsPoint.cpp in Sources */,
+				34837FD6150119C9000A778A /* PhysicsPolygon.cpp in Sources */,
+				34837FD7150119C9000A778A /* PhysicsRigid.cpp in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXVariantGroup section */
+		34E63E3814FF5D4B00A7BA42 /* InfoPlist.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				34E63E3914FF5D4B00A7BA42 /* en */,
+			);
+			name = InfoPlist.strings;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		34E63E3B14FF5D4B00A7BA42 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
+				CLANG_CXX_LANGUAGE_STANDARD = "c++0x";
+				CLANG_CXX_LIBRARY = "libstdc++";
+				CLANG_ENABLE_OBJC_ARC = "";
+				COPY_PHASE_STRIP = NO;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
+				GCC_ENABLE_OBJC_GC = unsupported;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_MISSING_PROTOTYPES = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				HEADER_SEARCH_PATHS = "$(HEADER_SEARCH_PATHS)";
+				MACOSX_DEPLOYMENT_TARGET = 10.6;
+				ONLY_ACTIVE_ARCH = YES;
+				OTHER_LDFLAGS = (
+					"$(OTHER_LDFLAGS)",
+					"$(SFML_SYSTEM)",
+					"$(SFML_WINDOW)",
+					"$(SFML_GRAPHICS)",
+					"$(SFML_AUDIO)",
+					"$(SFML_NETWORK)",
+				);
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = macosx;
+				SFML_AUDIO = "";
+				SFML_GRAPHICS = "$(SFML_LINK_PREFIX)sfml-graphics$(SFML_LINK_SUFFIX)";
+				SFML_LINK_DYLIBS_PREFIX = "-l";
+				SFML_LINK_DYLIBS_SUFFIX = "-d";
+				SFML_LINK_FRAMEWORKS_PREFIX = "-framework ";
+				SFML_LINK_FRAMEWORKS_SUFFIX = "";
+				SFML_LINK_PREFIX = "$(SFML_LINK_FRAMEWORKS_PREFIX)";
+				SFML_LINK_SUFFIX = "$(SFML_LINK_FRAMEWORKS_SUFFIX)";
+				SFML_NETWORK = "";
+				SFML_SYSTEM = "$(SFML_LINK_PREFIX)sfml-system$(SFML_LINK_SUFFIX)";
+				SFML_WINDOW = "$(SFML_LINK_PREFIX)sfml-window$(SFML_LINK_SUFFIX)";
+			};
+			name = Debug;
+		};
+		34E63E3C14FF5D4B00A7BA42 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
+				CLANG_CXX_LANGUAGE_STANDARD = "c++0x";
+				CLANG_CXX_LIBRARY = "libstdc++";
+				CLANG_ENABLE_OBJC_ARC = "";
+				COPY_PHASE_STRIP = YES;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
+				GCC_ENABLE_OBJC_GC = unsupported;
+				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_MISSING_PROTOTYPES = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				HEADER_SEARCH_PATHS = "$(HEADER_SEARCH_PATHS)";
+				MACOSX_DEPLOYMENT_TARGET = 10.6;
+				OTHER_LDFLAGS = (
+					"$(OTHER_LDFLAGS)",
+					"$(SFML_SYSTEM)",
+					"$(SFML_WINDOW)",
+					"$(SFML_GRAPHICS)",
+					"$(SFML_AUDIO)",
+					"$(SFML_NETWORK)",
+				);
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = macosx;
+				SFML_AUDIO = "";
+				SFML_GRAPHICS = "$(SFML_LINK_PREFIX)sfml-graphics$(SFML_LINK_SUFFIX)";
+				SFML_LINK_DYLIBS_PREFIX = "-l";
+				SFML_LINK_DYLIBS_SUFFIX = "";
+				SFML_LINK_FRAMEWORKS_PREFIX = "-framework ";
+				SFML_LINK_FRAMEWORKS_SUFFIX = "";
+				SFML_LINK_PREFIX = "$(SFML_LINK_FRAMEWORKS_PREFIX)";
+				SFML_LINK_SUFFIX = "$(SFML_LINK_FRAMEWORKS_SUFFIX)";
+				SFML_NETWORK = "";
+				SFML_SYSTEM = "$(SFML_LINK_PREFIX)sfml-system$(SFML_LINK_SUFFIX)";
+				SFML_WINDOW = "$(SFML_LINK_PREFIX)sfml-window$(SFML_LINK_SUFFIX)";
+			};
+			name = Release;
+		};
+		34E63E3E14FF5D4B00A7BA42 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COPY_PHASE_STRIP = NO;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_PRECOMPILE_PREFIX_HEADER = NO;
+				GCC_PREFIX_HEADER = "";
+				INFOPLIST_FILE = "Verlet/Verlet-Info.plist";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				WRAPPER_EXTENSION = app;
+			};
+			name = Debug;
+		};
+		34E63E3F14FF5D4B00A7BA42 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COPY_PHASE_STRIP = YES;
+				GCC_PRECOMPILE_PREFIX_HEADER = NO;
+				GCC_PREFIX_HEADER = "";
+				INFOPLIST_FILE = "Verlet/Verlet-Info.plist";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				WRAPPER_EXTENSION = app;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		34E63E1E14FF5D4B00A7BA42 /* Build configuration list for PBXProject "Verlet" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				34E63E3B14FF5D4B00A7BA42 /* Debug */,
+				34E63E3C14FF5D4B00A7BA42 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		34E63E3D14FF5D4B00A7BA42 /* Build configuration list for PBXNativeTarget "Verlet" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				34E63E3E14FF5D4B00A7BA42 /* Debug */,
+				34E63E3F14FF5D4B00A7BA42 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 34E63E1B14FF5D4B00A7BA42 /* Project object */;
+}

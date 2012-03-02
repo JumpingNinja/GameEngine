@@ -1,0 +1,336 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		34E63E5F14FF638B00A7BA42 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 34E63E5E14FF638B00A7BA42 /* Foundation.framework */; };
+		34E63E6214FF638B00A7BA42 /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 34E63E6114FF638B00A7BA42 /* main.cpp */; };
+		34E63E6414FF638B00A7BA42 /* ResourcePath.mm in Sources */ = {isa = PBXBuildFile; fileRef = 34E63E6314FF638B00A7BA42 /* ResourcePath.mm */; };
+		34E63E6814FF638B00A7BA42 /* sansation.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 34E63E6714FF638B00A7BA42 /* sansation.ttf */; };
+		34E63E6A14FF638B00A7BA42 /* cute_image.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 34E63E6914FF638B00A7BA42 /* cute_image.jpg */; };
+		34E63E6F14FF638B00A7BA42 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 34E63E6D14FF638B00A7BA42 /* InfoPlist.strings */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		34E63E5A14FF638B00A7BA42 /* window test.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "window test.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		34E63E5E14FF638B00A7BA42 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
+		34E63E6114FF638B00A7BA42 /* main.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
+		34E63E6314FF638B00A7BA42 /* ResourcePath.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = ResourcePath.mm; sourceTree = "<group>"; };
+		34E63E6514FF638B00A7BA42 /* ResourcePath.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = ResourcePath.hpp; sourceTree = "<group>"; };
+		34E63E6714FF638B00A7BA42 /* sansation.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = sansation.ttf; sourceTree = "<group>"; };
+		34E63E6914FF638B00A7BA42 /* cute_image.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = cute_image.jpg; sourceTree = "<group>"; };
+		34E63E6C14FF638B00A7BA42 /* window test-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "window test-Info.plist"; sourceTree = "<group>"; };
+		34E63E6E14FF638B00A7BA42 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		34E63E5714FF638B00A7BA42 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				34E63E5F14FF638B00A7BA42 /* Foundation.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		34E63E4E14FF638A00A7BA42 = {
+			isa = PBXGroup;
+			children = (
+				34E63E6014FF638B00A7BA42 /* window test */,
+				34E63E5D14FF638B00A7BA42 /* Frameworks */,
+				34E63E5B14FF638B00A7BA42 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		34E63E5B14FF638B00A7BA42 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				34E63E5A14FF638B00A7BA42 /* window test.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		34E63E5D14FF638B00A7BA42 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				34E63E5E14FF638B00A7BA42 /* Foundation.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		34E63E6014FF638B00A7BA42 /* window test */ = {
+			isa = PBXGroup;
+			children = (
+				34E63E6114FF638B00A7BA42 /* main.cpp */,
+				34E63E6314FF638B00A7BA42 /* ResourcePath.mm */,
+				34E63E6514FF638B00A7BA42 /* ResourcePath.hpp */,
+				34E63E6614FF638B00A7BA42 /* Resources */,
+				34E63E6B14FF638B00A7BA42 /* Supporting Files */,
+			);
+			path = "window test";
+			sourceTree = "<group>";
+		};
+		34E63E6614FF638B00A7BA42 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				34E63E6714FF638B00A7BA42 /* sansation.ttf */,
+				34E63E6914FF638B00A7BA42 /* cute_image.jpg */,
+			);
+			name = Resources;
+			sourceTree = "<group>";
+		};
+		34E63E6B14FF638B00A7BA42 /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				34E63E6C14FF638B00A7BA42 /* window test-Info.plist */,
+				34E63E6D14FF638B00A7BA42 /* InfoPlist.strings */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		34E63E5914FF638B00A7BA42 /* window test */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 34E63E7214FF638B00A7BA42 /* Build configuration list for PBXNativeTarget "window test" */;
+			buildPhases = (
+				34E63E5514FF638B00A7BA42 /* ShellScript */,
+				34E63E5614FF638B00A7BA42 /* Sources */,
+				34E63E5714FF638B00A7BA42 /* Frameworks */,
+				34E63E5814FF638B00A7BA42 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "window test";
+			productName = "window test";
+			productReference = 34E63E5A14FF638B00A7BA42 /* window test.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		34E63E5014FF638A00A7BA42 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 0420;
+				ORGANIZATIONNAME = "Posva Games";
+			};
+			buildConfigurationList = 34E63E5314FF638A00A7BA42 /* Build configuration list for PBXProject "window test" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+			);
+			mainGroup = 34E63E4E14FF638A00A7BA42;
+			productRefGroup = 34E63E5B14FF638B00A7BA42 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				34E63E5914FF638B00A7BA42 /* window test */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		34E63E5814FF638B00A7BA42 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				34E63E6814FF638B00A7BA42 /* sansation.ttf in Resources */,
+				34E63E6A14FF638B00A7BA42 /* cute_image.jpg in Resources */,
+				34E63E6F14FF638B00A7BA42 /* InfoPlist.strings in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		34E63E5514FF638B00A7BA42 /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "# This shell script simply copies required sfml dylibs/frameworks into the application bundle frameworks folder.\n# If you're using static libraries (which is not recommended) you should remove this script from your project.\n\n# Are we building a project that uses framework or dylibs ?\nif [ $SFML_LINK_PREFIX = $SFML_LINK_FRAMEWORKS_PREFIX ]\nthen\n    frameworks=1\nelse\n    frameworks=0\nfi\n\nrequire () # $1 is a SFML module like 'system' or 'audio'\n{\n    dest=$BUILT_PRODUCTS_DIR/$PRODUCT_NAME.app/Contents/Frameworks\n    \n    if [ -z $1 ]\n    then\n        echo \"no parameter! ERROR!\"\n        exit\n    else\n        # clean potentially old stuff\n        rm -f $dest/libsfml-$1.2.dylib\n        rm -f $dest/libsfml-$1-d.2.dylib\n        rm -fr $dest/sfml-$1.framework\n    \n        # copy SFML libraries\n        if [ $frameworks ]\n        then\n            ditto \"/Library/Frameworks/sfml-$1.framework\" \"$dest/sfml-$1.framework\"\n        elif [ $CONFIGURATION = \"Debug\" ]\n        then\n            ditto \"/usr/local/lib/libsfml-$1-d.2.dylib\" \"$dest/libsfml-$1-d.2.dylib\"\n        else\n            ditto \"/usr/local/lib/libsfml-$1.2.dylib\" \"$dest/libsfml-$1.2.dylib\"\n        fi\n        \n        if [ $1 = \"audio\" ]\n        then\n            # copy sndfile framework too\n            ditto \"/Library/Frameworks/sndfile.framework\" \"$dest/sndfile.framework\"\n        fi\n    fi\n}\n\nif [ -n \"$SFML_SYSTEM\" ]\nthen\n    require \"system\"\nfi\n\nif [ -n \"$SFML_AUDIO\" ]\nthen\n    require \"audio\"\nfi\n\nif [ -n \"$SFML_NETWORK\" ]\nthen\n    require \"network\"\nfi\n\nif [ -n \"$SFML_WINDOW\" ]\nthen\n    require \"window\"\nfi\n\nif [ -n \"$SFML_GRAPHICS\" ]\nthen\n    require \"graphics\"\nfi\n\t\t\t\t\t";
+		};
+/* End PBXShellScriptBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		34E63E5614FF638B00A7BA42 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				34E63E6214FF638B00A7BA42 /* main.cpp in Sources */,
+				34E63E6414FF638B00A7BA42 /* ResourcePath.mm in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXVariantGroup section */
+		34E63E6D14FF638B00A7BA42 /* InfoPlist.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				34E63E6E14FF638B00A7BA42 /* en */,
+			);
+			name = InfoPlist.strings;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		34E63E7014FF638B00A7BA42 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
+				CLANG_ENABLE_OBJC_ARC = "";
+				COPY_PHASE_STRIP = NO;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
+				GCC_ENABLE_OBJC_GC = unsupported;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_MISSING_PROTOTYPES = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				HEADER_SEARCH_PATHS = "$(HEADER_SEARCH_PATHS)";
+				MACOSX_DEPLOYMENT_TARGET = 10.6;
+				ONLY_ACTIVE_ARCH = YES;
+				OTHER_LDFLAGS = (
+					"$(OTHER_LDFLAGS)",
+					"$(SFML_SYSTEM)",
+					"$(SFML_WINDOW)",
+					"$(SFML_GRAPHICS)",
+					"$(SFML_AUDIO)",
+					"$(SFML_NETWORK)",
+				);
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = macosx;
+				SFML_AUDIO = "";
+				SFML_GRAPHICS = "$(SFML_LINK_PREFIX)sfml-graphics$(SFML_LINK_SUFFIX)";
+				SFML_LINK_DYLIBS_PREFIX = "-l";
+				SFML_LINK_DYLIBS_SUFFIX = "-d";
+				SFML_LINK_FRAMEWORKS_PREFIX = "-framework ";
+				SFML_LINK_FRAMEWORKS_SUFFIX = "";
+				SFML_LINK_PREFIX = "$(SFML_LINK_FRAMEWORKS_PREFIX)";
+				SFML_LINK_SUFFIX = "$(SFML_LINK_FRAMEWORKS_SUFFIX)";
+				SFML_NETWORK = "";
+				SFML_SYSTEM = "$(SFML_LINK_PREFIX)sfml-system$(SFML_LINK_SUFFIX)";
+				SFML_WINDOW = "$(SFML_LINK_PREFIX)sfml-window$(SFML_LINK_SUFFIX)";
+			};
+			name = Debug;
+		};
+		34E63E7114FF638B00A7BA42 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
+				CLANG_ENABLE_OBJC_ARC = "";
+				COPY_PHASE_STRIP = YES;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
+				GCC_ENABLE_OBJC_GC = unsupported;
+				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_MISSING_PROTOTYPES = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				HEADER_SEARCH_PATHS = "$(HEADER_SEARCH_PATHS)";
+				MACOSX_DEPLOYMENT_TARGET = 10.6;
+				OTHER_LDFLAGS = (
+					"$(OTHER_LDFLAGS)",
+					"$(SFML_SYSTEM)",
+					"$(SFML_WINDOW)",
+					"$(SFML_GRAPHICS)",
+					"$(SFML_AUDIO)",
+					"$(SFML_NETWORK)",
+				);
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = macosx;
+				SFML_AUDIO = "";
+				SFML_GRAPHICS = "$(SFML_LINK_PREFIX)sfml-graphics$(SFML_LINK_SUFFIX)";
+				SFML_LINK_DYLIBS_PREFIX = "-l";
+				SFML_LINK_DYLIBS_SUFFIX = "";
+				SFML_LINK_FRAMEWORKS_PREFIX = "-framework ";
+				SFML_LINK_FRAMEWORKS_SUFFIX = "";
+				SFML_LINK_PREFIX = "$(SFML_LINK_FRAMEWORKS_PREFIX)";
+				SFML_LINK_SUFFIX = "$(SFML_LINK_FRAMEWORKS_SUFFIX)";
+				SFML_NETWORK = "";
+				SFML_SYSTEM = "$(SFML_LINK_PREFIX)sfml-system$(SFML_LINK_SUFFIX)";
+				SFML_WINDOW = "$(SFML_LINK_PREFIX)sfml-window$(SFML_LINK_SUFFIX)";
+			};
+			name = Release;
+		};
+		34E63E7314FF638B00A7BA42 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COPY_PHASE_STRIP = NO;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_PRECOMPILE_PREFIX_HEADER = NO;
+				GCC_PREFIX_HEADER = "";
+				INFOPLIST_FILE = "window test/window test-Info.plist";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				WRAPPER_EXTENSION = app;
+			};
+			name = Debug;
+		};
+		34E63E7414FF638B00A7BA42 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COPY_PHASE_STRIP = YES;
+				GCC_PRECOMPILE_PREFIX_HEADER = NO;
+				GCC_PREFIX_HEADER = "";
+				INFOPLIST_FILE = "window test/window test-Info.plist";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				WRAPPER_EXTENSION = app;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		34E63E5314FF638A00A7BA42 /* Build configuration list for PBXProject "window test" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				34E63E7014FF638B00A7BA42 /* Debug */,
+				34E63E7114FF638B00A7BA42 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		34E63E7214FF638B00A7BA42 /* Build configuration list for PBXNativeTarget "window test" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				34E63E7314FF638B00A7BA42 /* Debug */,
+				34E63E7414FF638B00A7BA42 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 34E63E5014FF638A00A7BA42 /* Project object */;
+}

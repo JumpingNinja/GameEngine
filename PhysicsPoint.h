@@ -3,6 +3,7 @@
 
 #include <cmath>
 #include <list>
+#include <SFML/OpenGL.hpp>
 
 #include "Vec2.h"
 
@@ -141,6 +142,12 @@ class Point
 		 * @param dt Intervalle de temps
 		**/
 		void ApplyMomentum(float prevdt, float dt);
+	
+	
+	void glDraw();
+	static void DrawAll();
+	
+	static Point* GetNearest(const Vec2 &v);
 };
 
 #endif

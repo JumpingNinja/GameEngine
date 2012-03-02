@@ -93,3 +93,47 @@ void Point::ApplyMomentum(float prevdt, float dt)
 	myOldPosition = tmp;
 	myAcceleration = Vec2(0,0);
 }
+
+
+void Point::glDraw()
+{
+	int quality(16);
+	glPushMatrix();
+	glLoadIdentity();
+	glTranslatef(myPosition.x, myPosition.y, 0.f);
+	glBegin(GL_TRIANGLE_FAN);
+	glColor3f(1.f, 1.f, 1.f);
+	//centre du cercle
+	glVertex2f(0.f, 0.f);
+	for (int i=0; i<=quality; i++)
+		glVertex2f(myMass*4.0*cos((2.0*M_PI)*(i/static_cast<double>(quality))), myMass*4.0*sin((2.0*M_PI)*(i/static_cast<double>(quality))));
+	
+	glEnd();
+	glPopMatrix();
+}
+
+void Point::DrawAll()
+{
+	for (std::list<Point*>::iterator it=List.begin(); it!=List.end(); it++)
+		(*it)->glDraw();
+}
+
+
+
+Point* Point::GetNearest(const Vec2 &v)
+{
+	if (List.size()<=0)
+		return NULL;
+	
+	std::list<Point*>::iterator it(List.begin()); Point* P((*it));
+	float dis((P->GetPosition()-v).GetLength());
+	for (std::list<Point*>::iterator it=List.begin(); it!=List.end(); it++)
+	{
+		if (dis>((*it)->GetPosition()-v).GetLength())
+		{
+			dis=((*it)->GetPosition()-v).GetLength();
+			P=(*it);
+		}
+	}
+	return P;
+}

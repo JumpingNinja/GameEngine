@@ -1,4 +1,5 @@
 #include "PhysicsPolygon.h"
+#include <iostream>
 
 #define FORMINSEARCH 10000.0
 
@@ -12,14 +13,15 @@ Polygon::Polygon(int nb, unsigned int FLAGS, ...)
 	Vertices.reserve(nb);
 	Edges.reserve(nb);
 
-	if(FLAGS & FLAG_NULL)
+	if(FLAGS==FLAG_NULL)
 	{
 		for(int i = 0; i < nb; i++)
 			Vertices.push_back(va_arg(ap, Point*));
 		for(int i = 0; i < nb; i++)
 			Edges.push_back(new Rigid(Vertices[i], Vertices[(i+1)%nb]));
+		std::cout<<"Flag Null\n";
 
-	} else if(FLAGS & WITH_LENGTH) {
+	} else if(FLAGS==WITH_LENGTH) {
 		std::vector<float> Lengths;
 		Lengths.reserve(nb);
 		Edges.reserve(nb);

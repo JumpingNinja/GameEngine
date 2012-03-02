@@ -19,9 +19,11 @@ Polygon::Polygon(int nb, unsigned int FLAGS, ...)
 			Vertices.push_back(va_arg(ap, Point*));
 		for(int i = 0; i < nb; i++)
 			Edges.push_back(new Rigid(Vertices[i], Vertices[(i+1)%nb]));
-		std::cout<<"Flag Null\n";
+		InternContraints.reserve(nb*(nb-3));
+		for(int i = 0; i < nb - 1; i++)
+			InternContraints.push_back(new Rigid(Vertices[i], Vertices[(i+2)%nb]));
 
-	} else if(FLAGS==WITH_LENGTH) {
+	} else if(FLAGS & WITH_LENGTH) {
 		std::vector<float> Lengths;
 		Lengths.reserve(nb);
 		Edges.reserve(nb);
@@ -51,8 +53,6 @@ void Polygon::DeleteAll()
         delete (Polygon::List.front());
 }
 
-#include <iostream>
-
 void Polygon::HandleCollisions()
 {
 	CollisionInfo Info;
@@ -72,12 +72,12 @@ void Polygon::HandleCollisions()
 				// Recherche du point de collision (le plus proche de P2)
 				float distP2Point = FORMINSEARCH; // On recherche un minimum
 				float tmpDist;
-				for(unsigned int i = 0; i < (*ite)->Vertices.size(); i++)
+				for(unsigned int i = 0; i < Info.P2->Vertices.size(); i++)
 				{
-					tmpDist = Info.Normal*((*ite)->Vertices[i]->GetPosition()-(*ite2)->GetCenter());
+					tmpDist = Info.Normal*(Info.P2->Vertices[i]->GetPosition()-Info.P2->GetCenter());
 					if(tmpDist < distP2Point)
 						distP2Point = tmpDist,
-						Info.P = (*ite)->Vertices[i];
+						Info.P = Info.P2->Vertices[i];
 				}
 
 				// Réponse
@@ -112,12 +112,13 @@ void Polygon::HandleCollisions()
 
 Vec2 Polygon::GetCenter()
 {
-	Vec2 Center(0,0);
-	for(unsigned int i = 0; i < Vertices.size(); i++)
+	Vec2 Center(Vertices[0]->GetPosition());
+	for(unsigned int i = 1; i < Vertices.size(); i++)
 	{
-		Center += Vertices[i]->GetPosition();
+		Center += (Vertices[i]->GetPosition());
+		Center /= 2;
 	}
-	return Center/Vertices.size();
+	return Center;
 }
 
 CollisionInfo Polygon::Collide(Polygon* P)
@@ -149,7 +150,7 @@ CollisionInfo Polygon::Collide(Polygon* P)
 		if (Gap > 0) return CollisionInfo(); // Pas de collision
 
 		if(std::abs(Gap) < Info.Depth)
-			Info.Depth = Gap,
+			Info.Depth = std::abs(Gap),
 			Info.Normal = Axis,
 			Info.Edge = Edge;
 	}

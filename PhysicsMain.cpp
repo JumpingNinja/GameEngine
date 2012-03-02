@@ -6,6 +6,9 @@
 #include <SFML/Graphics.hpp>
 #include <SFML/OpenGL.hpp>
 
+#ifdef SFML_SYSTEM_MACOS
+	#include "ResourcePath.hpp"
+#endif
 /* Simple test de Physics.h */
 
 using namespace std;
@@ -23,6 +26,29 @@ int main(int argc, char** argv)
 	
 	sf::Clock vent;
 	float forceVent(1.f);
+	
+	
+	//Une texture OpenGL
+	GLuint texture=0;
+	{
+		sf::Image image;
+		#ifdef SFML_SYSTEM_MACOS
+		image.LoadFromFile(ResourcePath() + "cute.png");
+		#else
+		image.LoadFromFile("cute.png");
+		#endif
+		
+		glGenTextures(1, &texture);
+        glBindTexture(GL_TEXTURE_2D, texture);
+        gluBuild2DMipmaps(GL_TEXTURE_2D, GL_RGBA, image.GetWidth(), image.GetHeight(), GL_RGBA, GL_UNSIGNED_BYTE, image.GetPixelsPtr());
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
+			
+	}
+	
+	// Bind our texture
+    glEnable(GL_TEXTURE_2D);
+    glBindTexture(GL_TEXTURE_2D, texture);
 
 
 //	Point* P1 = new Point();
@@ -68,28 +94,30 @@ int main(int argc, char** argv)
 	new Rigid(P5, P7, sqrt(20000.f));
 	
 	//Un petit rideau :D
-	const int rows=12, colums=10;
+	const int rows=20, colums=20;
+	const float tailleCarre(15.f);
 	Point* pRideau[rows*colums]={NULL};
 	for (int i=0; i<colums; i++)
 		for (int j=0; j<rows; j++)
 		{
 			pRideau[i+j*colums]=new Point();
-			pRideau[i+j*colums]->SetPosition(Vec2(300.f+i*10.f, 30.f+j*10.f));
-			pRideau[i+j*colums]->SetMass(.5f);
+			pRideau[i+j*colums]->SetPosition(Vec2(300.f+i*tailleCarre, 30.f+j*tailleCarre));
+			pRideau[i+j*colums]->SetMass(0.15f);
 			//On fixe deux des points
-			if ((i==0 && j==0) || (i==colums-1 && j==0))
+			if ((i==0 && j==0) || (i==colums-1 && j==0) || (i==0  && j==rows-1) || (i==colums-1  && j==rows-1))
 				pRideau[i+j*colums]->SetFixe();
 			
 			//On fait le lien avec celui qui est à gauche est en haut
 			if (i>0) //on peut faire le lien sur la gauche
-				new Elastic(pRideau[i+j*colums-1], pRideau[i+j*colums]);
+				new Elastic(pRideau[i+j*colums-1], pRideau[i+j*colums], -1.f, 2.f);
 			if (j>0) //on peut faire le lien sur la gauche
-				new Elastic(pRideau[i+(j-1)*colums], pRideau[i+j*colums]);
-			
+				new Elastic(pRideau[i+(j-1)*colums], pRideau[i+j*colums], -1.f, 2.f);
+			/*
 			if (i==1 && j==0)
 				new Elastic(pRideau[i+j*colums-1], pRideau[i+j*colums], -1.f, 2.f);
 			if (i==0 && j==1)
 				new Elastic(pRideau[i+(j-1)*colums], pRideau[i+j*colums], -1.f, 2.f);
+			 */
 		}
 
 
@@ -144,12 +172,62 @@ int main(int argc, char** argv)
 
 		i++;
 		//while(i%10 > 0)
-			Physics::ForceAll(Vec2(forceVent, 6)), // Gravité
+			Physics::ForceAll(Vec2(forceVent, 1.f)), // Gravité
+			//Physics::ForceAll(Vec2(0.f, 0.f)),
 			Physics::Update(prevdt, dt), i++,
 			prevdt = dt; // Permet de gérer des framerate inconstants
 
 		//system("PAUSE");
 
+		//On affiche le rideau
+		glColor4f(1.f, 1.f, 1.f, 1.f);
+		glBegin(GL_QUADS);
+		
+		for (int i=0; i<colums; i++) //On fait de 4 en quatre ??
+			for (int j=0; j<rows; j++)
+			{
+				if (i>=colums-1 || j>=rows-1) continue;
+				
+				//left top
+				glTexCoord2f(static_cast<float>(i)/static_cast<float>(colums), static_cast<float>(j)/static_cast<float>(rows));
+				glVertex2f(pRideau[i+j*colums]->GetPosition().x, pRideau[i+j*colums]->GetPosition().y);
+				
+				//right top
+				glTexCoord2f(static_cast<float>(i+1)/static_cast<float>(colums), static_cast<float>(j)/static_cast<float>(rows));
+				glVertex2f(pRideau[i+j*colums+1]->GetPosition().x, pRideau[i+j*colums+1]->GetPosition().y);
+				
+				//right bottom
+				glTexCoord2f(static_cast<float>(i+1)/static_cast<float>(colums), static_cast<float>(j+1)/static_cast<float>(rows));
+				glVertex2f(pRideau[i+(j+1)*colums+1]->GetPosition().x, pRideau[i+(j+1)*colums+1]->GetPosition().y);
+				
+				//Left bottom
+				glTexCoord2f(static_cast<float>(i)/static_cast<float>(colums), static_cast<float>(j+1)/static_cast<float>(rows));
+				glVertex2f(pRideau[i+(j+1)*colums]->GetPosition().x, pRideau[i+(j+1)*colums]->GetPosition().y);
+			}
+		
+		glEnd();
+		
+		/*glBegin(GL_QUADS);
+		glColor4f(1.f, 1.f, 1.f, 1.f);
+		glTexCoord2f(0.f, 0.f); glVertex2f(pRideau[0]->GetPosition().x, pRideau[0]->GetPosition().y);
+		glTexCoord2f(1.f, 0.f); glVertex2f(pRideau[1]->GetPosition().x, pRideau[1]->GetPosition().y);
+		glTexCoord2f(1.f, 1.f); glVertex2f(pRideau[colums*1+1]->GetPosition().x, pRideau[colums*1+1]->GetPosition().y);
+		glTexCoord2f(0.f, 1.f); glVertex2f(pRideau[colums*1]->GetPosition().x, pRideau[colums*1]->GetPosition().y);
+		
+		glEnd();
+		 */
+		
+		/*
+		 glBegin(GL_QUADS);
+		 glColor4f(1.f, 1.f, 1.f, 1.f);
+		 glTexCoord2f(0.f, 0.f); glVertex2f(pRideau[0]->GetPosition().x, pRideau[0]->GetPosition().y);
+		 glTexCoord2f(1.f, 0.f); glVertex2f(pRideau[colums-1]->GetPosition().x, pRideau[colums-1]->GetPosition().y);
+		 glTexCoord2f(1.f, 1.f); glVertex2f(pRideau[colums*rows-1]->GetPosition().x, pRideau[colums*rows-1]->GetPosition().y);
+		 glTexCoord2f(0.f, 1.f); glVertex2f(pRideau[colums*(rows-1)]->GetPosition().x, pRideau[colums*(rows-1)]->GetPosition().y);
+		 
+		 glEnd();
+		 */
+		
 
 		Point::DrawAll();
 		Constraint::DrawAll();

@@ -50,6 +50,6 @@ void Elastic::Resolve()
 	// Normalisation du vecteur (pas besoin de GetNormalized(), on a déjà acLength)
 	Vect = Vect/acLength;
 
-	P2->ApplyForce(-Vect*factor/P2->GetMass()),
-	P1->ApplyForce(Vect*factor/P1->GetMass());
+	P2->ApplyForce(-Vect*factor/P1->GetMass()),
+	P1->ApplyForce(Vect*factor/P2->GetMass());
 }

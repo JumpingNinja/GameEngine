@@ -1,5 +1,7 @@
 #include "PhysicsPolygon.h"
 
+#define FORMINSEARCH 10000.0
+
 std::list<Polygon*> Polygon::List;
 
 Polygon::Polygon(int nb, unsigned int FLAGS, ...)
@@ -47,16 +49,89 @@ void Polygon::DeleteAll()
         delete (Polygon::List.front());
 }
 
-CollisionInfo Polygon::Collide(Polygon* P)
+void Polygon::HandleCollisions()
 {
 	CollisionInfo Info;
+	for(std::list<Polygon*>::iterator ite = Polygon::List.begin();
+		ite != Polygon::List.end(); ite++)
+	{
+		for(std::list<Polygon*>::iterator ite2 = ite;
+			ite2 != Polygon::List.end(); ite2++)
+		{
+			Info = (*ite)->Collide((*ite2));
+			if(Info.P1 != 0) // Il y a collision
+			{
+				if(Info.Normal*((*ite)->GetCenter() - (*ite2)->GetCenter()) < 0)
+					Info.Normal *= -1;
+
+				// Recherche du point de collision (le plus proche de P2)
+				float distP2Point = FORMINSEARCH; // On recherche un minimum
+				float tmpDist;
+				for(unsigned int i = 0; i < (*ite)->Vertices.size(); i++)
+				{
+					tmpDist = Info.Normal*((*ite)->Vertices[i]->GetPosition()-(*ite2)->GetCenter());
+					if(tmpDist < distP2Point)
+						distP2Point = tmpDist,
+						Info.P = (*ite)->Vertices[i];
+				}
+
+				// Réponse
+				Vec2 CollisionVector = Info.Normal*Info.Depth*0.5f;
+
+				Info.P->CorrectPosition(CollisionVector); // Du point
+
+				Vec2 PosE1 = Info.Edge->GetP1()->GetPosition();
+				Vec2 PosE2 = Info.Edge->GetP2()->GetPosition();
+
+				// Des points de la face
+				float PositionOnEdge; // Position du point sur la face
+				if(std::abs(PosE1.x - PosE2.x) > std::abs(PosE1.y - PosE2.y))
+					PositionOnEdge = (Info.P->GetPosition().x - CollisionVector.x
+					- PosE1.x)/(PosE2.x - PosE1.x);
+				else
+					PositionOnEdge = (Info.P->GetPosition().y - CollisionVector.y
+					- PosE1.y)/(PosE2.y - PosE1.y);
+
+				float CorrectionFactor = -1.0f/(PositionOnEdge*PositionOnEdge +
+						(1 - PositionOnEdge)*(1 - PositionOnEdge));
+
+				Info.Edge->GetP1()->CorrectPosition(CollisionVector*
+					CorrectionFactor*(1-PositionOnEdge));
+				Info.Edge->GetP2()->CorrectPosition(CollisionVector*
+					CorrectionFactor*PositionOnEdge);
+			}
+		}
+    }
+}
+
+Vec2 Polygon::GetCenter()
+{
+	Vec2 Center(0,0);
+	for(unsigned int i = 0; i < Vertices.size(); i++)
+	{
+		Center += Vertices[i]->GetPosition();
+	}
+	return Center/Vertices.size();
+}
+
+CollisionInfo Polygon::Collide(Polygon* P)
+{
 	Vec2 Axis;
+	Rigid* Edge;
+	CollisionInfo Info;
+	Info.P1 = this;
+	Info.P2 = P;
+	Info.Depth = FORMINSEARCH; // Pour le minimum
 	float Min, Max, MinP, MaxP, Gap; // Valeur des projections, distance
+
 	for(unsigned int i = 0; i < Edges.size() + P->Edges.size(); i++)
 	{
 		if(i < Edges.size())
-			Axis = Edges[i]->GetVector().GetNormalized();
-		else Axis = (*P)[i].GetVector().GetNormalized();
+			Edge = Edges[i];
+		else Edge = P->Edges[i - Edges.size()], Info.P1 = P, Info.P2 = this;
+		// P1 est toujours le polygone dont on teste la face
+
+		Axis = Edge->GetVector().GetPerpendicular().GetNormalized();
 
 		ProjectToAxis(Min, Max, Axis);
 		P->ProjectToAxis(MinP, MaxP, Axis);
@@ -64,7 +139,13 @@ CollisionInfo Polygon::Collide(Polygon* P)
 		if(Min < MinP)
 			Gap = MinP - Max;
 		else Gap = Min - MaxP;
-		if
+
+		if (Gap > 0) return CollisionInfo(); // Pas de collision
+
+		if(std::abs(Gap) < Info.Depth)
+			Info.Depth = Gap,
+			Info.Normal = Axis,
+			Info.Edge = Edge;
 	}
 	return Info;
 }

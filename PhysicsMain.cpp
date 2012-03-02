@@ -56,7 +56,7 @@ int main(int argc, char** argv)
 		cout << "\nLengths : P4P5 : " << (P4->GetPosition() - P5->GetPosition()).GetLength() << " P5P6 : " << (P5->GetPosition() - P6->GetPosition()).GetLength() << " P6P7 : " << (P6->GetPosition() - P7->GetPosition()).GetLength() << " P7P4 : " << (P7->GetPosition() - P4->GetPosition()).GetLength() << endl;
 
 		i++;
-		while(i%100 > 0)
+		while(i%10 > 0)
 			Physics::ForceAll(Vec2(0, 1)), // Gravité
 			Physics::Update(prevdt, dt), i++,
 			prevdt = dt; // Permet de gérer des framerate inconstants

@@ -11,25 +11,10 @@
 #define FLAG_NULL 0
 #define WITH_LENGTH 1
 
+class CollisionInfo;
+class Polygon;
 
-class CollisionInfo {
-	public:
-		float	Depth;
-		Vec2	Normal;
-		Rigid*	R;
-		Point*	P;
-
-		CollisionInfo() : Depth(0), Normal(0,0), R(0), P(0)
-		{
-		}
-
-		CollisionInfo(float D, Vec2 N, Rigid* R, Point* P) :
-			Depth(D), Normal(N), R(R), P(P)
-		{
-		}
-};
-
-/** @brief Décrit un polygone concave : Ensemble de points (Vertices)
+/** @brief Décrit un polygone convexe : Ensemble de points (Vertices)
  * reliés par les liaisons rigides (Edges).
  *
  **/
@@ -47,7 +32,7 @@ class Polygon
 		static void DeleteAll();
 		/** @brief Calcule et gère les collisions de tous les polygones
 		**/
-		static void CollideAll();
+		static void HandleCollisions();
 
 		/** @brief Construteur à partir de VPs et éventuelement de longueurs
 		 *
@@ -71,11 +56,35 @@ class Polygon
 		**/
 		~Polygon();
 
+		/// @brief Renvoi le centre du polygone
+		Vec2 GetCenter();
+
 		CollisionInfo Collide(Polygon* o);
 
 		void ProjectToAxis(float &Min, float &Max, Vec2 Axis);
 
 		Rigid& operator[](const unsigned int);
+};
+
+
+class CollisionInfo {
+	public:
+		Polygon*	P1;
+		Polygon*	P2;
+		float	Depth;
+		Vec2	Normal;
+		Rigid*	Edge;
+		Point*	P;
+
+		CollisionInfo() : P1(0), P2(0), Depth(0), Normal(0,0), Edge(0), P(0)
+		{
+		}
+
+		CollisionInfo(Polygon* P1, Polygon* P2, float D,
+						Vec2 N, Rigid* R, Point* P) :
+			P1(P1), P2(P2), Depth(D), Normal(N), Edge(R), P(P)
+		{
+		}
 };
 
 #endif

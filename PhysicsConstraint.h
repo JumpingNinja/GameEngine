@@ -23,8 +23,13 @@ class Constraint
 		/// @brief Applique la contrainte
 		virtual void Resolve() =0;
 
+		/// @brief Accesseur de P1
+		Point* GetP1() { return P1; }
+		/// @brief Accesseur de P2
+		Point* GetP2() { return P2; }
+
 		/// @brief Retourne le vecteur associé à la contrainte (dans le sens P1 vers P2)
-		Vec2 GetVector() { return P2->GetPosition() - P1->GetPosition(); }
+		Vec2 GetVector() { return (P2->GetPosition() - P1->GetPosition()); }
 };
 
 #endif

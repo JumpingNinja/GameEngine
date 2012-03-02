@@ -21,6 +21,7 @@ namespace Physics
 **/
 void Update(float prevdt, float dt)
 {
+	Polygon::HandleCollisions();
 	Rigid::ResolveAll(), // Les Rigid doivent être gérés avant les Elastic
 	Elastic::ResolveAll(),
 	Point::UpdateAll(prevdt, dt);

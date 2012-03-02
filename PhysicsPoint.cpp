@@ -41,7 +41,6 @@ void Point::DeleteAll()
 
 bool Point::SetPosition(Vec2 newPos, bool oldToo)
 {
-	//if(myFixe) return false;
 	myPosition = newPos;
 	if(oldToo) myOldPosition = newPos;
 	return true;
@@ -49,7 +48,7 @@ bool Point::SetPosition(Vec2 newPos, bool oldToo)
 
 bool Point::CorrectPosition(Vec2 add)
 {
-	//if(myFixe) return false;
+	if(myFixe) return false;
 	myPosition += add;
 	return true;
 }
@@ -107,7 +106,7 @@ void Point::glDraw()
 	glVertex2f(0.f, 0.f);
 	for (int i=0; i<=quality; i++)
 		glVertex2f(myMass*4.0*cos((2.0*M_PI)*(i/static_cast<double>(quality))), myMass*4.0*sin((2.0*M_PI)*(i/static_cast<double>(quality))));
-	
+
 	glEnd();
 	glPopMatrix();
 }
@@ -124,7 +123,7 @@ Point* Point::GetNearest(const Vec2 &v)
 {
 	if (List.size()<=0)
 		return NULL;
-	
+
 	std::list<Point*>::iterator it(List.begin()); Point* P((*it));
 	float dis((P->GetPosition()-v).GetLength());
 	for (std::list<Point*>::iterator it=List.begin(); it!=List.end(); it++)

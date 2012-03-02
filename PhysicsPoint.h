@@ -1,11 +1,12 @@
-#ifndef _VERLETPOINT_H_
-#define _VERLETPOINT_H_
+#ifndef _PHYSICSPOINT_H_
+#define _PHYSICSPOINT_H_
 
 #include <cmath>
 #include <list>
-#include <SFML/System/Vector2.hpp>
 
-/** @class VerletPoint
+#include "Vec2.h"
+
+/** @class Point
  * @brief Décrit une particule dans une approximation de Verlet
  *
  * Dans un premier temps, l'approximation de Verlet pose que la dérivée de
@@ -16,30 +17,30 @@
  * nulle. Une initilisation plus fine DOIT préciser une accélération initiale
  * valide (i.e. réaliste) pour une simulation précise.
 **/
-class VerletPoint
+class Point
 {
 	private:
-		sf::Vector2f myPosition; ///< Position actuelle
-		sf::Vector2f myOldPosition; ///< Ancienne position
-		sf::Vector2f myAcceleration; ///< Acceleration courante
-		// sf::Vector2f myOldAcceleration; ///< Pourrait être utilisé pour
+		Vec2	myPosition; ///< Position actuelle
+		Vec2	myOldPosition; ///< Ancienne position
+		Vec2	myAcceleration; ///< Acceleration courante
+		// Vec2 myOldAcceleration; ///< Pourrait être utilisé pour
 		// calculer la dérivée de l'accélération (approx. rang 3)
-		float myRadius; ///< Rayon, utilisé pour les collisions
-		float myMass; ///< Masse
-		float myBounce; ///< Coefficient de restitution
-		bool myFixe; ///< Détermine si le point est fixe ou non (ApplyForce n'aura alors aucun effet)
+		float	myRadius; ///< Rayon, utilisé pour les collisions
+		float	myMass; ///< Masse
+		float	myBounce; ///< Coefficient de restitution
+		bool	myFixe; ///< Détermine si le point est fixe ou non (ApplyForce n'aura alors aucun effet)
 
 	public:
 		/// @brief Constructeur par défaut
-		VerletPoint();
+		Point();
 
 		/// @brief Destructeur par défaut
-		~VerletPoint();
+		~Point();
 
-		/// @brief Liste des VerletPoint créés
-		static std::list<VerletPoint*> VPList;
+		/// @brief Liste des Point créés
+		static std::list<Point*> List;
 
-		/** @brief Appelle ApplyMomentum pour tout les VerletPoints
+		/** @brief Appelle ApplyMomentum pour tout les Points
 		 *
 		 * @param prevdt Intervalle de temps lors de la frame précédente
 		 * @param dt Intervalle de temps
@@ -51,28 +52,28 @@ class VerletPoint
 		 * Usage typique : Gravité
 		 * @param Force Force à appliquer
 		**/
-		static void ForceAll(sf::Vector2f Force);
+		static void ForceAll(Vec2 Force);
 
 		/// @brief Détruit tout les VP
 		static void DeleteAll();
 
 		/** @brief Accesseur de la position
 		 *
-		 * @return sf::Vector2f
+		 * @return Vec2
 		**/
-		sf::Vector2f GetPosition() { return myPosition; }
+		Vec2 GetPosition() { return myPosition; }
 
 		/** @brief Accesseur de l'ancienne position
 		 *
-		 * @return sf::Vector2f
+		 * @return Vec2
 		**/
-		sf::Vector2f GetOldPosition() { return myOldPosition; }
+		Vec2 GetOldPosition() { return myOldPosition; }
 
 		/** @brief Accesseur de l'accélération
 		 *
-		 * @return sf::Vector2f
+		 * @return Vec2
 		**/
-		sf::Vector2f GetAcceleration() { return myAcceleration; }
+		Vec2 GetAcceleration() { return myAcceleration; }
 
 		/** @brief Accesseur de la Masse
 		 *
@@ -95,20 +96,20 @@ class VerletPoint
 		 * @param oldToo Vrai si l'ancienne position doit être également changée
 		 * @return Vrai si la position a effectivement été changée, faux sinon
 		**/
-		bool SetPosition(sf::Vector2f newPos, bool oldToo = 1);
+		bool SetPosition(Vec2 newPos, bool oldToo = 1);
 
 		/** @brief Corrige la position actuelle par un vecteur
 		 *
 		 * @param add Vecteur à ajouter (déplacement)
 		 * @return Vrai si la position a effectivement été changée, faux sinon
 		**/
-		bool CorrectPosition(sf::Vector2f add);
+		bool CorrectPosition(Vec2 add);
 
 		/** @brief Mutateur de l'accélération
 		 *
 		 * @return Vrai si l'accélération effectivement été changée, faux sinon
 		**/
-		bool SetAcceleration(sf::Vector2f newAcc);
+		bool SetAcceleration(Vec2 newAcc);
 
 		/** @brief Mutateur du rayon
 		 *
@@ -132,18 +133,14 @@ class VerletPoint
 		 * @param threshold Permet d'outrepasser le seuil par défaut
 		 * @return Vrai si la force a été prise en compte
 		**/
-		bool ApplyForce(sf::Vector2f Force, float threshold = 0.1f);
+		bool ApplyForce(Vec2 Force, float threshold = 0.001f);
 
-		/** @brief Déplace la particule selon son momentum
+		/** @brief Déplace la particule selon son momentum et son acceleration
 		 *
 		 * @param prevdt Intervalle de temps lors de la frame précédente
 		 * @param dt Intervalle de temps
 		**/
 		void ApplyMomentum(float prevdt, float dt);
 };
-
-// A fouttre ailleurs, probablement
-inline float ComputeLength(sf::Vector2f v) { return sqrt(v.x*v.x + v.y*v.y); }
-inline sf::Vector2f Normalize(sf::Vector2f v) { return v/ComputeLength(v); }
 
 #endif

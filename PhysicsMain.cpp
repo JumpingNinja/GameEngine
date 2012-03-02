@@ -21,6 +21,9 @@ int main(int argc, char** argv)
 	glOrtho(0.0, 800.0, 600.0, 0.0, 0.0, 1.0);
 	glDisable(GL_DEPTH_TEST);
 	
+	sf::Clock vent;
+	float forceVent(1.f);
+	
 	
 	Point* P1 = new Point();
 	P1->SetPosition(Vec2(50, 50));
@@ -69,6 +72,31 @@ int main(int argc, char** argv)
 	new Rigid(P8, new Point(), 5);
 	new Rigid(P4, P6, sqrt(20000.f));
 	new Rigid(P5, P7, sqrt(20000.f));
+	
+	//Un petit rideau :D
+	const int rows=12, colums=10;
+	Point* pRideau[rows*colums]={NULL};
+	for (int i=0; i<colums; i++)
+		for (int j=0; j<rows; j++)
+		{
+			pRideau[i+j*colums]=new Point();
+			pRideau[i+j*colums]->SetPosition(Vec2(300.f+i*10.f, 30.f+j*10.f));
+			pRideau[i+j*colums]->SetMass(.5f);
+			//On fixe deux des points
+			if ((i==0 && j==0) || (i==colums-1 && j==0))
+				pRideau[i+j*colums]->SetFixe();
+			
+			//On fait le lien avec celui qui est à gauche est en haut
+			if (i>0) //on peut faire le lien sur la gauche
+				new Elastic(pRideau[i+j*colums-1], pRideau[i+j*colums]);
+			if (j>0) //on peut faire le lien sur la gauche
+				new Elastic(pRideau[i+(j-1)*colums], pRideau[i+j*colums]);
+			
+			if (i==1 && j==0)
+				new Elastic(pRideau[i+j*colums-1], pRideau[i+j*colums], -1.f, 2.f);
+			if (i==0 && j==1)
+				new Elastic(pRideau[i+(j-1)*colums], pRideau[i+j*colums], -1.f, 2.f);
+		}
 
 
 	int i = 0;
@@ -117,9 +145,12 @@ int main(int argc, char** argv)
 
 		 */
 		
+		if (vent.GetElapsedTime().AsSeconds()>=2.f)
+			forceVent=(rand()%100)/100.f, vent.Restart();
+		
 		i++;
 		//while(i%10 > 0)
-			Physics::ForceAll(Vec2(0, 1)), // Gravité
+			Physics::ForceAll(Vec2(forceVent, 6)), // Gravité
 			Physics::Update(prevdt, dt), i++,
 			prevdt = dt; // Permet de gérer des framerate inconstants
 

@@ -25,9 +25,9 @@ class Elastic : public Constraint
 		static void DeleteAll();
 
 		Elastic(Point* P1, Point* P2,
-						float Length = -1, float Spring = 1);
+						float Length = -1.f, float Spring = 1.f);
 		Elastic(Point &P1, Point &P2,
-						float Length = -1, float Spring = 1);
+						float Length = -1.f, float Spring = 1.f);
 		~Elastic();
 
 		/** @brief Applique la contrainte

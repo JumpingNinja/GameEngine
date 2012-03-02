@@ -49,14 +49,17 @@ void Polygon::DeleteAll()
         delete (Polygon::List.front());
 }
 
+#include <iostream>
+
 void Polygon::HandleCollisions()
 {
 	CollisionInfo Info;
 	for(std::list<Polygon*>::iterator ite = Polygon::List.begin();
 		ite != Polygon::List.end(); ite++)
 	{
-		for(std::list<Polygon*>::iterator ite2 = ite;
-			ite2 != Polygon::List.end(); ite2++)
+		std::list<Polygon*>::iterator ite2 = ite;
+		ite2++;
+		while(ite2 != Polygon::List.end())
 		{
 			Info = (*ite)->Collide((*ite2));
 			if(Info.P1 != 0) // Il y a collision
@@ -100,6 +103,7 @@ void Polygon::HandleCollisions()
 				Info.Edge->GetP2()->CorrectPosition(CollisionVector*
 					CorrectionFactor*PositionOnEdge);
 			}
+			ite2++;
 		}
     }
 }

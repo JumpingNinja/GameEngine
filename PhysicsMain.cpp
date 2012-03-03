@@ -170,7 +170,7 @@ int main(int argc, char** argv)
 				if(event.MouseButton.Button == sf::Mouse::Left)
 					delete MouseElastic,
 					MouseElastic = new Physics::Elastic(grab, Mouse, 1.f, 5.f);
-				if(event.MouseButton.Button == sf::Mouse::Middle)
+				if(event.MouseButton.Button == sf::Mouse::Middle || event.MouseButton.Button == sf::Mouse::XButton1)
 					(new Rectangle(25.f, 25.f))->GetTopLeft().SetPosition(Vec2(sf::Mouse::GetPosition(window).x, sf::Mouse::GetPosition(window).y));
 			}
 

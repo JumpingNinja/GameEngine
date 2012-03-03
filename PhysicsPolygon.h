@@ -38,6 +38,9 @@ class Polygon
 		**/
 		static void HandleCollisions();
 
+		/// @brief Constructeur par défaut, pour usage interne.
+		Polygon();
+
 		/** @brief Construteur à partir de VPs et éventuelement de longueurs
 		 *
 		 * La longueur des liens est déterminée par la position

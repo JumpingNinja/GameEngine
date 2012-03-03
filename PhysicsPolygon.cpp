@@ -8,6 +8,11 @@ namespace Physics
 
 std::list<Polygon*> Polygon::List;
 
+Polygon::Polygon()
+{
+	Polygon::List.push_back(this);
+}
+
 Polygon::Polygon(int nb, unsigned int FLAGS, ...)
 {
 	va_list ap;
@@ -22,7 +27,7 @@ Polygon::Polygon(int nb, unsigned int FLAGS, ...)
 			Vertices.push_back(va_arg(ap, Point*));
 		for(int i = 0; i < nb; i++)
 			Edges.push_back(new Rigid(Vertices[i], Vertices[(i+1)%nb]));
-		InternContraints.reserve(nb*(nb-3));
+		InternContraints.reserve(nb*(nb-3)); // Il en fait trop !
 		for(int i = 0; i < nb - 1; i++)
 			InternContraints.push_back(new Rigid(Vertices[i], Vertices[(i+2)%nb]));
 

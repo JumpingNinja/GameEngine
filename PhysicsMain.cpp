@@ -94,7 +94,8 @@ int main(int argc, char** argv)
 	new Rigid(P5, P7, sqrt(20000.f));
 	
 	//Un petit rideau :D
-	const int rows=20, colums=20;
+	const int rows=30, colums=30, cTimes(2);
+	bool cType(1);
 	const float tailleCarre(15.f);
 	Point* pRideau[rows*colums]={NULL};
 	for (int i=0; i<colums; i++)
@@ -102,16 +103,30 @@ int main(int argc, char** argv)
 		{
 			pRideau[i+j*colums]=new Point();
 			pRideau[i+j*colums]->SetPosition(Vec2(300.f+i*tailleCarre, 30.f+j*tailleCarre));
-			pRideau[i+j*colums]->SetMass(0.15f);
+			pRideau[i+j*colums]->SetMass(0.5f);
 			//On fixe deux des points
 			if ((i==0 && j==0) || (i==colums-1 && j==0) || (i==0  && j==rows-1) || (i==colums-1  && j==rows-1))
 				pRideau[i+j*colums]->SetFixe();
 			
 			//On fait le lien avec celui qui est à gauche est en haut
 			if (i>0) //on peut faire le lien sur la gauche
-				new Elastic(pRideau[i+j*colums-1], pRideau[i+j*colums], -1.f, 2.f);
+				for (int a=0; a<cTimes; a++)
+				{
+					if (cType)
+						new Elastic(pRideau[i+j*colums-1], pRideau[i+j*colums], -1.f, 2.f);
+					else
+						new Rigid(pRideau[i+j*colums-1], pRideau[i+j*colums]);
+				}
+			
 			if (j>0) //on peut faire le lien sur la gauche
-				new Elastic(pRideau[i+(j-1)*colums], pRideau[i+j*colums], -1.f, 2.f);
+				for (int a=0; a<cTimes; a++)
+				{
+					if (cType)
+						new Elastic(pRideau[i+(j-1)*colums], pRideau[i+j*colums], -1.f, 2.f);
+					else
+						new Rigid(pRideau[i+(j-1)*colums], pRideau[i+j*colums]);
+				}
+					
 			/*
 			if (i==1 && j==0)
 				new Elastic(pRideau[i+j*colums-1], pRideau[i+j*colums], -1.f, 2.f);
@@ -172,7 +187,7 @@ int main(int argc, char** argv)
 
 		i++;
 		//while(i%10 > 0)
-			Physics::ForceAll(Vec2(forceVent, 1.f)), // Gravité
+			Physics::ForceAll(Vec2(forceVent, 6.f)), // Gravité
 			//Physics::ForceAll(Vec2(0.f, 0.f)),
 			Physics::Update(prevdt, dt), i++,
 			prevdt = dt; // Permet de gérer des framerate inconstants
@@ -229,8 +244,8 @@ int main(int argc, char** argv)
 		 */
 		
 
-		Point::DrawAll();
-		Constraint::DrawAll();
+		//Point::DrawAll();
+		//Constraint::DrawAll();
 
 		window.Display();
 	}

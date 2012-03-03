@@ -27,7 +27,14 @@ void Elastic::ResolveAll()
 {
 	for(std::list<Elastic*>::iterator ite = Elastic::List.begin();
 		ite != Elastic::List.end(); ite++)
-		(*ite)->Resolve();
+		/*if ((*ite)->GetVector().GetLength()>10.f*(*ite)->myLength)
+		{
+			Elastic* E=(*ite);
+			ite--;
+			delete <#expression#>
+		}
+		else*/
+			(*ite)->Resolve();
 }
 
 void Elastic::DeleteAll()

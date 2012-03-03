@@ -92,8 +92,8 @@ int main(int argc, char** argv)
 
 	float taille_cubes = 50.f;
 	for(int i = 1; i < 10; i++)
-		new Polygon(4, FLAG_NULL, new Point(taille_cubes*i,taille_cubes*i, i), new Point(taille_cubes*i+taille_cubes,taille_cubes*i),
-					new Point(taille_cubes*i+taille_cubes,taille_cubes*i+taille_cubes), new Point(taille_cubes*i,taille_cubes*i+taille_cubes));
+		//new Polygon(4, FLAG_NULL, new Point(taille_cubes*i,taille_cubes*i, i), new Point(taille_cubes*i+taille_cubes,taille_cubes*i), new Point(taille_cubes*i+taille_cubes,taille_cubes*i+taille_cubes), new Point(taille_cubes*i,taille_cubes*i+taille_cubes));
+		new Rectangle(taille_cubes, taille_cubes, i, 1, 1, 1);
 
 
 	//Point* P8 = new Point();

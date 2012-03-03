@@ -11,6 +11,9 @@
 #define FLAG_NULL 0
 #define WITH_LENGTH 1
 
+namespace Physics
+{
+
 class CollisionInfo;
 class Polygon;
 
@@ -61,6 +64,9 @@ class Polygon
 		/// @brief Renvoi le centre du polygone
 		Vec2 GetCenter();
 
+		/// @brief Renvoi le centre de masse du polygone
+		Vec2 GetMassCenter();
+
 		CollisionInfo Collide(Polygon* o);
 
 		void ProjectToAxis(float &Min, float &Max, Vec2 Axis);
@@ -88,5 +94,7 @@ class CollisionInfo {
 		{
 		}
 };
+
+}
 
 #endif

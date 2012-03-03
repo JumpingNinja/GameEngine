@@ -4,6 +4,9 @@
 #include "PhysicsPoint.h"
 #include "PhysicsConstraint.h"
 
+namespace Physics
+{
+
 /** @class Rigid
  * @brief Lien rigide (fort) entre deux Points
  *
@@ -38,6 +41,10 @@ class Rigid : public Constraint
 		void Resolve(int iterations = 10);
 		/// @brief Replace les points pour qu'ils respectent la liaison
 		void Resolve();
+
+		void glDraw();
 };
+
+}
 
 #endif

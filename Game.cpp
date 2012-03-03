@@ -14,8 +14,6 @@
 #include "IniParser.hpp"
 #include "Trigger.h"
 
-#include "Verlet.h"
-
 void triggerFunc()
 {
 	std::cout<<"Trigger!!\n";

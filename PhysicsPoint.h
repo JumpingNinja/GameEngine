@@ -7,6 +7,9 @@
 
 #include "Vec2.h"
 
+namespace Physics
+{
+
 /** @class Point
  * @brief Décrit une particule dans une approximation de Verlet
  *
@@ -35,6 +38,15 @@ class Point
 		/// @brief Constructeur par défaut
 		Point();
 
+		/// @brief Constructeur par coordonnées
+		Point(float x, float y);
+
+		/// @brief Constructeur par coordonnées et masse
+		Point(float x, float y, float Mass);
+
+		/// @brief Constructeur par Vec2
+		Point(Vec2 Pos);
+
 		/// @brief Destructeur par défaut
 		~Point();
 
@@ -52,8 +64,9 @@ class Point
 		 *
 		 * Usage typique : Gravité
 		 * @param Force Force à appliquer
+		 * @param Mass Si true, la force est multipliée par la masse (Puisque l'on part du principe que l'on ne travaille pas dans le vide...)
 		**/
-		static void ForceAll(Vec2 Force);
+		static void ForceAll(Vec2 Force, bool Mass = 0);
 
 		/// @brief Détruit tout les VP
 		static void DeleteAll();
@@ -142,12 +155,14 @@ class Point
 		 * @param dt Intervalle de temps
 		**/
 		void ApplyMomentum(float prevdt, float dt);
-	
-	
+
+
 	void glDraw();
 	static void DrawAll();
-	
+
 	static Point* GetNearest(const Vec2 &v);
 };
+
+}
 
 #endif

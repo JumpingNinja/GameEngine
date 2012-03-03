@@ -12,7 +12,7 @@
 #endif
 /* Simple test de Physics.h */
 
-using namespace std;
+using namespace Physics;
 
 int main(int argc, char** argv)
 {
@@ -77,6 +77,8 @@ int main(int argc, char** argv)
 	Rigid* VR4 = new Rigid(P7, P4, 50);*/
 	Polygon* VP1 = new Polygon(4, WITH_LENGTH, P4, 100.f, P5, 100.f, P6, 100.f, P7, 100.f);
 	//Polygon* VP1 = new Polygon(4, FLAG_NULL, P4, P5, P6, P7);
+	new Rigid(P4, P6, sqrt(20000.f));
+	new Rigid(P5, P7, sqrt(20000.f));
 
 	Point* pLeftTop = new Point(), *pRightTop = new Point(), *pRightBottom = new Point(), *pLeftBottom = new Point();
 	pLeftTop->SetPosition(Vec2(300.f, 10.f));
@@ -85,14 +87,17 @@ int main(int argc, char** argv)
 	pRightBottom->SetPosition(Vec2(400.f, 110.f));
 
 	new Polygon(4, FLAG_NULL, pLeftTop, pRightTop, pRightBottom, pLeftBottom);
-	new Polygon(4, WITH_LENGTH, pLeftTop, 100.f, pRightTop, 100.f, pRightBottom, 100.f, pLeftBottom, 100.f);
-
+	//new Polygon(4, WITH_LENGTH, pLeftTop, 100.f, pRightTop, 100.f, pRightBottom, 100.f, pLeftBottom, 100.f);
 	new Rigid(pLeftTop, pRightBottom);// sqrt(20000.f));
 	new Rigid(pLeftBottom, pRightTop);// sqrt(20000.f));
 
+	float taille_cubes = 50.f;
+	for(int i = 1; i < 10; i++)
+		new Polygon(4, FLAG_NULL, new Point(taille_cubes*i,taille_cubes*i, i), new Point(taille_cubes*i+taille_cubes,taille_cubes*i),
+					new Point(taille_cubes*i+taille_cubes,taille_cubes*i+taille_cubes), new Point(taille_cubes*i,taille_cubes*i+taille_cubes));
+
+
 	//Point* P8 = new Point();
-	new Rigid(P4, P6, sqrt(20000.f));
-	new Rigid(P5, P7, sqrt(20000.f));
 
 	//Un petit rideau :D
 	const int rows=40, colums=40;
@@ -103,16 +108,16 @@ int main(int argc, char** argv)
 		{
 			pRideau[i+j*colums]=new Point();
 			pRideau[i+j*colums]->SetPosition(Vec2(300.f+i*tailleCarre, 30.f+j*tailleCarre));
-			pRideau[i+j*colums]->SetMass(0.15f);
+			pRideau[i+j*colums]->SetMass(0.01f);
 			//On fixe deux des points
 			if ((i==0 && j==0) || (i==colums-1 && j==0) || (i==0  && j==rows-1) || (i==colums-1  && j==rows-1))
 				pRideau[i+j*colums]->SetFixe();
 
 			//On fait le lien avec celui qui est à gauche est en haut
 			if (i>0) //on peut faire le lien sur la gauche
-				new Elastic(pRideau[i+j*colums-1], pRideau[i+j*colums], -1.f, 2.f);
+				new Elastic(pRideau[i+j*colums-1], pRideau[i+j*colums], -1.f, 10.f);
 			if (j>0) //on peut faire le lien sur la gauche
-				new Elastic(pRideau[i+(j-1)*colums], pRideau[i+j*colums], -1.f, 2.f);
+				new Elastic(pRideau[i+(j-1)*colums], pRideau[i+j*colums], -1.f, 10.f);
 			/*
 			if (i==1 && j==0)
 				new Elastic(pRideau[i+j*colums-1], pRideau[i+j*colums], -1.f, 2.f);
@@ -125,7 +130,9 @@ int main(int argc, char** argv)
 	int i = 0;
 	float prevdt = 0.1, dt = 0.1;
 
-	Point *grab=NULL;
+	Point *grab = NULL;
+	Elastic* MouseElastic = NULL;
+	Point* Mouse = new Point();
 
 	while(window.IsOpen())
 	{
@@ -143,13 +150,26 @@ int main(int argc, char** argv)
 			// Adjust the viewport when the window is resized
             if (event.Type == sf::Event::Resized)
                 glViewport(0, 0, event.Size.Width, event.Size.Height);
+
 			if (event.Type == sf::Event::MouseButtonPressed)
-				grab=Point::GetNearest(Vec2(sf::Mouse::GetPosition(window).x, sf::Mouse::GetPosition(window).y) );
+			{
+				grab=Point::GetNearest(Vec2(sf::Mouse::GetPosition(window).x, sf::Mouse::GetPosition(window).y));
+				if(event.MouseButton.Button == sf::Mouse::Left)
+					delete MouseElastic,
+					MouseElastic = new Physics::Elastic(grab, Mouse, 1.f, 5.f);
+				if(event.MouseButton.Button == sf::Mouse::Right)
+					grab->SetPosition(Vec2(sf::Mouse::GetPosition(window).x, sf::Mouse::GetPosition(window).y));
+			}
+
 
 		}
 
-		if (sf::Mouse::IsButtonPressed(sf::Mouse::Left) && grab!=NULL)
+		if (sf::Mouse::IsButtonPressed(sf::Mouse::Right) && grab!=NULL)
 			grab->SetPosition(Vec2(sf::Mouse::GetPosition(window).x, sf::Mouse::GetPosition(window).y));
+
+		if (sf::Mouse::IsButtonPressed(sf::Mouse::Left))
+				Mouse->SetPosition(Vec2(sf::Mouse::GetPosition(window).x, sf::Mouse::GetPosition(window).y));
+		else if(MouseElastic != NULL) delete MouseElastic, MouseElastic = NULL;
 
 		glClear(GL_COLOR_BUFFER_BIT); //On efface le fond. Color car on est en 2D
 		glClearColor(0.0f, 0.f, 0.f, 1.f); //Ici optionnel car par défaut couleur est rouge
@@ -173,7 +193,8 @@ int main(int argc, char** argv)
 
 		//i++;
 		//while(i%10 > 0)
-			Physics::ForceAll(Vec2(forceVent, 1.f)), // Gravité
+			Physics::ForceAll(Vec2(forceVent, 0.f)), // Vent
+			Physics::ForceAll(Vec2(0.f, 9.f), true), // Gravité
 			//Physics::ForceAll(Vec2(0.f, 0.f)),
 			Physics::Update(prevdt, dt), i++,
 			prevdt = dt; // Permet de gérer des framerate inconstants

@@ -4,6 +4,9 @@
 #include "PhysicsPoint.h"
 #include "PhysicsConstraint.h"
 
+namespace Physics
+{
+
 /** @class Elastic
  * @brief Lien élastique entre deux Points
  *
@@ -34,6 +37,10 @@ class Elastic : public Constraint
 		*
 		**/
 		void Resolve();
+
+		void glDraw();
 };
+
+}
 
 #endif

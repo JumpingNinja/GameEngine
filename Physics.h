@@ -27,7 +27,17 @@ void Update(float prevdt, float dt)
 	Rigid::ResolveAll(), // Les Rigid doivent être gérés avant les Elastic
 	Elastic::ResolveAll(),
 	Point::UpdateAll(prevdt, dt);
-
+	for(std::list<Point*>::iterator it = Point::List.begin(); it != Point::List.end(); it++)
+	{
+		if((*it)->GetPosition().x > 800)
+			(*it)->SetPosition(Vec2(800.f, (*it)->GetPosition().y));
+		if((*it)->GetPosition().x < 0)
+			(*it)->SetPosition(Vec2(0.f, (*it)->GetPosition().y));
+		if((*it)->GetPosition().y > 600)
+			(*it)->SetPosition(Vec2((*it)->GetPosition().x, 600.f));
+		if((*it)->GetPosition().y < 0)
+			(*it)->SetPosition(Vec2((*it)->GetPosition().x, 0.f));
+	}
 }
 
 void DeleteAll()
@@ -38,7 +48,7 @@ void DeleteAll()
 	Point::DeleteAll();
 }
 
-inline void ForceAll(Vec2 V) { Point::ForceAll(V); }
+ void ForceAll(Vec2 V, bool Mass = 0) { Point::ForceAll(V, Mass); }
 
 }
 /// @}

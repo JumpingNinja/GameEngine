@@ -3,6 +3,10 @@
 
 #include "PhysicsPoint.h"
 
+
+namespace Physics
+{
+
 /** @class Constraint
  * @brief Lien entre deux Points
  *
@@ -31,9 +35,11 @@ class Constraint
 
 		/// @brief Retourne le vecteur associé à la contrainte (dans le sens P1 vers P2)
 		Vec2 GetVector() { return (P2->GetPosition() - P1->GetPosition()); }
-	
-	void glDraw();
+
+	virtual void glDraw() =0;
 	static void DrawAll();
 };
+
+}
 
 #endif

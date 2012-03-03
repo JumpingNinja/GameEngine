@@ -3,6 +3,9 @@
 
 #define FORMINSEARCH 10000.0
 
+namespace Physics
+{
+
 std::list<Polygon*> Polygon::List;
 
 Polygon::Polygon(int nb, unsigned int FLAGS, ...)
@@ -115,8 +118,20 @@ Vec2 Polygon::GetCenter()
 	Vec2 Center(Vertices[0]->GetPosition());
 	for(unsigned int i = 1; i < Vertices.size(); i++)
 	{
-		Center += (Vertices[i]->GetPosition());
-		Center /= 2;
+		Center += Vertices[i]->GetPosition();
+	}
+	return Center/Vertices.size();
+}
+
+Vec2 Polygon::GetMassCenter()
+{
+	float Mass = Vertices[0]->GetMass();
+	Vec2 Center(Vertices[0]->GetPosition());
+	for(unsigned int i = 1; i < Vertices.size(); i++)
+	{
+		Center = (Vertices[i]->GetPosition()*Vertices[i]->GetMass()
+					+ Center*Mass)/(Mass + Vertices[i]->GetMass());
+		Mass += Vertices[i]->GetMass();
 	}
 	return Center;
 }
@@ -171,4 +186,6 @@ void Polygon::ProjectToAxis(float &Min, float &Max, Vec2 Axis)
 Rigid& Polygon::operator[](const unsigned int i)
 {
 	return *Edges[i];
+}
+
 }

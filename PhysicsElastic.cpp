@@ -1,5 +1,8 @@
 #include "PhysicsElastic.h"
 
+namespace Physics
+{
+
 std::list<Elastic*> Elastic::List;
 
 Elastic::Elastic(Point* P1, Point* P2,
@@ -47,9 +50,28 @@ void Elastic::Resolve()
 	// Loi de Hooke
 	float factor = mySpring*(acLength - myLength);
 
+	// Rapport entre les masses : Si !=0.5, l'un des points sera moins enclin à bouger
+	float MassFactor = P1->GetMass()/(P1->GetMass()+P2->GetMass());
+
 	// Normalisation du vecteur (pas besoin de GetNormalized(), on a déjà acLength)
 	Vect = Vect/acLength;
 
-	P2->ApplyForce(-Vect*factor/P1->GetMass()),
-	P1->ApplyForce(Vect*factor/P2->GetMass());
+	// Si l'un des points est fixe, toute la force est appliquée à l'autre
+	P2->ApplyForce(-Vect*factor*(P1->IsFixe()?MassFactor*1:1)),
+	P1->ApplyForce(Vect*factor*(P1->IsFixe()?(1-MassFactor):1));
+}
+
+void Elastic::glDraw()
+{
+	glPushMatrix();
+	glLoadIdentity();
+	glBegin(GL_LINES);
+	// Plus la contraite est forte, plus le lien est rouge
+	glColor3f(std::abs(myLength - GetVector().GetLength())*mySpring*0.5f/myLength, 0.f, 0.f);
+	glVertex2f(P1->GetPosition().x, P1->GetPosition().y);
+	glVertex2f(P2->GetPosition().x, P2->GetPosition().y);
+	glEnd();
+	glPopMatrix();
+}
+
 }

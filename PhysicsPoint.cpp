@@ -1,9 +1,48 @@
 #include "PhysicsPoint.h"
 
+namespace Physics
+{
+
 std::list<Point*> Point::List;
 
 Point::Point() :
 	myPosition(0, 0),
+	myOldPosition(myPosition), // Vitesse nulle à la création
+	myAcceleration(0, 0), // Accélération nulle à la création
+	myRadius(0),
+	myMass(1),
+	myBounce(0),
+	myFixe(0)
+{
+	Point::List.push_back(this);
+}
+
+Point::Point(float x, float y) :
+	myPosition(x, y),
+	myOldPosition(myPosition), // Vitesse nulle à la création
+	myAcceleration(0, 0), // Accélération nulle à la création
+	myRadius(0),
+	myMass(1),
+	myBounce(0),
+	myFixe(0)
+{
+	Point::List.push_back(this);
+}
+
+Point::Point(float x, float y, float Mass) :
+	myPosition(x, y),
+	myOldPosition(myPosition), // Vitesse nulle à la création
+	myAcceleration(0, 0), // Accélération nulle à la création
+	myRadius(0),
+	myMass(Mass),
+	myBounce(0),
+	myFixe(0)
+{
+	Point::List.push_back(this);
+}
+
+Point::Point(Vec2 Pos) :
+	myPosition(Pos),
 	myOldPosition(myPosition), // Vitesse nulle à la création
 	myAcceleration(0, 0), // Accélération nulle à la création
 	myRadius(0),
@@ -26,11 +65,11 @@ void Point::UpdateAll(float prevdt, float dt)
 		(*ite)->ApplyMomentum(prevdt, dt);
 }
 
-void Point::ForceAll(Vec2 Force)
+void Point::ForceAll(Vec2 Force, bool Mass)
 {
 	for(std::list<Point*>::iterator ite = Point::List.begin();
 		ite != Point::List.end(); ite++)
-		(*ite)->ApplyForce(Force);
+		(*ite)->ApplyForce(Force*((Mass)?(*ite)->GetMass():1.f));
 }
 
 void Point::DeleteAll()
@@ -87,6 +126,7 @@ void Point::ApplyMomentum(float prevdt, float dt)
 {
 	//if(myFixe) return;
 	Vec2 tmp = myPosition;
+	//            Dissipation d'énergie, dépend du milieu
 	myPosition += 0.99f*((myPosition - myOldPosition)*(dt/prevdt)) // Inertie
 	 + myAcceleration*dt*dt; // Accélération
 	myOldPosition = tmp;
@@ -101,11 +141,13 @@ void Point::glDraw()
 	glLoadIdentity();
 	glTranslatef(myPosition.x, myPosition.y, 0.f);
 	glBegin(GL_TRIANGLE_FAN);
-	glColor3f(1.f, 1.f, 1.f);
 	//centre du cercle
 	glVertex2f(0.f, 0.f);
 	for (int i=0; i<=quality; i++)
+	{
+		(myFixe) ? glColor3f(1.f, 0.2f, 0.2f) : glColor3f(1.f, 1.f, 1.f);
 		glVertex2f(myMass*4.0*cos((2.0*M_PI)*(i/static_cast<double>(quality))), myMass*4.0*sin((2.0*M_PI)*(i/static_cast<double>(quality))));
+	}
 
 	glEnd();
 	glPopMatrix();
@@ -135,4 +177,6 @@ Point* Point::GetNearest(const Vec2 &v)
 		}
 	}
 	return P;
+}
+
 }

@@ -1,5 +1,8 @@
 #include "PhysicsRigid.h"
 
+namespace Physics
+{
+
 std::list<Rigid*> Rigid::List;
 
 Rigid::Rigid(Point* P1, Point* P2,
@@ -64,3 +67,16 @@ void Rigid::Resolve(int iterations)
 	}
 }
 
+void Rigid::glDraw()
+{
+	glPushMatrix();
+	glLoadIdentity();
+	glBegin(GL_LINES);
+	glColor3f(0.f, 0.f, 1.f);
+	glVertex2f(P1->GetPosition().x, P1->GetPosition().y);
+	glVertex2f(P2->GetPosition().x, P2->GetPosition().y);
+	glEnd();
+	glPopMatrix();
+}
+
+}

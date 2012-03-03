@@ -72,7 +72,7 @@ class Polygon
 
 		CollisionInfo Collide(Polygon* o);
 
-		void ProjectToAxis(float &Min, float &Max, Vec2 Axis);
+		void ProjectToAxis(float &Min, float &Max, const Vec2 Axis);
 
 		Rigid& operator[](const unsigned int);
 };

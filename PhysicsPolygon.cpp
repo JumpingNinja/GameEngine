@@ -159,6 +159,9 @@ CollisionInfo Polygon::Collide(Polygon* P)
 		else Edge = P->Edges[i - Edges.size()], Info.P1 = P, Info.P2 = this;
 		// P1 est toujours le polygone dont on teste la face
 
+        // Si la face est "nulle", on n'essaye pas de la tester !
+        if(Edge->GetVector() == Vec2(0.f, 0.f)) continue;
+
 		Axis = Edge->GetVector().GetPerpendicular().GetNormalized();
 
 		ProjectToAxis(Min, Max, Axis);
@@ -168,25 +171,23 @@ CollisionInfo Polygon::Collide(Polygon* P)
 			Gap = MinP - Max;
 		else Gap = Min - MaxP;
 
-		if (Gap >= 0) return CollisionInfo(); // Pas de collision
+		if (Gap > 0) return CollisionInfo(); // Pas de collision
 
 		if(std::abs(Gap) < Info.Depth)
 			Info.Depth = std::abs(Gap),
 			Info.Normal = Axis,
 			Info.Edge = Edge;
+
+	    if(Info.Edge == NULL)
+            std::cout << "Min Max MinP MaxP Gap : " << Min << " " << Max << " " << MinP << " " << MaxP << " " << Gap << std::endl;
 	}
 
-	// DEBUG
-	if(Info.Edge == NULL)
-	{
-	    std::cout << "Info - P1 : " << Info.P1 << " P2 : " << Info.P2 << std::endl;
-	}
-	assert(Info.Edge != NULL);
-
-	return Info;
+	// Gère le cas où le polygone se résume à un point (Tout ses points ont les mêmes coordonnées
+	if(Info.Edge == NULL) return CollisionInfo();
+	else return Info;
 }
 
-void Polygon::ProjectToAxis(float &Min, float &Max, Vec2 Axis)
+void Polygon::ProjectToAxis(float &Min, float &Max, const Vec2 Axis)
 {
 	Min = Max = Vertices[0]->GetPosition()*Axis;
 

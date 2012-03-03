@@ -167,6 +167,8 @@ int main(int argc, char** argv)
                     case sf::Keyboard::R:
                         (new Rectangle(25.f, 25.f))->GetTopLeft().SetPosition(Vec2(sf::Mouse::GetPosition(window).x, sf::Mouse::GetPosition(window).y));
                         break;
+                    default:
+                        break;
                 }
 
 

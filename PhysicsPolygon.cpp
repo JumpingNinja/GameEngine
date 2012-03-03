@@ -1,7 +1,7 @@
 #include "PhysicsPolygon.h"
 #include <iostream>
 
-#define FORMINSEARCH 10000.0
+#define FORMINSEARCH 10000000.0
 
 namespace Physics
 {
@@ -140,7 +140,8 @@ Vec2 Polygon::GetMassCenter()
 	}
 	return Center;
 }
-
+#include <assert.h>
+#include <iostream>
 CollisionInfo Polygon::Collide(Polygon* P)
 {
 	Vec2 Axis;
@@ -167,13 +168,21 @@ CollisionInfo Polygon::Collide(Polygon* P)
 			Gap = MinP - Max;
 		else Gap = Min - MaxP;
 
-		if (Gap > 0) return CollisionInfo(); // Pas de collision
+		if (Gap >= 0) return CollisionInfo(); // Pas de collision
 
 		if(std::abs(Gap) < Info.Depth)
 			Info.Depth = std::abs(Gap),
 			Info.Normal = Axis,
 			Info.Edge = Edge;
 	}
+
+	// DEBUG
+	if(Info.Edge == NULL)
+	{
+	    std::cout << "Info - P1 : " << Info.P1 << " P2 : " << Info.P2 << std::endl;
+	}
+	assert(Info.Edge != NULL);
+
 	return Info;
 }
 

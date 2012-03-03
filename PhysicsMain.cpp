@@ -158,8 +158,18 @@ int main(int argc, char** argv)
 				window.Close();
 
 			// Escape pressed : exit
-			if (event.Type == sf::Event::KeyPressed && event.Key.Code == sf::Keyboard::Escape)
-				window.Close();
+			if (event.Type == sf::Event::KeyPressed)
+                switch (event.Key.Code)
+                {
+                    case sf::Keyboard::Escape:
+                        window.Close();
+                        break;
+                    case sf::Keyboard::R:
+                        (new Rectangle(25.f, 25.f))->GetTopLeft().SetPosition(Vec2(sf::Mouse::GetPosition(window).x, sf::Mouse::GetPosition(window).y));
+                        break;
+                }
+
+
 			// Adjust the viewport when the window is resized
             if (event.Type == sf::Event::Resized)
                 glViewport(0, 0, event.Size.Width, event.Size.Height);

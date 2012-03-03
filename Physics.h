@@ -24,10 +24,6 @@ namespace Physics
 **/
 void Update(float prevdt, float dt)
 {
-	Polygon::HandleCollisions();
-	Rigid::ResolveAll(), // Les Rigid doivent être gérés avant les Elastic
-	Elastic::ResolveAll(),
-	Point::UpdateAll(prevdt, dt);
 	for(std::list<Point*>::iterator it = Point::List.begin(); it != Point::List.end(); it++)
 	{
 		if((*it)->GetPosition().x > 800)
@@ -39,6 +35,10 @@ void Update(float prevdt, float dt)
 		if((*it)->GetPosition().y < 0)
 			(*it)->SetPosition(Vec2((*it)->GetPosition().x, 0.f));
 	}
+	Polygon::HandleCollisions();
+	Rigid::ResolveAll(), // Les Rigid doivent être gérés avant les Elastic
+	Elastic::ResolveAll(),
+	Point::UpdateAll(prevdt, dt);
 }
 
 void DeleteAll()

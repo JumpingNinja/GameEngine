@@ -2,7 +2,9 @@
 #define _PHYSICS_H_
 
 /** @defgroup Physics
- * @todo Implémenter SAT
+ * @todo Vérifier collisions
+ * @todo Collisions d'objets élastiques ?
+ * @todo Séparer l'affichage
  * @{
 **/
 #include "PhysicsPoint.h"

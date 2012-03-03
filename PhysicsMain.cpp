@@ -23,11 +23,11 @@ int main(int argc, char** argv)
 	glLoadIdentity();
 	glOrtho(0.0, 800.0, 600.0, 0.0, 0.0, 1.0);
 	glDisable(GL_DEPTH_TEST);
-	
+
 	sf::Clock vent;
 	float forceVent(1.f);
-	
-	
+
+
 	//Une texture OpenGL
 	GLuint texture=0;
 	{
@@ -37,15 +37,15 @@ int main(int argc, char** argv)
 		#else
 		image.LoadFromFile("cute.png");
 		#endif
-		
+
 		glGenTextures(1, &texture);
         glBindTexture(GL_TEXTURE_2D, texture);
         gluBuild2DMipmaps(GL_TEXTURE_2D, GL_RGBA, image.GetWidth(), image.GetHeight(), GL_RGBA, GL_UNSIGNED_BYTE, image.GetPixelsPtr());
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
-			
+
 	}
-	
+
 	// Bind our texture
     glEnable(GL_TEXTURE_2D);
     glBindTexture(GL_TEXTURE_2D, texture);
@@ -84,15 +84,15 @@ int main(int argc, char** argv)
 	pRightBottom->SetPosition(Vec2(400.f, 110.f));
 
 	new Polygon(4, FLAG_NULL, pLeftTop, pRightTop, pRightBottom, pLeftBottom);
-	//new Polygon(4, WITH_LENGTH, pLeftTop, 100.f, pRightTop, 100.f, pRightBottom, 100.f, pLeftBottom, 100.f);
+	new Polygon(4, WITH_LENGTH, pLeftTop, 100.f, pRightTop, 100.f, pRightBottom, 100.f, pLeftBottom, 100.f);
 
-	//new Rigid(pLeftTop, pRightBottom);// sqrt(20000.f));
-	//new Rigid(pLeftBottom, pRightTop);// sqrt(20000.f));
+	new Rigid(pLeftTop, pRightBottom);// sqrt(20000.f));
+	new Rigid(pLeftBottom, pRightTop);// sqrt(20000.f));
 
 	//Point* P8 = new Point();
 	new Rigid(P4, P6, sqrt(20000.f));
 	new Rigid(P5, P7, sqrt(20000.f));
-	
+
 	//Un petit rideau :D
 	const int rows=30, colums=30, cTimes(2);
 	bool cType(1);
@@ -107,7 +107,7 @@ int main(int argc, char** argv)
 			//On fixe deux des points
 			if ((i==0 && j==0) || (i==colums-1 && j==0) || (i==0  && j==rows-1) || (i==colums-1  && j==rows-1))
 				pRideau[i+j*colums]->SetFixe();
-			
+
 			//On fait le lien avec celui qui est à gauche est en haut
 			if (i>0) //on peut faire le lien sur la gauche
 				for (int a=0; a<cTimes; a++)
@@ -158,7 +158,7 @@ int main(int argc, char** argv)
             if (event.Type == sf::Event::Resized)
                 glViewport(0, 0, event.Size.Width, event.Size.Height);
 			if (event.Type == sf::Event::MouseButtonPressed)
-				std::cout<<"Grab!\n", grab=Point::GetNearest(Vec2(sf::Mouse::GetPosition(window).x, sf::Mouse::GetPosition(window).y) );
+				grab=Point::GetNearest(Vec2(sf::Mouse::GetPosition(window).x, sf::Mouse::GetPosition(window).y) );
 
 		}
 
@@ -181,11 +181,11 @@ int main(int argc, char** argv)
 		cout << "\nLengths : P4P5 : " << (P4->GetPosition() - P5->GetPosition()).GetLength() << " P5P6 : " << (P5->GetPosition() - P6->GetPosition()).GetLength() << " P6P7 : " << (P6->GetPosition() - P7->GetPosition()).GetLength() << " P7P4 : " << (P7->GetPosition() - P4->GetPosition()).GetLength() << endl;
 
 		 */
-		
-		if (vent.GetElapsedTime().AsSeconds()>=2.f)
-			forceVent=(rand()%100)/100.f, vent.Restart();
 
-		i++;
+		if (vent.GetElapsedTime().AsSeconds()>=2.f)
+			forceVent=(forceVent>0 ? -1 : 1)*(rand()%400)/100.f, vent.Restart();
+
+		//i++;
 		//while(i%10 > 0)
 			Physics::ForceAll(Vec2(forceVent, 6.f)), // Gravité
 			//Physics::ForceAll(Vec2(0.f, 0.f)),
@@ -197,41 +197,41 @@ int main(int argc, char** argv)
 		//On affiche le rideau
 		glColor4f(1.f, 1.f, 1.f, 1.f);
 		glBegin(GL_QUADS);
-		
+
 		for (int i=0; i<colums; i++) //On fait de 4 en quatre ??
 			for (int j=0; j<rows; j++)
 			{
 				if (i>=colums-1 || j>=rows-1) continue;
-				
+
 				//left top
 				glTexCoord2f(static_cast<float>(i)/static_cast<float>(colums), static_cast<float>(j)/static_cast<float>(rows));
 				glVertex2f(pRideau[i+j*colums]->GetPosition().x, pRideau[i+j*colums]->GetPosition().y);
-				
+
 				//right top
 				glTexCoord2f(static_cast<float>(i+1)/static_cast<float>(colums), static_cast<float>(j)/static_cast<float>(rows));
 				glVertex2f(pRideau[i+j*colums+1]->GetPosition().x, pRideau[i+j*colums+1]->GetPosition().y);
-				
+
 				//right bottom
 				glTexCoord2f(static_cast<float>(i+1)/static_cast<float>(colums), static_cast<float>(j+1)/static_cast<float>(rows));
 				glVertex2f(pRideau[i+(j+1)*colums+1]->GetPosition().x, pRideau[i+(j+1)*colums+1]->GetPosition().y);
-				
+
 				//Left bottom
 				glTexCoord2f(static_cast<float>(i)/static_cast<float>(colums), static_cast<float>(j+1)/static_cast<float>(rows));
 				glVertex2f(pRideau[i+(j+1)*colums]->GetPosition().x, pRideau[i+(j+1)*colums]->GetPosition().y);
 			}
-		
+
 		glEnd();
-		
+
 		/*glBegin(GL_QUADS);
 		glColor4f(1.f, 1.f, 1.f, 1.f);
 		glTexCoord2f(0.f, 0.f); glVertex2f(pRideau[0]->GetPosition().x, pRideau[0]->GetPosition().y);
 		glTexCoord2f(1.f, 0.f); glVertex2f(pRideau[1]->GetPosition().x, pRideau[1]->GetPosition().y);
 		glTexCoord2f(1.f, 1.f); glVertex2f(pRideau[colums*1+1]->GetPosition().x, pRideau[colums*1+1]->GetPosition().y);
 		glTexCoord2f(0.f, 1.f); glVertex2f(pRideau[colums*1]->GetPosition().x, pRideau[colums*1]->GetPosition().y);
-		
+
 		glEnd();
 		 */
-		
+
 		/*
 		 glBegin(GL_QUADS);
 		 glColor4f(1.f, 1.f, 1.f, 1.f);
@@ -239,10 +239,10 @@ int main(int argc, char** argv)
 		 glTexCoord2f(1.f, 0.f); glVertex2f(pRideau[colums-1]->GetPosition().x, pRideau[colums-1]->GetPosition().y);
 		 glTexCoord2f(1.f, 1.f); glVertex2f(pRideau[colums*rows-1]->GetPosition().x, pRideau[colums*rows-1]->GetPosition().y);
 		 glTexCoord2f(0.f, 1.f); glVertex2f(pRideau[colums*(rows-1)]->GetPosition().x, pRideau[colums*(rows-1)]->GetPosition().y);
-		 
+
 		 glEnd();
 		 */
-		
+
 
 		//Point::DrawAll();
 		//Constraint::DrawAll();
@@ -251,4 +251,6 @@ int main(int argc, char** argv)
 	}
 
 	Physics::DeleteAll();
+	//On libere la texture
+	glDeleteTextures(1, &texture);
 }

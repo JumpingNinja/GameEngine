@@ -23,7 +23,7 @@ class Polygon;
  **/
 class Polygon
 {
-	private:
+	protected:
 		std::vector<Point*> Vertices;
 		std::vector<Rigid*> Edges;
 		std::vector<Rigid*> InternContraints;

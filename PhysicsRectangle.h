@@ -37,6 +37,9 @@ class Rectangle : public Polygon
 		**/
 		Rectangle(float Width, float Heigth, float Mass1, float Mass2, float Mass3, float Mass4);
 		~Rectangle();
+
+		/// @brief Retourne une référence vers le point en haut à gauche
+		Point& GetTopLeft();
 };
 
 }

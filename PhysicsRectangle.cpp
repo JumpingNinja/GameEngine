@@ -18,4 +18,9 @@ Rectangle::Rectangle(float Width, float Height, float Mass1, float Mass2, float 
 {
 }
 
+Point& Rectangle::GetTopLeft()
+{
+	return *(Vertices[0]);
+}
+
 }

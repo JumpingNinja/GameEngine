@@ -5,7 +5,6 @@
 
 #include <SFML/Graphics.hpp>
 #include <SFML/OpenGL.hpp>
-#include <GL/glu.h>
 
 #ifdef SFML_SYSTEM_MACOS
 	#include "ResourcePath.hpp"
@@ -100,8 +99,9 @@ int main(int argc, char** argv)
 	//Point* P8 = new Point();
 
 	//Un petit rideau :D
-	const int rows=40, colums=40;
-	const float tailleCarre(10.f);
+	const int rows=30, colums=30, cTimes(2);
+	bool cType(1);
+	const float tailleCarre(15.f);
 	Point* pRideau[rows*colums]={NULL};
 	for (int i=0; i<colums; i++)
 		for (int j=0; j<rows; j++)
@@ -115,9 +115,22 @@ int main(int argc, char** argv)
 
 			//On fait le lien avec celui qui est à gauche est en haut
 			if (i>0) //on peut faire le lien sur la gauche
-				new Elastic(pRideau[i+j*colums-1], pRideau[i+j*colums], -1.f, 10.f);
+				for (int a=0; a<cTimes; a++)
+				{
+					if (cType)
+						new Elastic(pRideau[i+j*colums-1], pRideau[i+j*colums], -1.f, 5.f);
+					else
+						new Rigid(pRideau[i+j*colums-1], pRideau[i+j*colums]);
+				}
+
 			if (j>0) //on peut faire le lien sur la gauche
-				new Elastic(pRideau[i+(j-1)*colums], pRideau[i+j*colums], -1.f, 10.f);
+				for (int a=0; a<cTimes; a++)
+				{
+					if (cType)
+						new Elastic(pRideau[i+(j-1)*colums], pRideau[i+j*colums], -1.f, 5.f);
+					else
+						new Rigid(pRideau[i+(j-1)*colums], pRideau[i+j*colums]);
+				}
 			/*
 			if (i==1 && j==0)
 				new Elastic(pRideau[i+j*colums-1], pRideau[i+j*colums], -1.f, 2.f);
@@ -258,4 +271,6 @@ int main(int argc, char** argv)
 	}
 
 	Physics::DeleteAll();
+	//On libere la texture
+	glDeleteTextures(1, &texture);
 }

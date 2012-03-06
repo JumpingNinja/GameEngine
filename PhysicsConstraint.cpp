@@ -1,5 +1,4 @@
 #include "PhysicsConstraint.h"
-#include <iostream>
 
 namespace Physics
 {

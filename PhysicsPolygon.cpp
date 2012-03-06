@@ -23,13 +23,16 @@ Polygon::Polygon(int nb, unsigned int FLAGS, ...)
 
 	if(FLAGS==FLAG_NULL)
 	{
+		InternContraints.reserve((nb-2)*(nb-3)/2 + 1);
+
 		for(int i = 0; i < nb; i++)
 			Vertices.push_back(va_arg(ap, Point*));
 		for(int i = 0; i < nb; i++)
+		{
 			Edges.push_back(new Rigid(Vertices[i], Vertices[(i+1)%nb]));
-		InternContraints.reserve(nb*(nb-3)); // Il en fait trop !
-		for(int i = 0; i < nb - 1; i++)
-			InternContraints.push_back(new Rigid(Vertices[i], Vertices[(i+2)%nb]));
+            for(int j = i + 2; j < nb - (i==0?1:0); j++)
+                InternContraints.push_back(new Rigid(Vertices[i], Vertices[j]));
+		}
 
 	} else if(FLAGS & WITH_LENGTH) {
 		std::vector<float> Lengths;
@@ -98,12 +101,16 @@ void Polygon::HandleCollisions()
 
 				// Des points de la face
 				float PositionOnEdge; // Position du point sur la face
+				// On évite les divisions par 0 !
+				/*
 				if(std::abs(PosE1.x - PosE2.x) > std::abs(PosE1.y - PosE2.y))
 					PositionOnEdge = (Info.P->GetPosition().x - CollisionVector.x
 					- PosE1.x)/(PosE2.x - PosE1.x);
 				else
 					PositionOnEdge = (Info.P->GetPosition().y - CollisionVector.y
 					- PosE1.y)/(PosE2.y - PosE1.y);
+                */
+                PositionOnEdge = (PosE1 - Info.P->GetPosition()).GetLength()/Info.Edge->GetVector().GetLength();
 
 				float CorrectionFactor = -1.0f/(PositionOnEdge*PositionOnEdge +
 						(1 - PositionOnEdge)*(1 - PositionOnEdge));

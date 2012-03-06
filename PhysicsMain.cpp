@@ -93,7 +93,7 @@ int main(int argc, char** argv)
 	float taille_cubes = 50.f;
 	for(int i = 1; i < 10; i++)
 		//new Polygon(4, FLAG_NULL, new Point(taille_cubes*i,taille_cubes*i, i), new Point(taille_cubes*i+taille_cubes,taille_cubes*i), new Point(taille_cubes*i+taille_cubes,taille_cubes*i+taille_cubes), new Point(taille_cubes*i,taille_cubes*i+taille_cubes));
-		new Rectangle(taille_cubes, taille_cubes, i, 1, 1, 1);
+		new Rectangle(taille_cubes, taille_cubes, 1, 1, 1, 1);
 
 
 	//Point* P8 = new Point();
@@ -141,11 +141,13 @@ int main(int argc, char** argv)
 
 
 	int i = 0;
-	float prevdt = 0.1, dt = 0.1;
+	float prevdt = 0.02f, dt = 0.02f;
 
 	Point *grab = NULL;
 	Elastic* MouseElastic = NULL;
 	Point* Mouse = new Point();
+
+	float polygon = 20.f;
 
 	while(window.IsOpen())
 	{
@@ -167,6 +169,13 @@ int main(int argc, char** argv)
                     case sf::Keyboard::R:
                         (new Rectangle(25.f, 25.f))->GetTopLeft().SetPosition(Vec2(sf::Mouse::GetPosition(window).x, sf::Mouse::GetPosition(window).y));
                         break;
+                    case sf::Keyboard::P:
+                         //new Polygon(8, FLAG_NULL, new Point(0.f, 1.f*polygon), new Point(1.f*polygon, 0.f), new Point(2.f*polygon, 0.f),
+                                    // new Point(3.f*polygon, 1.f*polygon), new Point(3.f*polygon, 2.f*polygon), new Point(2.f*polygon, 3.f*polygon),
+                                    // new Point(1.f*polygon, 3.f*polygon), new Point(0.f, 2.f*polygon));
+                         new Polygon(6, FLAG_NULL, new Point(0.f, 1.f*polygon), new Point(1.f*polygon, 0.f),
+                                     new Point(2.f*polygon, 1.f*polygon), new Point(2.f*polygon, 2.f*polygon),
+                                     new Point(1.f*polygon, 3.f*polygon), new Point(0.f, 2.f*polygon));
                     default:
                         break;
                 }
@@ -194,7 +203,8 @@ int main(int argc, char** argv)
 
 		if (sf::Mouse::IsButtonPressed(sf::Mouse::Left))
 				Mouse->SetPosition(Vec2(sf::Mouse::GetPosition(window).x, sf::Mouse::GetPosition(window).y));
-		else if(MouseElastic != NULL) delete MouseElastic, MouseElastic = NULL;
+		//else if(MouseElastic != NULL) delete MouseElastic, MouseElastic = NULL;
+		else Mouse->SetFixe();
 
 		glClear(GL_COLOR_BUFFER_BIT); //On efface le fond. Color car on est en 2D
 		glClearColor(0.0f, 0.f, 0.f, 1.f); //Ici optionnel car par défaut couleur est rouge
@@ -218,11 +228,14 @@ int main(int argc, char** argv)
 
 		//i++;
 		//while(i%10 > 0)
-			Physics::ForceAll(Vec2(forceVent, 0.f)), // Vent
-			Physics::ForceAll(Vec2(0.f, 9.f), true), // Gravité
-			//Physics::ForceAll(Vec2(0.f, 0.f)),
-			Physics::Update(prevdt, dt), i++,
+		for(int i = 0; i < 10; i++)
+        {
+            //Physics::ForceAll(Vec2(forceVent, 0.f)); // Vent
+            Physics::ForceAll(Vec2(0.f, 9.f), true); // Gravité
+			//Physics::ForceAll(Vec2(0.f, 0.f));
+			Physics::Update(prevdt, dt), i++;
 			prevdt = dt; // Permet de gérer des framerate inconstants
+        }
 
 		//system("PAUSE");
 

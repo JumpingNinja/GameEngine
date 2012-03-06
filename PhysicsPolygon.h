@@ -53,6 +53,7 @@ class Polygon
 		 * Donnera un triangle isocèle en VP2 avec |VP1VP2| = |VP2VP3| = 10 et |VP3VP1| = 20.
 		 * ATTENTION ! Les longeurs doivent être explicitement des floats ou des doubles (dans ce dernier cas, elles seront static_cast<float>) sous peine de plantage (dans le cas d'un passage d'un int) à cause de l'utilisation de la macro va_arg ! En effet, lors de l'appel, il n'est précisé nul part que nous travaillerons en float et donc il n'y aucune conversion implicite int -> float.
 		 * Les liens internes se sont pas créés automatiquement avec cette configuration !
+		 * @todo Optimiser la création des liens internes automatiques
 		 * @param nb Nombre de VP
 		 * @param FLAGS FLAG_NULL, WITH_LENGTH
 		 * @param ... Liste de Point* [, float]

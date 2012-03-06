@@ -35,15 +35,16 @@ void Update(float prevdt, float dt)
 		if((*it)->GetPosition().y < 0)
 			(*it)->SetPosition(Vec2((*it)->GetPosition().x, 0.f));
 
-        // Test si une coordonnée vaut NaN
+        // Teste si une coordonnée vaut NaN
         if((*it)->GetPosition().x != (*it)->GetPosition().x || (*it)->GetPosition().y != (*it)->GetPosition().y)
         {
             (*it)->SetPosition(Vec2(0, 0), 1);
         }
 	}
-	Polygon::HandleCollisions();
-	Rigid::ResolveAll(), // Les Rigid doivent être gérés avant les Elastic
-	Elastic::ResolveAll(),
+	/*for(int i=0; i<50; i++)*/ Polygon::HandleCollisions();
+	Rigid::ResolveAll();
+	 // Les Rigid doivent être gérés avant les Elastic
+	Elastic::ResolveAll();
 	Point::UpdateAll(prevdt, dt);
 }
 

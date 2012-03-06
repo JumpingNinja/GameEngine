@@ -41,7 +41,8 @@ void Update(float prevdt, float dt)
             (*it)->SetPosition(Vec2(0, 0), 1);
         }
 	}
-	/*for(int i=0; i<50; i++)*/ Polygon::HandleCollisions();
+	for(int i=0; i<10; i++)
+    Polygon::HandleCollisions(),
 	Rigid::ResolveAll();
 	 // Les Rigid doivent être gérés avant les Elastic
 	Elastic::ResolveAll();

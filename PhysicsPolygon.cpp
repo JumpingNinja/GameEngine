@@ -1,5 +1,7 @@
 #include "PhysicsPolygon.h"
-#include <iostream>
+
+//#include <assert.h>
+//#include <iostream>
 
 #define FORMINSEARCH 10000000.0
 
@@ -77,10 +79,11 @@ void Polygon::HandleCollisions()
 			Info = (*ite)->Collide((*ite2));
 			if(Info.P1 != 0) // Il y a collision
 			{
-				if(Info.Normal*((*ite)->GetCenter() - (*ite2)->GetCenter()) < 0)
+			    // On s'assure que la normal est dans le bon sens
+				if(Info.Normal*(Info.P2->GetCenter() - Info.P1->GetCenter()) < 0)
 					Info.Normal *= -1;
 
-				// Recherche du point de collision (le plus proche de P2)
+				// Recherche du point de collision (=le plus proche de P2)
 				float distP2Point = FORMINSEARCH; // On recherche un minimum
 				float tmpDist;
 				for(unsigned int i = 0; i < Info.P2->Vertices.size(); i++)
@@ -101,8 +104,8 @@ void Polygon::HandleCollisions()
 
 				// Des points de la face
 				float PositionOnEdge; // Position du point sur la face
-				// On évite les divisions par 0 !
 				/*
+				// On évite les divisions par 0 !
 				if(std::abs(PosE1.x - PosE2.x) > std::abs(PosE1.y - PosE2.y))
 					PositionOnEdge = (Info.P->GetPosition().x - CollisionVector.x
 					- PosE1.x)/(PosE2.x - PosE1.x);
@@ -110,7 +113,8 @@ void Polygon::HandleCollisions()
 					PositionOnEdge = (Info.P->GetPosition().y - CollisionVector.y
 					- PosE1.y)/(PosE2.y - PosE1.y);
                 */
-                PositionOnEdge = (PosE1 - Info.P->GetPosition()).GetLength()/Info.Edge->GetVector().GetLength();
+                PositionOnEdge = ((Info.P->GetPosition() - PosE1)*Info.Edge->GetVector())/Info.Edge->GetVector().GetLength();
+                //std::cout << "Correction :  PositionOnEdge" << PositionOnEdge << std::endl;
 
 				float CorrectionFactor = -1.0f/(PositionOnEdge*PositionOnEdge +
 						(1 - PositionOnEdge)*(1 - PositionOnEdge));
@@ -147,8 +151,7 @@ Vec2 Polygon::GetMassCenter()
 	}
 	return Center;
 }
-#include <assert.h>
-#include <iostream>
+
 CollisionInfo Polygon::Collide(Polygon* P)
 {
 	Vec2 Axis;
@@ -185,13 +188,16 @@ CollisionInfo Polygon::Collide(Polygon* P)
 			Info.Normal = Axis,
 			Info.Edge = Edge;
 
-	    if(Info.Edge == NULL)
-            std::cout << "Min Max MinP MaxP Gap : " << Min << " " << Max << " " << MinP << " " << MaxP << " " << Gap << std::endl;
+        // Debug
+	    //if(Info.Edge == NULL)
+        //    std::cout << "Min Max MinP MaxP Gap : " << Min << " " << Max << " " << MinP << " " << MaxP << " " << Gap << std::endl;
 	}
 
 	// Gère le cas où le polygone se résume à un point (Tout ses points ont les mêmes coordonnées
-	if(Info.Edge == NULL) return CollisionInfo();
-	else return Info;
+	if(Info.Edge == NULL)
+        return CollisionInfo();
+	else //std::cout << "Collision !" << Info.Depth << std::endl;
+        return Info;
 }
 
 void Polygon::ProjectToAxis(float &Min, float &Max, const Vec2 Axis)

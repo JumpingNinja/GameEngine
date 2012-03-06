@@ -91,9 +91,9 @@ int main(int argc, char** argv)
 	new Rigid(pLeftBottom, pRightTop);// sqrt(20000.f));
 
 	float taille_cubes = 50.f;
-	for(int i = 1; i < 10; i++)
+	//for(int i = 1; i < 10; i++)
 		//new Polygon(4, FLAG_NULL, new Point(taille_cubes*i,taille_cubes*i, i), new Point(taille_cubes*i+taille_cubes,taille_cubes*i), new Point(taille_cubes*i+taille_cubes,taille_cubes*i+taille_cubes), new Point(taille_cubes*i,taille_cubes*i+taille_cubes));
-		new Rectangle(taille_cubes, taille_cubes, 1, 1, 1, 1);
+		//new Rectangle(taille_cubes, taille_cubes, 1, 1, 1, 1);
 
 
 	//Point* P8 = new Point();
@@ -167,7 +167,7 @@ int main(int argc, char** argv)
                         window.Close();
                         break;
                     case sf::Keyboard::R:
-                        (new Rectangle(25.f, 25.f))->GetTopLeft().SetPosition(Vec2(sf::Mouse::GetPosition(window).x, sf::Mouse::GetPosition(window).y));
+                        (new Rectangle(50.f, 50.f))->GetTopLeft().SetPosition(Vec2(sf::Mouse::GetPosition(window).x, sf::Mouse::GetPosition(window).y));
                         break;
                     case sf::Keyboard::P:
                          //new Polygon(8, FLAG_NULL, new Point(0.f, 1.f*polygon), new Point(1.f*polygon, 0.f), new Point(2.f*polygon, 0.f),

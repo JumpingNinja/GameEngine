@@ -24,29 +24,12 @@ namespace Physics
 **/
 void Update(float prevdt, float dt)
 {
-	for(std::list<Point*>::iterator it = Point::List.begin(); it != Point::List.end(); it++)
-	{
-		if((*it)->GetPosition().x > 800)
-			(*it)->SetPosition(Vec2(800.f, (*it)->GetPosition().y));
-		if((*it)->GetPosition().x < 0)
-			(*it)->SetPosition(Vec2(0.f, (*it)->GetPosition().y));
-		if((*it)->GetPosition().y > 600)
-			(*it)->SetPosition(Vec2((*it)->GetPosition().x, 600.f));
-		if((*it)->GetPosition().y < 0)
-			(*it)->SetPosition(Vec2((*it)->GetPosition().x, 0.f));
-
-        // Teste si une coordonnée vaut NaN
-        if((*it)->GetPosition().x != (*it)->GetPosition().x || (*it)->GetPosition().y != (*it)->GetPosition().y)
-        {
-            (*it)->SetPosition(Vec2(0, 0), 1);
-        }
-	}
-	for(int i=0; i<10; i++)
-    Polygon::HandleCollisions(),
-	Rigid::ResolveAll();
-	 // Les Rigid doivent être gérés avant les Elastic
 	Elastic::ResolveAll();
 	Point::UpdateAll(prevdt, dt);
+
+	for(int i=0; i<10; i++)
+	Rigid::ResolveAll(),
+    Polygon::HandleCollisions();
 }
 
 void DeleteAll()

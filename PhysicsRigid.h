@@ -38,7 +38,7 @@ class Rigid : public Constraint
 		 *
 		 * @param iterations Nombre d'itérations, un nombre important génère une simulation plus précise.
 		**/
-		void Resolve(int iterations = 10);
+		void Resolve(int iterations);
 		/// @brief Replace les points pour qu'ils respectent la liaison
 		void Resolve();
 

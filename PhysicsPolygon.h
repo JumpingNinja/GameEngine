@@ -84,7 +84,7 @@ class CollisionInfo {
 		Polygon*	P1;
 		Polygon*	P2;
 		float	Depth;
-		Vec2	Normal;
+		Vec2	Normal, P1Center, P2Center;
 		Rigid*	Edge;
 		Point*	P;
 

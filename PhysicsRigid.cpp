@@ -39,7 +39,7 @@ void Rigid::DeleteAll()
 
 void Rigid::Resolve()
 {
-	Resolve(10);
+	Resolve(1);
 }
 
 void Rigid::Resolve(int iterations)

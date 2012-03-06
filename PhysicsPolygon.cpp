@@ -1,7 +1,7 @@
 #include "PhysicsPolygon.h"
 
 //#include <assert.h>
-//#include <iostream>
+#include <iostream>
 
 #define FORMINSEARCH 10000000.0
 
@@ -72,59 +72,57 @@ void Polygon::HandleCollisions()
 	for(std::list<Polygon*>::iterator ite = Polygon::List.begin();
 		ite != Polygon::List.end(); ite++)
 	{
-		std::list<Polygon*>::iterator ite2 = ite;
-		ite2++;
-		while(ite2 != Polygon::List.end())
+		//std::list<Polygon*>::iterator ite2 = ite;
+		//ite2++;
+		//while(ite2 != Polygon::List.end())
+		for(std::list<Polygon*>::iterator ite2 = Polygon::List.begin(); ite2 != Polygon::List.end(); ite2++)
 		{
-			Info = (*ite)->Collide((*ite2));
-			if(Info.P1 != 0) // Il y a collision
-			{
-			    // On s'assure que la normal est dans le bon sens
-				if(Info.Normal*(Info.P2->GetCenter() - Info.P1->GetCenter()) < 0)
-					Info.Normal *= -1;
-
-				// Recherche du point de collision (=le plus proche de P2)
-				float distP2Point = FORMINSEARCH; // On recherche un minimum
-				float tmpDist;
-				for(unsigned int i = 0; i < Info.P2->Vertices.size(); i++)
+			if( ite != ite2 ) {
+				Info = (*ite)->Collide((*ite2));
+				if(Info.P1 != 0) // Il y a collision
 				{
-					tmpDist = Info.Normal*(Info.P2->Vertices[i]->GetPosition()-Info.P2->GetCenter());
-					if(tmpDist < distP2Point)
-						distP2Point = tmpDist,
-						Info.P = Info.P2->Vertices[i];
+					Vec2 P2Center = Info.P2->GetCenter();
+					// On s'assure que la normal est dans le bon sens
+					if(Info.Normal*(P2Center - Info.P1->GetCenter()) < 0)
+						Info.Normal *= -1;
+
+					// Recherche du point de collision (=le plus proche de P1)
+					float distP1Point = FORMINSEARCH; // On recherche un minimum
+					float tmpDist;
+					for(unsigned int i = 0; i < Info.P2->Vertices.size(); i++)
+					{
+						tmpDist = Info.Normal*(Info.P2->Vertices[i]->GetPosition()-Info.P1->GetCenter());
+						if(tmpDist < distP1Point)
+							distP1Point = tmpDist,
+							Info.P = Info.P2->Vertices[i];
+					}
+
+					// Réponse
+					Vec2 CollisionVector = Info.Normal*Info.Depth;
+
+					Vec2 PosE1 = Info.Edge->GetP1()->GetPosition();
+					Vec2 PosE2 = Info.Edge->GetP2()->GetPosition();
+
+					float PositionOnEdge; // Position du point sur la face
+					// On évite les divisions par 0 !
+					if(std::abs(PosE1.x - PosE2.x) > std::abs(PosE1.y - PosE2.y))
+						PositionOnEdge = (Info.P->GetPosition().x - CollisionVector.x
+						- PosE1.x)/(PosE2.x - PosE1.x);
+					else
+						PositionOnEdge = (Info.P->GetPosition().y - CollisionVector.y
+						- PosE1.y)/(PosE2.y - PosE1.y);
+
+					float CorrectionFactor = -1.0f/(PositionOnEdge*PositionOnEdge + (1 - PositionOnEdge)*(1 - PositionOnEdge));
+
+					// Correction des positions
+					Info.P->CorrectPosition(CollisionVector*0.5f); // Du point
+					// De  la face
+					Info.Edge->GetP1()->CorrectPosition(CollisionVector*
+						CorrectionFactor*(1-PositionOnEdge)*0.5f);
+					Info.Edge->GetP2()->CorrectPosition(CollisionVector*
+						CorrectionFactor*(PositionOnEdge)*0.5f);
 				}
-
-				// Réponse
-				Vec2 CollisionVector = Info.Normal*Info.Depth*0.5f;
-
-				Info.P->CorrectPosition(CollisionVector); // Du point
-
-				Vec2 PosE1 = Info.Edge->GetP1()->GetPosition();
-				Vec2 PosE2 = Info.Edge->GetP2()->GetPosition();
-
-				// Des points de la face
-				float PositionOnEdge; // Position du point sur la face
-				/*
-				// On évite les divisions par 0 !
-				if(std::abs(PosE1.x - PosE2.x) > std::abs(PosE1.y - PosE2.y))
-					PositionOnEdge = (Info.P->GetPosition().x - CollisionVector.x
-					- PosE1.x)/(PosE2.x - PosE1.x);
-				else
-					PositionOnEdge = (Info.P->GetPosition().y - CollisionVector.y
-					- PosE1.y)/(PosE2.y - PosE1.y);
-                */
-                PositionOnEdge = ((Info.P->GetPosition() - PosE1)*Info.Edge->GetVector())/Info.Edge->GetVector().GetLength();
-                //std::cout << "Correction :  PositionOnEdge" << PositionOnEdge << std::endl;
-
-				float CorrectionFactor = -1.0f/(PositionOnEdge*PositionOnEdge +
-						(1 - PositionOnEdge)*(1 - PositionOnEdge));
-
-				Info.Edge->GetP1()->CorrectPosition(CollisionVector*
-					CorrectionFactor*(1-PositionOnEdge));
-				Info.Edge->GetP2()->CorrectPosition(CollisionVector*
-					CorrectionFactor*PositionOnEdge);
 			}
-			ite2++;
 		}
     }
 }

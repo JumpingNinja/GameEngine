@@ -87,7 +87,7 @@ Vec2 operator/(const Vec2& V, const float& f)
 
 float operator*(const Vec2& V1, const Vec2& V2)
 {
-	return V1.x*V2.x + V1.y*V2.y;
+	return (V1.x*V2.x + V1.y*V2.y);
 }
 
 bool operator== (const Vec2& V1, const Vec2& V2)

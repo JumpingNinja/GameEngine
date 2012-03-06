@@ -62,7 +62,26 @@ void Point::UpdateAll(float prevdt, float dt)
 {
 	for(std::list<Point*>::iterator ite = Point::List.begin();
 		ite != Point::List.end(); ite++)
+	{
 		(*ite)->ApplyMomentum(prevdt, dt);
+
+		// Replace le point dans les limites du monde
+		if((*ite)->GetPosition().x > 800)
+			(*ite)->SetPosition(Vec2(800.f, (*ite)->GetPosition().y));
+		if((*ite)->GetPosition().x < 0)
+			(*ite)->SetPosition(Vec2(0.f, (*ite)->GetPosition().y));
+		if((*ite)->GetPosition().y > 600)
+			(*ite)->SetPosition(Vec2((*ite)->GetPosition().x, 600.f));
+		if((*ite)->GetPosition().y < 0)
+			(*ite)->SetPosition(Vec2((*ite)->GetPosition().x, 0.f));
+
+        // Teste si une coordonnée vaut NaN
+        if((*ite)->GetPosition().x != (*ite)->GetPosition().x ||
+			(*ite)->GetPosition().y != (*ite)->GetPosition().y)
+        {
+            (*ite)->SetPosition(Vec2(0, 0), 1);
+        }
+	}
 }
 
 void Point::ForceAll(Vec2 Force, bool Mass)
@@ -166,15 +185,19 @@ Point* Point::GetNearest(const Vec2 &v)
 	if (List.size()<=0)
 		return NULL;
 
-	std::list<Point*>::iterator it(List.begin()); Point* P((*it));
-	float dis((P->GetPosition()-v).GetLength());
-	for (std::list<Point*>::iterator it=List.begin(); it!=List.end(); it++)
+	std::list<Point*>::iterator it(List.begin());
+	Point* P((*it)); it++;
+	// Longueur au carré, fonction^2 strictement croissante... Plus rapide à calculer
+	float dis = (P->GetPosition() - v)*(P->GetPosition() - v), tmp;
+	while(it!=List.end())
 	{
-		if (dis>((*it)->GetPosition()-v).GetLength())
+		tmp = ((*it)->GetPosition() - v)*((*it)->GetPosition() - v);
+		if (dis > tmp)
 		{
-			dis=((*it)->GetPosition()-v).GetLength();
-			P=(*it);
+			dis = tmp;
+			P = (*it);
 		}
+		it++;
 	}
 	return P;
 }

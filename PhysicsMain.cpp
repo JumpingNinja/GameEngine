@@ -141,7 +141,7 @@ int main(int argc, char** argv)
 
 
 	int i = 0;
-	float prevdt = 0.02f, dt = 0.02f;
+	float prevdt = 0.4f, dt = 0.1f;
 
 	Point *grab = NULL;
 	Elastic* MouseElastic = NULL;
@@ -214,30 +214,19 @@ int main(int argc, char** argv)
 		glLoadIdentity(); //On charge l'identite pour dessiner normalement
 		glTranslatef(0.375, 0.375, 0.0); //petit trick qui assure le dessin à la  bonne place
 
-		/*cout << "Frame #" << i << endl;
-		cout << "P1 : " << P1->GetPosition().x << " " << P1->GetPosition().y << " Length P1 P4 : " << (P1->GetPosition() - P4->GetPosition()).GetLength() << endl;
-		cout << "P2 : " << P2->GetPosition().x << " " << P2->GetPosition().y << endl;
-		cout << "P3 : " << P3->GetPosition().x << " " << P3->GetPosition().y << endl;
-		cout << "P4 : " << P4->GetPosition().x << " " << P4->GetPosition().y << endl;
-		cout << "\nLengths : P4P5 : " << (P4->GetPosition() - P5->GetPosition()).GetLength() << " P5P6 : " << (P5->GetPosition() - P6->GetPosition()).GetLength() << " P6P7 : " << (P6->GetPosition() - P7->GetPosition()).GetLength() << " P7P4 : " << (P7->GetPosition() - P4->GetPosition()).GetLength() << endl;
-
-		 */
-
 		if (vent.GetElapsedTime().AsSeconds()>=2.f)
 			forceVent=(forceVent>0 ? -1 : 1)*(rand()%400)/100.f, vent.Restart();
 
 		//i++;
 		//while(i%10 > 0)
-		for(int i = 0; i < 10; i++)
+		for(int i = 0; i < 1; i++)
         {
             //Physics::ForceAll(Vec2(forceVent, 0.f)); // Vent
-            Physics::ForceAll(Vec2(0.f, 9.f), true); // Gravité
+            Physics::ForceAll(Vec2(0.f, 1.f), true); // Gravité
 			//Physics::ForceAll(Vec2(0.f, 0.f));
 			Physics::Update(prevdt, dt), i++;
 			prevdt = dt; // Permet de gérer des framerate inconstants
         }
-
-		//system("PAUSE");
 
 		//On affiche le rideau
 		glColor4f(1.f, 1.f, 1.f, 1.f);

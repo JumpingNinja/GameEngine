@@ -81,9 +81,8 @@ void Polygon::HandleCollisions()
 				Info = (*ite)->Collide((*ite2));
 				if(Info.P1 != 0) // Il y a collision
 				{
-					Vec2 P2Center = Info.P2->GetCenter();
 					// On s'assure que la normal est dans le bon sens
-					if(Info.Normal*(P2Center - Info.P1->GetCenter()) < 0)
+					if(Info.Normal*(Info.P2->GetCenter() - Info.P1->GetCenter()) < 0)
 						Info.Normal *= -1;
 
 					// Recherche du point de collision (=le plus proche de P1)

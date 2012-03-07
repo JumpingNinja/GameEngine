@@ -40,6 +40,8 @@ class Rectangle : public Polygon
 
 		/// @brief Retourne une référence vers le point en haut à gauche
 		Point& GetTopLeft();
+	
+	void SetFixed();
 };
 
 }

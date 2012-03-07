@@ -81,7 +81,7 @@ void Polygon::HandleCollisions()
 				Info = (*ite)->Collide((*ite2));
 				if(Info.P1 != 0) // Il y a collision
 				{
-					// On s'assure que la normal est dans le bon sens
+					// On s'assure que la normal est dans le bon sens (pointe vers P1)
 					if(Info.Normal*(Info.P2->GetCenter() - Info.P1->GetCenter()) < 0)
 						Info.Normal *= -1;
 

@@ -24,7 +24,7 @@ Vec2 Vec2::GetNormalized()
 
 Vec2 Vec2::GetPerpendicular()
 {
-	return Vec2(x, -y);
+	return Vec2(-y, x);
 }
 
 Vec2& Vec2::operator+=(const Vec2& V)

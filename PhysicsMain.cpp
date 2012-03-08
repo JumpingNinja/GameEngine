@@ -108,7 +108,7 @@ int main(int argc, char** argv)
 		{
 			pRideau[i+j*colums]=new Point();
 			pRideau[i+j*colums]->SetPosition(Vec2(300.f+i*tailleCarre, 30.f+j*tailleCarre));
-			pRideau[i+j*colums]->SetMass(0.01f);
+			pRideau[i+j*colums]->SetMass(0.1f);
 			//On fixe deux des points
 			if ((i==0 && j==0) || (i==colums-1 && j==0) || (i==0  && j==rows-1) || (i==colums-1  && j==rows-1))
 				pRideau[i+j*colums]->SetFixe();
@@ -141,7 +141,7 @@ int main(int argc, char** argv)
 
 
 	int i = 0;
-	float prevdt = 0.4f, dt = 0.1f;
+	float prevdt = 0.1f, dt = 0.1f;
 
 	Point *grab = NULL;
 	Elastic* MouseElastic = NULL;
@@ -219,10 +219,10 @@ int main(int argc, char** argv)
 
 		//i++;
 		//while(i%10 > 0)
-		for(int i = 0; i < 1; i++)
+		for(int i = 0; i < 10; i++)
         {
             //Physics::ForceAll(Vec2(forceVent, 0.f)); // Vent
-            Physics::ForceAll(Vec2(0.f, 1.f), true); // Gravité
+            Physics::ForceAll(Vec2(0.f, 2.f), true); // Gravité
 			//Physics::ForceAll(Vec2(0.f, 0.f));
 			Physics::Update(prevdt, dt), i++;
 			prevdt = dt; // Permet de gérer des framerate inconstants

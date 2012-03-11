@@ -5,6 +5,7 @@
 
 #include <SFML/Graphics.hpp>
 #include <SFML/OpenGL.hpp>
+#include <SFML/Audio.hpp>
 
 #ifdef SFML_SYSTEM_MACOS
 	#include "ResourcePath.hpp"
@@ -12,6 +13,10 @@
 /* Simple test de Physics.h */
 
 using namespace Physics;
+
+
+void glDrawCube(const sf::Vector2f &Position, float size);
+
 
 int main(int argc, char** argv)
 {
@@ -21,12 +26,27 @@ int main(int argc, char** argv)
 
 	glMatrixMode(GL_PROJECTION); //On va ainsi définir le viewport
 	glLoadIdentity();
-	glOrtho(0.0, 800.0, 600.0, 0.0, 0.0, 1.0);
-	glDisable(GL_DEPTH_TEST);
+	glOrtho(0.0, 800.0, 600.0, 0.0, 0.0, 100.0);
+	//gluPerspective(90.f, 1.f, 1.f, 500.f);
+	glEnable(GL_DEPTH_TEST);
+	glDepthMask(GL_TRUE);
+    glClearDepth(1.f);
 
 	sf::Clock vent;
 	float forceVent(1.f);
 
+	/*sf::Music music;
+	music.OpenFromFile(ResourcePath()+"infect.ogg");
+	music.SetLoop(1);
+	//music.Play();
+	
+	sf::SoundBuffer sndB;
+	sndB.LoadFromFile(ResourcePath()+"mono.ogg");
+	
+	sf::Sound snd;
+	snd.SetBuffer(sndB);
+	snd.Play();
+	 */
 
 	//Une texture OpenGL
 	GLuint texture=0;
@@ -107,6 +127,8 @@ int main(int argc, char** argv)
 	pB1->SetPosition(Vec2(50.f, 50.f));
 	pB2=new Point();
 	pB2->SetPosition(Vec2(50.f, 100.f));
+	pB1->SetFixe();
+	pB2->SetFixe();
 	new Polygon(2, FLAG_NULL, pB1, pB2);
 	
 	//Les bras
@@ -140,13 +162,33 @@ int main(int argc, char** argv)
 	pB1=new Point();
 	pB1->SetPosition(Vec2(55.f, 145.f));
 	new Polygon(2, FLAG_NULL, pB1, pB3);
-					
+	
+	
+	P4=new Point(100.f, 20.f);
+	P4->SetRadius(50.f);
+	
+	
+	//De l'eau?
+	const int waterN(30); //MULTIPLE DE 2
+	Point *pWater[waterN], *pWaterFixed[waterN];
+	for (int i=0; i<waterN; i++)
+	{
+		pWater[i]= new Point(50.f+i*10.f, 300.f);
+		pWater[i]->SetMass(0.f);
+		if (i==0 || i==waterN-1)
+			pWater[i]->SetFixe();
+		pWaterFixed[i]=new Point(50.f+i*10.f, 300.f);
+		pWaterFixed[i]->SetFixe();
+		new Elastic(pWaterFixed[i], pWater[i], 0.f, 0.75f);
+		if (i>0)
+			new Elastic(pWater[i], pWater[i-1]);
+	}
 	
 
 	//Un petit rideau :D
-	const int rows=30, colums=30, cTimes(2);
+	const int rows=20, colums=20, cTimes(2);
 	bool cType(1);
-	const float tailleCarre(15.f);
+	const float tailleCarre(5.f);
 	Point* pRideau[rows*colums]={NULL};
 	for (int i=0; i<colums; i++)
 		for (int j=0; j<rows; j++)
@@ -155,7 +197,9 @@ int main(int argc, char** argv)
 			pRideau[i+j*colums]->SetPosition(Vec2(300.f+i*tailleCarre, 30.f+j*tailleCarre));
 			pRideau[i+j*colums]->SetMass(0.01f);
 			//On fixe deux des points
-			if ((i==0 && j==0) || (i==colums-1 && j==0) || (i==0  && j==rows-1) || (i==colums-1  && j==rows-1))
+			if ((i==0 && j==0) || (i==0  && j==rows-1))// || (i==colums-1 && j==0) || (i==colums-1  && j==rows-1))
+				pRideau[i+j*colums]->SetFixe();
+			if (j!=0 && i==0)
 				pRideau[i+j*colums]->SetFixe();
 
 			//On fait le lien avec celui qui est à gauche est en haut
@@ -195,7 +239,7 @@ int main(int argc, char** argv)
 	Rectangle* rP;
 	rP=new Rectangle(100.f, 20.f);
 	rP->GetTopLeft().SetPosition(Vec2(10.f,400.f));
-	rP->SetFixed();
+	//rP->SetFixed();
 
 	float polygon = 20.f;
 
@@ -237,6 +281,7 @@ int main(int argc, char** argv)
 
 			if (event.Type == sf::Event::MouseButtonPressed)
 			{
+					
 				grab=Point::GetNearest(Vec2(sf::Mouse::GetPosition(window).x, sf::Mouse::GetPosition(window).y));
 				if(event.MouseButton.Button == sf::Mouse::Left)
 					delete MouseElastic,
@@ -249,7 +294,18 @@ int main(int argc, char** argv)
 		}
 
 		if (sf::Mouse::IsButtonPressed(sf::Mouse::Right) && grab!=NULL)
-			grab->SetPosition(Vec2(sf::Mouse::GetPosition(window).x, sf::Mouse::GetPosition(window).y));
+		{
+			if (sf::Keyboard::IsKeyPressed(sf::Keyboard::H))
+				grab->SetPosition(Vec2(sf::Mouse::GetPosition(window).x, grab->GetPosition().y));
+			else
+			{
+				if (sf::Keyboard::IsKeyPressed(sf::Keyboard::V))
+					grab->SetPosition(Vec2(grab->GetPosition().x, sf::Mouse::GetPosition(window).y));
+				else
+					grab->SetPosition(Vec2(sf::Mouse::GetPosition(window).x, sf::Mouse::GetPosition(window).y));
+			}
+		}
+			
 
 		if (sf::Mouse::IsButtonPressed(sf::Mouse::Left))
 				Mouse->SetPosition(Vec2(sf::Mouse::GetPosition(window).x, sf::Mouse::GetPosition(window).y));
@@ -258,14 +314,15 @@ int main(int argc, char** argv)
 
 		glClear(GL_COLOR_BUFFER_BIT); //On efface le fond. Color car on est en 2D
 		glClearColor(0.0f, 0.f, 0.f, 1.f); //Ici optionnel car par défaut couleur est rouge
-
+		//glClear(GL_DEPTH_BUFFER_BIT);
+		
 		//On prepare la projection
 		glMatrixMode(GL_MODELVIEW);
 		glLoadIdentity(); //On charge l'identite pour dessiner normalement
 		glTranslatef(0.375, 0.375, 0.0); //petit trick qui assure le dessin à la  bonne place
 
-		if (vent.GetElapsedTime().AsSeconds()>=2.f)
-			forceVent=(forceVent>0 ? -1 : 1)*(rand()%400)/100.f, vent.Restart();
+		if (vent.GetElapsedTime().AsSeconds()>=4.f)
+			forceVent=(forceVent>0 ? -1 : 1)*((rand()%400)/100.f+3.f), vent.Restart();
 
 		//i++;
 		//while(i%10 > 0)
@@ -278,7 +335,7 @@ int main(int argc, char** argv)
 			prevdt = dt; // Permet de gérer des framerate inconstants
         }
 
-		//On affiche le rideau
+				//On affiche le rideau
 		glColor4f(1.f, 1.f, 1.f, 1.f);
 		glBegin(GL_QUADS);
 
@@ -305,6 +362,24 @@ int main(int argc, char** argv)
 			}
 
 		glEnd();
+		
+		//on affiche l'eau
+		glColor3f(0.f, 0.1f, 1.f);
+		glBegin(GL_QUADS);
+		for (int i=0; i<waterN-1; i++)
+		{
+			glVertex2f(pWaterFixed[i]->GetPosition().x, pWaterFixed[i]->GetPosition().y+200.f);
+			glVertex2f(pWater[i]->GetPosition().x, pWater[i]->GetPosition().y);
+			glVertex2f(pWater[i+1]->GetPosition().x, pWater[i+1]->GetPosition().y);
+			glVertex2f(pWaterFixed[i+1]->GetPosition().x, pWaterFixed[i+1]->GetPosition().y+200.f);
+					   
+		}
+		glEnd();
+		
+		
+		
+		for (int i=0; i<10; i++)
+			glDrawCube(sf::Vector2f(i*20.f, 400.f), 20.f);
 
 		/*glBegin(GL_QUADS);
 		glColor4f(1.f, 1.f, 1.f, 1.f);
@@ -327,6 +402,13 @@ int main(int argc, char** argv)
 		 glEnd();
 		 */
 
+		/*
+		glMatrixMode(GL_PROJECTION); //On va ainsi définir le viewport
+		glLoadIdentity();
+		glOrtho(0.0, 800.0, 600.0, 0.0, 0.0, 100.0);
+*/
+		
+		
 
 		Point::DrawAll();
 		Constraint::DrawAll();
@@ -337,4 +419,56 @@ int main(int argc, char** argv)
 	Physics::DeleteAll();
 	//On libere la texture
 	glDeleteTextures(1, &texture);
+}
+
+
+void glDrawCube(const sf::Vector2f &Position, float size)
+{
+	glPushMatrix();
+	glLoadIdentity();
+	glTranslatef(Position.x, Position.y, 0.f);
+	
+	glBegin(GL_QUADS);
+	
+	//glColor3f(1.f, 0.f, 0.f);
+	//front
+	/*
+	glTexCoord2f(0, 0); glVertex3f(0.f, 0.f, 0.f);
+	glTexCoord2f(0, 1); glVertex3f(0.f,  size, 0.f);
+	glTexCoord2f(1, 1); glVertex3f( size,  size, 0.f);
+	glTexCoord2f(1, 0); glVertex3f( size, 0.f, 0.f);
+	*/
+	//back
+	glTexCoord2f(0, 0); glVertex3f(0.f, 0.f, size);
+	glTexCoord2f(0, 1); glVertex3f(0.f,  size, size);
+	glTexCoord2f(1, 1); glVertex3f( size,  size, size);
+	glTexCoord2f(1, 0); glVertex3f( size, 0.f, size);
+	
+	//left side
+	glTexCoord2f(0, 0); glVertex3f(0.f, 0.f, 0.f);
+	glTexCoord2f(0, 1); glVertex3f(0.f,  size, 0.f);
+	glTexCoord2f(1, 1); glVertex3f(0.f,  size,  size);
+	glTexCoord2f(1, 0); glVertex3f(0.f, 0.f,  size);
+	
+	//right side
+	glTexCoord2f(0, 0); glVertex3f(size, 0.f, 0.f);
+	glTexCoord2f(0, 1); glVertex3f(size,  size, 0.f);
+	glTexCoord2f(1, 1); glVertex3f(size,  size,  size);
+	glTexCoord2f(1, 0); glVertex3f(size, 0.f,  size);
+	
+	//Top
+	glTexCoord2f(0, 1); glVertex3f(0.f, 0.f,  size);
+	glTexCoord2f(0, 0); glVertex3f(0.f, 0.f, 0.f);
+	glTexCoord2f(1, 0); glVertex3f( size, 0.f, 0.f);
+	glTexCoord2f(1, 1); glVertex3f( size, 0.f,  size);
+	
+	//bottom
+	glTexCoord2f(0, 1); glVertex3f(0.f, size,  size);
+	glTexCoord2f(0, 0); glVertex3f(0.f, size, 0.f);
+	glTexCoord2f(1, 0); glVertex3f( size, size, 0.f);
+	glTexCoord2f(1, 1); glVertex3f( size, size,  size);
+	
+	glEnd();
+	
+	glPopMatrix();
 }

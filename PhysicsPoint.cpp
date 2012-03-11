@@ -192,7 +192,7 @@ Point* Point::GetNearest(const Vec2 &v)
 	while(it!=List.end())
 	{
 		tmp = ((*it)->GetPosition() - v)*((*it)->GetPosition() - v);
-		if (dis > tmp)
+		if (!(*it)->IsFixe() && dis > tmp)
 		{
 			dis = tmp;
 			P = (*it);

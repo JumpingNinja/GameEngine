@@ -87,10 +87,11 @@ void Polygon::HandleCollisions()
 
 					// Recherche du point de collision (=le plus proche de P1)
 					float distP1Point = FORMINSEARCH; // On recherche un minimum
+					Vec2 P1Center = Info.P1->GetCenter();
 					float tmpDist;
 					for(unsigned int i = 0; i < Info.P2->Vertices.size(); i++)
 					{
-						tmpDist = Info.Normal*(Info.P2->Vertices[i]->GetPosition()-Info.P1->GetCenter());
+						tmpDist = Info.Normal*(Info.P2->Vertices[i]->GetPosition()-P1Center);
 						if(tmpDist < distP1Point)
 							distP1Point = tmpDist,
 							Info.P = Info.P2->Vertices[i];

@@ -98,6 +98,51 @@ int main(int argc, char** argv)
 
 	//Point* P8 = new Point();
 
+
+
+	//Un corps ?? Il faudrait ajouter des verices, mais cela ferait plusieurs polygones (no problem)
+	Point* pB1, *pB2, *pB3, *pB4;
+	//corps
+	pB1=new Point();
+	pB1->SetPosition(Vec2(50.f, 50.f));
+	pB2=new Point();
+	pB2->SetPosition(Vec2(50.f, 100.f));
+	new Polygon(2, FLAG_NULL, pB1, pB2);
+
+	//Les bras
+	pB3=new Point();
+	pB3->SetPosition(Vec2(25.f, 50.f));
+	new Polygon(2, FLAG_NULL, pB1, pB3);
+	pB4=new Point();
+	pB4->SetPosition(Vec2(15.f, 50.f));
+	new Polygon(2, FLAG_NULL, pB4, pB3);
+
+	pB3=new Point();
+	pB3->SetPosition(Vec2(75.f, 50.f));
+	new Polygon(2, FLAG_NULL, pB1, pB3);
+	pB4=new Point();
+	pB4->SetPosition(Vec2(85.f, 50.f));
+	new Polygon(2, FLAG_NULL, pB4, pB3);
+
+	//les jambes
+	pB3=new Point();
+	pB3->SetPosition(Vec2(45.f, 125.f));
+	new Polygon(2, FLAG_NULL, pB2, pB3);
+
+	pB1=new Point();
+	pB1->SetPosition(Vec2(45.f, 145.f));
+	new Polygon(2, FLAG_NULL, pB3, pB1);
+
+	pB3=new Point();
+	pB3->SetPosition(Vec2(55.f, 125.f));
+	new Polygon(2, FLAG_NULL, pB2, pB3);
+
+	pB1=new Point();
+	pB1->SetPosition(Vec2(55.f, 145.f));
+	new Polygon(2, FLAG_NULL, pB1, pB3);
+
+
+
 	//Un petit rideau :D
 	const int rows=30, colums=30, cTimes(2);
 	bool cType(1);
@@ -146,6 +191,11 @@ int main(int argc, char** argv)
 	Point *grab = NULL;
 	Elastic* MouseElastic = NULL;
 	Point* Mouse = new Point();
+
+	Rectangle* rP;
+	rP=new Rectangle(100.f, 20.f);
+	rP->GetTopLeft().SetPosition(Vec2(10.f,400.f));
+	rP->SetFixed();
 
 	float polygon = 20.f;
 
@@ -219,10 +269,10 @@ int main(int argc, char** argv)
 
 		//i++;
 		//while(i%10 > 0)
-		for(int i = 0; i < 10; i++)
+		for(int i = 0; i < 1; i++)
         {
             //Physics::ForceAll(Vec2(forceVent, 0.f)); // Vent
-            Physics::ForceAll(Vec2(0.f, 2.f), true); // Gravité
+            Physics::ForceAll(Vec2(0.f, 9.f), true); // Gravité
 			//Physics::ForceAll(Vec2(0.f, 0.f));
 			Physics::Update(prevdt, dt), i++;
 			prevdt = dt; // Permet de gérer des framerate inconstants

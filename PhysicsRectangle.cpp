@@ -22,5 +22,12 @@ Point& Rectangle::GetTopLeft()
 {
 	return *(Vertices[0]);
 }
-
+	
+void Rectangle::SetFixed()
+{
+	for (std::vector<Point*>::iterator it=Vertices.begin(); it!=Vertices.end(); it++)
+		(*it)->SetFixe();
 }
+	
+}
+

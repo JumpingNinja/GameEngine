@@ -28,9 +28,9 @@ int main(int argc, char** argv)
 	glLoadIdentity();
 	glOrtho(0.0, 800.0, 600.0, 0.0, 0.0, 100.0);
 	//gluPerspective(90.f, 1.f, 1.f, 500.f);
-	glEnable(GL_DEPTH_TEST);
-	glDepthMask(GL_TRUE);
-    glClearDepth(1.f);
+	glDisable(GL_DEPTH_TEST);
+	//glDepthMask(GL_TRUE);
+    //glClearDepth(1.f);
 
 	sf::Clock vent;
 	float forceVent(1.f);
@@ -179,6 +179,7 @@ int main(int argc, char** argv)
 			pWater[i]->SetFixe();
 		pWaterFixed[i]=new Point(50.f+i*10.f, 300.f);
 		pWaterFixed[i]->SetFixe();
+		pWaterFixed[i]->SetMass(3.f);
 		new Elastic(pWaterFixed[i], pWater[i], 0.f, 0.75f);
 		if (i>0)
 			new Elastic(pWater[i], pWater[i-1]);
@@ -328,7 +329,7 @@ int main(int argc, char** argv)
 		//while(i%10 > 0)
 		for(int i = 0; i < 1; i++)
         {
-            //Physics::ForceAll(Vec2(forceVent, 0.f)); // Vent
+            Physics::ForceAll(Vec2(forceVent, 0.f)); // Vent
             Physics::ForceAll(Vec2(0.f, 9.f), true); // Gravité
 			//Physics::ForceAll(Vec2(0.f, 0.f));
 			Physics::Update(prevdt, dt), i++;
@@ -364,22 +365,23 @@ int main(int argc, char** argv)
 		glEnd();
 		
 		//on affiche l'eau
-		glColor3f(0.f, 0.1f, 1.f);
-		glBegin(GL_QUADS);
+		glColor4f(0.f, 0.1f, 1.f, 0.5f);
+		glBegin(GL_TRIANGLE_STRIP);
 		for (int i=0; i<waterN-1; i++)
 		{
 			glVertex2f(pWaterFixed[i]->GetPosition().x, pWaterFixed[i]->GetPosition().y+200.f);
 			glVertex2f(pWater[i]->GetPosition().x, pWater[i]->GetPosition().y);
-			glVertex2f(pWater[i+1]->GetPosition().x, pWater[i+1]->GetPosition().y);
 			glVertex2f(pWaterFixed[i+1]->GetPosition().x, pWaterFixed[i+1]->GetPosition().y+200.f);
+			glVertex2f(pWater[i+1]->GetPosition().x, pWater[i+1]->GetPosition().y);
+			
 					   
 		}
 		glEnd();
 		
 		
 		
-		for (int i=0; i<10; i++)
-			glDrawCube(sf::Vector2f(i*20.f, 400.f), 20.f);
+		//for (int i=0; i<10; i++)
+		//	glDrawCube(sf::Vector2f(i*20.f, 400.f), 20.f);
 
 		/*glBegin(GL_QUADS);
 		glColor4f(1.f, 1.f, 1.f, 1.f);
@@ -410,8 +412,8 @@ int main(int argc, char** argv)
 		
 		
 
-		Point::DrawAll();
-		Constraint::DrawAll();
+		//Point::DrawAll();
+		//Constraint::DrawAll();
 
 		window.Display();
 	}

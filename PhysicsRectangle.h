@@ -39,8 +39,8 @@ class Rectangle : public Polygon
 		~Rectangle();
 
 		/// @brief Retourne une référence vers le point en haut à gauche
-		Point& GetTopLeft();
-	
+		Vertex& GetTopLeft();
+
 	void SetFixed();
 };
 

@@ -5,7 +5,7 @@
 #include <list>
 #include <cstdarg>
 
-#include "PhysicsPoint.h"
+#include "PhysicsVertex.h"
 #include "PhysicsRigid.h"
 
 #define FLAG_NULL 0
@@ -24,7 +24,7 @@ class Polygon;
 class Polygon
 {
 	protected:
-		std::vector<Point*> Vertices;
+		std::vector<Vertex*> Vertices;
 		std::vector<Rigid*> Edges;
 		std::vector<Rigid*> InternContraints;
 
@@ -56,7 +56,7 @@ class Polygon
 		 * @todo Optimiser la création des liens internes automatiques
 		 * @param nb Nombre de VP
 		 * @param FLAGS FLAG_NULL, WITH_LENGTH
-		 * @param ... Liste de Point* [, float]
+		 * @param ... Liste de Vertex* [, float]
 		**/
 		Polygon(int nb, unsigned int FLAGS, ...);
 		/** @brief Destructeur
@@ -75,6 +75,9 @@ class Polygon
 
 		void ProjectToAxis(float &Min, float &Max, const Vec2 Axis);
 
+		/// @brief Applique une force à tout les Vertices du polygon
+		void ApplyForce(Vec2 V);
+
 		Rigid& operator[](const unsigned int);
 };
 
@@ -86,14 +89,14 @@ class CollisionInfo {
 		float	Depth;
 		Vec2	Normal;
 		Rigid*	Edge;
-		Point*	P;
+		Vertex*	P;
 
 		CollisionInfo() : P1(0), P2(0), Depth(0), Normal(0,0), Edge(0), P(0)
 		{
 		}
 
 		CollisionInfo(Polygon* P1, Polygon* P2, float D,
-						Vec2 N, Rigid* R, Point* P) :
+						Vec2 N, Rigid* R, Vertex* P) :
 			P1(P1), P2(P2), Depth(D), Normal(N), Edge(R), P(P)
 		{
 		}

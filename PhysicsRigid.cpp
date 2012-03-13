@@ -5,14 +5,14 @@ namespace Physics
 
 std::list<Rigid*> Rigid::List;
 
-Rigid::Rigid(Point* P1, Point* P2,
+Rigid::Rigid(Vertex* P1, Vertex* P2,
 								float Length) :
 								Constraint(P1, P2, Length)
 {
 	Rigid::List.push_back(this);
 }
 
-Rigid::Rigid(Point &P1, Point &P2,
+Rigid::Rigid(Vertex &P1, Vertex &P2,
 								float Length) :
 								Constraint(P1, P2, Length)
 {

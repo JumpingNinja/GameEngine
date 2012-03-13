@@ -7,7 +7,7 @@
  * @todo Séparer l'affichage
  * @{
 **/
-#include "PhysicsPoint.h"
+#include "PhysicsVertex.h"
 #include "PhysicsConstraint.h"
 #include "PhysicsElastic.h"
 #include "PhysicsRigid.h"
@@ -25,7 +25,7 @@ namespace Physics
 void Update(float prevdt, float dt)
 {
 	Elastic::ResolveAll();
-	Point::UpdateAll(prevdt, dt);
+	Vertex::UpdateAll(prevdt, dt);
 
 	for(int i=0; i<10; i++)
 	Rigid::ResolveAll(),
@@ -37,10 +37,10 @@ void DeleteAll()
 	Polygon::DeleteAll();
 	Rigid::DeleteAll();
 	Elastic::DeleteAll();
-	Point::DeleteAll();
+	Vertex::DeleteAll();
 }
 
- void ForceAll(Vec2 V, bool Mass = 0) { Point::ForceAll(V, Mass); }
+ void ForceAll(Vec2 V, bool Mass = 0) { Vertex::ForceAll(V, Mass); }
 
 }
 /// @}

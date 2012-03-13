@@ -28,7 +28,7 @@ Polygon::Polygon(int nb, unsigned int FLAGS, ...)
 		InternContraints.reserve((nb-2)*(nb-3)/2 + 1);
 
 		for(int i = 0; i < nb; i++)
-			Vertices.push_back(va_arg(ap, Point*));
+			Vertices.push_back(va_arg(ap, Vertex*));
 		for(int i = 0; i < nb; i++)
 		{
 			Edges.push_back(new Rigid(Vertices[i], Vertices[(i+1)%nb]));
@@ -41,7 +41,7 @@ Polygon::Polygon(int nb, unsigned int FLAGS, ...)
 		Lengths.reserve(nb);
 		Edges.reserve(nb);
 		for(int i = 0; i < nb; i++)
-			Vertices.push_back(va_arg(ap, Point*)),
+			Vertices.push_back(va_arg(ap, Vertex*)),
 			Lengths.push_back(static_cast<float>(va_arg(ap, double)));
 		for(int i = 0; i < nb; i++)
 			Edges.push_back(new Rigid(Vertices[i],
@@ -86,14 +86,14 @@ void Polygon::HandleCollisions()
 						Info.Normal *= -1;
 
 					// Recherche du point de collision (=le plus proche de P1)
-					float distP1Point = FORMINSEARCH; // On recherche un minimum
+					float distP1Vertex = FORMINSEARCH; // On recherche un minimum
 					Vec2 P1Center = Info.P1->GetCenter();
 					float tmpDist;
 					for(unsigned int i = 0; i < Info.P2->Vertices.size(); i++)
 					{
 						tmpDist = Info.Normal*(Info.P2->Vertices[i]->GetPosition()-P1Center);
-						if(tmpDist < distP1Point)
-							distP1Point = tmpDist,
+						if(tmpDist < distP1Vertex)
+							distP1Vertex = tmpDist,
 							Info.P = Info.P2->Vertices[i];
 					}
 
@@ -212,6 +212,14 @@ void Polygon::ProjectToAxis(float &Min, float &Max, const Vec2 Axis)
 Rigid& Polygon::operator[](const unsigned int i)
 {
 	return *Edges[i];
+}
+
+void Polygon::ApplyForce(Vec2 V)
+{
+	for(int i = 0; i < Vertices.size(); i++)
+	{
+		Vertices[i]->ApplyForce(V);
+	}
 }
 
 }

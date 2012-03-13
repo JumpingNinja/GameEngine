@@ -1,16 +1,16 @@
 #ifndef _PHYSICSRIGID_H_
 #define _PHYSICSRIGID_H_
 
-#include "PhysicsPoint.h"
+#include "PhysicsVertex.h"
 #include "PhysicsConstraint.h"
 
 namespace Physics
 {
 
 /** @class Rigid
- * @brief Lien rigide (fort) entre deux Points
+ * @brief Lien rigide (fort) entre deux Vertexs
  *
- * Permet la création de polygones à partir de Points
+ * Permet la création de polygones à partir de Vertexs
 **/
 class Rigid : public Constraint
 {
@@ -28,9 +28,9 @@ class Rigid : public Constraint
 		/// @brief Détruit tout les VR
 		static void DeleteAll();
 
-		Rigid(Point* P1, Point* P2,
+		Rigid(Vertex* P1, Vertex* P2,
 						float Length = -1);
-		Rigid(Point &P1, Point &P2,
+		Rigid(Vertex &P1, Vertex &P2,
 						float Length = -1);
 		~Rigid();
 

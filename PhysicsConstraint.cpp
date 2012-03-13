@@ -5,7 +5,7 @@ namespace Physics
 
 std::list<Constraint*> Constraint::list;
 
-Constraint::Constraint(Point* P1, Point* P2, float Length) :
+Constraint::Constraint(Vertex* P1, Vertex* P2, float Length) :
 								P1(P1), P2(P2)
 {
 	if(Length > 0)
@@ -16,7 +16,7 @@ Constraint::Constraint(Point* P1, Point* P2, float Length) :
 	list.push_back(this);
 }
 
-Constraint::Constraint(Point &P1, Point &P2, float Length) :
+Constraint::Constraint(Vertex &P1, Vertex &P2, float Length) :
 								P1(&P1), P2(&P2)
 {
 	if(Length > 0)

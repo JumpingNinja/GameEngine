@@ -5,7 +5,7 @@ namespace Physics
 
 std::list<Elastic*> Elastic::List;
 
-Elastic::Elastic(Point* P1, Point* P2,
+Elastic::Elastic(Vertex* P1, Vertex* P2,
 								float Length, float Spring) :
 								Constraint(P1, P2, Length),
 								mySpring(Spring)
@@ -13,7 +13,7 @@ Elastic::Elastic(Point* P1, Point* P2,
 	Elastic::List.push_back(this);
 }
 
-Elastic::Elastic(Point &P1, Point &P2,
+Elastic::Elastic(Vertex &P1, Vertex &P2,
 								float Length, float Spring) :
 								Constraint(P1, P2, Length),
 								mySpring(Spring)

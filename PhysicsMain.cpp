@@ -21,16 +21,16 @@ void glDrawCube(const sf::Vector2f &Position, float size);
 int main(int argc, char** argv)
 {
 	sf::RenderWindow window(sf::VideoMode(800, 600), "SFML window");
-	window.EnableVerticalSync(1);
+	window.setVerticalSyncEnabled(1);
 	//window.SetFramerateLimit(30);
 
 	glMatrixMode(GL_PROJECTION); //On va ainsi définir le viewport
 	glLoadIdentity();
 	glOrtho(0.0, 800.0, 600.0, 0.0, 0.0, 100.0);
 	//gluPerspective(90.f, 1.f, 1.f, 500.f);
-	glEnable(GL_DEPTH_TEST);
-	glDepthMask(GL_TRUE);
-    glClearDepth(1.f);
+	glDisable(GL_DEPTH_TEST);
+	//glDepthMask(GL_TRUE);
+    //glClearDepth(1.f);
 
 	sf::Clock vent;
 	float forceVent(1.f);
@@ -53,14 +53,14 @@ int main(int argc, char** argv)
 	{
 		sf::Image image;
 		#ifdef SFML_SYSTEM_MACOS
-		image.LoadFromFile(ResourcePath() + "cute.png");
+		image.loadFromFile(ResourcePath() + "cute.png");
 		#else
-		image.LoadFromFile("cute.png");
+		image.loadFromFile("cute.png");
 		#endif
 
 		glGenTextures(1, &texture);
         glBindTexture(GL_TEXTURE_2D, texture);
-        gluBuild2DMipmaps(GL_TEXTURE_2D, GL_RGBA, image.GetWidth(), image.GetHeight(), GL_RGBA, GL_UNSIGNED_BYTE, image.GetPixelsPtr());
+        gluBuild2DMipmaps(GL_TEXTURE_2D, GL_RGBA, image.getWidth(), image.getHeight(), GL_RGBA, GL_UNSIGNED_BYTE, image.getPixelsPtr());
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
 
@@ -71,21 +71,21 @@ int main(int argc, char** argv)
     glBindTexture(GL_TEXTURE_2D, texture);
 
 
-//	Point* P1 = new Point();
+//	Vertex* P1 = new Vertex();
 //	P1->SetPosition(Vec2(50, 50));
 //	P1->SetMass(2);
-//	Point* P2 = new Point();
+//	Vertex* P2 = new Vertex();
 //	P2->SetPosition(Vec2(150, 50));
-//	Point* P3 = new Point();
+//	Vertex* P3 = new Vertex();
 //	P3->SetPosition(Vec2(150, 150));
-	Point* P4 = new Point();
+	Vertex* P4 = new Vertex();
 	P4->SetPosition(Vec2(100, 25));
 	P4->SetFixe();
-	Point* P5 = new Point();
+	Vertex* P5 = new Vertex();
 	P5->SetPosition(Vec2(50, 50));
-	Point* P6 = new Point();
+	Vertex* P6 = new Vertex();
 	P6->SetPosition(Vec2(100, 150));
-	Point* P7 = new Point();
+	Vertex* P7 = new Vertex();
 	P7->SetPosition(Vec2(150, 50));
 //	Elastic* VC1 = new Elastic(P1, P2, 50, 11);
 //	Elastic* VC2 = new Elastic(P1, P3, 50, 1);
@@ -99,7 +99,7 @@ int main(int argc, char** argv)
 	new Rigid(P4, P6, sqrt(20000.f));
 	new Rigid(P5, P7, sqrt(20000.f));
 
-	Point* pLeftTop = new Point(), *pRightTop = new Point(), *pRightBottom = new Point(), *pLeftBottom = new Point();
+	Vertex* pLeftTop = new Vertex(), *pRightTop = new Vertex(), *pRightBottom = new Vertex(), *pLeftBottom = new Vertex();
 	pLeftTop->SetPosition(Vec2(300.f, 10.f));
 	pRightTop->SetPosition(Vec2(400.f, 10.f));
 	pLeftBottom->SetPosition(Vec2(300.f, 110.f));
@@ -112,72 +112,85 @@ int main(int argc, char** argv)
 
 	float taille_cubes = 50.f;
 	//for(int i = 1; i < 10; i++)
-		//new Polygon(4, FLAG_NULL, new Point(taille_cubes*i,taille_cubes*i, i), new Point(taille_cubes*i+taille_cubes,taille_cubes*i), new Point(taille_cubes*i+taille_cubes,taille_cubes*i+taille_cubes), new Point(taille_cubes*i,taille_cubes*i+taille_cubes));
+		//new Polygon(4, FLAG_NULL, new Vertex(taille_cubes*i,taille_cubes*i, i), new Vertex(taille_cubes*i+taille_cubes,taille_cubes*i), new Vertex(taille_cubes*i+taille_cubes,taille_cubes*i+taille_cubes), new Vertex(taille_cubes*i,taille_cubes*i+taille_cubes));
 		//new Rectangle(taille_cubes, taille_cubes, 1, 1, 1, 1);
 
 
-	//Point* P8 = new Point();
+	Vertex* P41 = new Vertex();
+	P41->SetPosition(Vec2(150, 150));
+	P41->SetFixe();
+	Vertex* P42 = new Vertex();
+	P42->SetPosition(Vec2(250, 150));
+	P42->SetFixe();
+	Vertex* P43 = new Vertex();
+	P43->SetPosition(Vec2(100, 300));
+	P43->SetFixe();
+
+	new Polygon(3, FLAG_NULL, P41, P42, P43);
+
+	//Vertex* P8 = new Vertex();
 
 
-
+	/*
 	//Un corps ?? Il faudrait ajouter des verices, mais cela ferait plusieurs polygones (no problem)
-	Point* pB1, *pB2, *pB3, *pB4;
+	Vertex* pB1, *pB2, *pB3, *pB4;
 	//corps
-	pB1=new Point();
+	pB1=new Vertex();
 	pB1->SetPosition(Vec2(50.f, 50.f));
-	pB2=new Point();
+	pB2=new Vertex();
 	pB2->SetPosition(Vec2(50.f, 100.f));
 	pB1->SetFixe();
 	pB2->SetFixe();
 	new Polygon(2, FLAG_NULL, pB1, pB2);
 
 	//Les bras
-	pB3=new Point();
+	pB3=new Vertex();
 	pB3->SetPosition(Vec2(25.f, 50.f));
 	new Polygon(2, FLAG_NULL, pB1, pB3);
-	pB4=new Point();
+	pB4=new Vertex();
 	pB4->SetPosition(Vec2(15.f, 50.f));
 	new Polygon(2, FLAG_NULL, pB4, pB3);
 
-	pB3=new Point();
+	pB3=new Vertex();
 	pB3->SetPosition(Vec2(75.f, 50.f));
 	new Polygon(2, FLAG_NULL, pB1, pB3);
-	pB4=new Point();
+	pB4=new Vertex();
 	pB4->SetPosition(Vec2(85.f, 50.f));
 	new Polygon(2, FLAG_NULL, pB4, pB3);
 
 	//les jambes
-	pB3=new Point();
+	pB3=new Vertex();
 	pB3->SetPosition(Vec2(45.f, 125.f));
 	new Polygon(2, FLAG_NULL, pB2, pB3);
 
-	pB1=new Point();
+	pB1=new Vertex();
 	pB1->SetPosition(Vec2(45.f, 145.f));
 	new Polygon(2, FLAG_NULL, pB3, pB1);
 
-	pB3=new Point();
+	pB3=new Vertex();
 	pB3->SetPosition(Vec2(55.f, 125.f));
 	new Polygon(2, FLAG_NULL, pB2, pB3);
 
-	pB1=new Point();
+	pB1=new Vertex();
 	pB1->SetPosition(Vec2(55.f, 145.f));
 	new Polygon(2, FLAG_NULL, pB1, pB3);
 
-	P4=new Point(100.f, 20.f);
+	P4=new Vertex(100.f, 20.f);
 	P4->SetRadius(50.f);
 
 
 	//De l'eau?
 	const int waterN(30); //MULTIPLE DE 2
-	Point *pWater[waterN], *pWaterFixed[waterN];
+	Vertex *pWater[waterN], *pWaterFixed[waterN];
 	for (int i=0; i<waterN; i++)
 	{
-		pWater[i]= new Point(50.f+i*10.f, 300.f);
+		pWater[i]= new Vertex(50.f+i*10.f, 300.f);
 		pWater[i]->SetMass(0.f);
 		if (i==0 || i==waterN-1)
 			pWater[i]->SetFixe();
-		pWaterFixed[i]=new Point(50.f+i*10.f, 300.f);
+		pWaterFixed[i]=new Vertex(50.f+i*10.f, 300.f);
 		pWaterFixed[i]->SetFixe();
+		pWaterFixed[i]->SetMass(3.f);
 		new Elastic(pWaterFixed[i], pWater[i], 0.f, 0.75f);
 		if (i>0)
 			new Elastic(pWater[i], pWater[i-1]);
@@ -187,11 +200,11 @@ int main(int argc, char** argv)
 	const int rows=20, colums=20, cTimes(2);
 	bool cType(1);
 	const float tailleCarre(5.f);
-	Point* pRideau[rows*colums]={NULL};
+	Vertex* pRideau[rows*colums]={NULL};
 	for (int i=0; i<colums; i++)
 		for (int j=0; j<rows; j++)
 		{
-			pRideau[i+j*colums]=new Point();
+			pRideau[i+j*colums]=new Vertex();
 			pRideau[i+j*colums]->SetPosition(Vec2(300.f+i*tailleCarre, 30.f+j*tailleCarre));
 			pRideau[i+j*colums]->SetMass(0.1f);
 			//On fixe deux des points
@@ -223,90 +236,96 @@ int main(int argc, char** argv)
 				new Elastic(pRideau[i+j*colums-1], pRideau[i+j*colums], -1.f, 2.f);
 			if (i==0 && j==1)
 				new Elastic(pRideau[i+(j-1)*colums], pRideau[i+j*colums], -1.f, 2.f);
-			 */
-		}
 
+		}
+	*/
 
 	int i = 0;
 	float prevdt = 0.1f, dt = 0.1f;
 
-	Point *grab = NULL;
+	Vertex *grab = NULL;
 	Elastic* MouseElastic = NULL;
-	Point* Mouse = new Point();
+	Vertex* Mouse = new Vertex();
 
 	Rectangle* rP;
-	rP=new Rectangle(100.f, 20.f);
+	rP=new Rectangle(40.f, 60.f);
 	rP->GetTopLeft().SetPosition(Vec2(10.f,400.f));
 	//rP->SetFixed();
 
 	float polygon = 20.f;
 
-	while(window.IsOpen())
+	while(window.isOpen())
 	{
 		// Process events
 		sf::Event event;
-		while (window.PollEvent(event))
+		while (window.pollEvent(event))
 		{
 			// Close window : exit
-			if (event.Type == sf::Event::Closed)
-				window.Close();
+			if (event.type == sf::Event::Closed)
+				window.close();
 
 			// Escape pressed : exit
-			if (event.Type == sf::Event::KeyPressed)
-                switch (event.Key.Code)
+			if (event.type == sf::Event::KeyPressed)
+                switch (event.key.code)
                 {
                     case sf::Keyboard::Escape:
-                        window.Close();
+                        window.close();
                         break;
                     case sf::Keyboard::R:
-                        (new Rectangle(50.f, 50.f))->GetTopLeft().SetPosition(Vec2(sf::Mouse::GetPosition(window).x, sf::Mouse::GetPosition(window).y));
+                        (new Rectangle(50.f, 50.f))->GetTopLeft().SetPosition(Vec2(sf::Mouse::getPosition(window).x, sf::Mouse::getPosition(window).y));
                         break;
                     case sf::Keyboard::P:
-                         //new Polygon(8, FLAG_NULL, new Point(0.f, 1.f*polygon), new Point(1.f*polygon, 0.f), new Point(2.f*polygon, 0.f),
-                                    // new Point(3.f*polygon, 1.f*polygon), new Point(3.f*polygon, 2.f*polygon), new Point(2.f*polygon, 3.f*polygon),
-                                    // new Point(1.f*polygon, 3.f*polygon), new Point(0.f, 2.f*polygon));
-                         new Polygon(6, FLAG_NULL, new Point(0.f, 1.f*polygon), new Point(1.f*polygon, 0.f),
-                                     new Point(2.f*polygon, 1.f*polygon), new Point(2.f*polygon, 2.f*polygon),
-                                     new Point(1.f*polygon, 3.f*polygon), new Point(0.f, 2.f*polygon));
+                         //new Polygon(8, FLAG_NULL, new Vertex(0.f, 1.f*polygon), new Vertex(1.f*polygon, 0.f), new Vertex(2.f*polygon, 0.f),
+                                    // new Vertex(3.f*polygon, 1.f*polygon), new Vertex(3.f*polygon, 2.f*polygon), new Vertex(2.f*polygon, 3.f*polygon),
+                                    // new Vertex(1.f*polygon, 3.f*polygon), new Vertex(0.f, 2.f*polygon));
+                         new Polygon(6, FLAG_NULL, new Vertex(0.f, 1.f*polygon), new Vertex(1.f*polygon, 0.f),
+                                     new Vertex(2.f*polygon, 1.f*polygon), new Vertex(2.f*polygon, 2.f*polygon),
+                                     new Vertex(1.f*polygon, 3.f*polygon), new Vertex(0.f, 2.f*polygon));
                     default:
                         break;
                 }
 
 
 			// Adjust the viewport when the window is resized
-            if (event.Type == sf::Event::Resized)
-                glViewport(0, 0, event.Size.Width, event.Size.Height);
+            if (event.type == sf::Event::Resized)
+                glViewport(0, 0, event.size.width, event.size.height);
 
-			if (event.Type == sf::Event::MouseButtonPressed)
+			if (event.type == sf::Event::MouseButtonPressed)
 			{
 
-				grab=Point::GetNearest(Vec2(sf::Mouse::GetPosition(window).x, sf::Mouse::GetPosition(window).y));
-				if(event.MouseButton.Button == sf::Mouse::Left)
+				grab=Vertex::GetNearest(Vec2(sf::Mouse::getPosition(window).x, sf::Mouse::getPosition(window).y));
+				if(event.mouseButton.button == sf::Mouse::Left)
 					delete MouseElastic,
 					MouseElastic = new Physics::Elastic(grab, Mouse, 1.f, 5.f);
-				if(event.MouseButton.Button == sf::Mouse::Middle || event.MouseButton.Button == sf::Mouse::XButton1)
-					(new Rectangle(25.f, 25.f))->GetTopLeft().SetPosition(Vec2(sf::Mouse::GetPosition(window).x, sf::Mouse::GetPosition(window).y));
+				if(event.mouseButton.button == sf::Mouse::Middle || event.mouseButton.button == sf::Mouse::XButton1)
+					(new Rectangle(25.f, 25.f))->GetTopLeft().SetPosition(Vec2(sf::Mouse::getPosition(window).x, sf::Mouse::getPosition(window).y));
 			}
 
 
 		}
 
-		if (sf::Mouse::IsButtonPressed(sf::Mouse::Right) && grab!=NULL)
+		if (sf::Mouse::isButtonPressed(sf::Mouse::Right) && grab!=NULL)
 		{
-			if (sf::Keyboard::IsKeyPressed(sf::Keyboard::H))
-				grab->SetPosition(Vec2(sf::Mouse::GetPosition(window).x, grab->GetPosition().y));
+			if (sf::Keyboard::isKeyPressed(sf::Keyboard::H))
+				grab->SetPosition(Vec2(sf::Mouse::getPosition(window).x, grab->GetPosition().y));
 			else
 			{
-				if (sf::Keyboard::IsKeyPressed(sf::Keyboard::V))
-					grab->SetPosition(Vec2(grab->GetPosition().x, sf::Mouse::GetPosition(window).y));
+				if (sf::Keyboard::isKeyPressed(sf::Keyboard::V))
+					grab->SetPosition(Vec2(grab->GetPosition().x, sf::Mouse::getPosition(window).y));
 				else
-					grab->SetPosition(Vec2(sf::Mouse::GetPosition(window).x, sf::Mouse::GetPosition(window).y));
+					grab->SetPosition(Vec2(sf::Mouse::getPosition(window).x, sf::Mouse::getPosition(window).y));
 			}
 		}
 
+		if (sf::Keyboard::isKeyPressed(sf::Keyboard::D))
+				rP->ApplyForce(Vec2(50.f,0.f));
+		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Q))
+				rP->ApplyForce(Vec2(-50.f,0.f));
+		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space))
+				rP->ApplyForce(Vec2(0.f,-50.f));
 
-		if (sf::Mouse::IsButtonPressed(sf::Mouse::Left))
-				Mouse->SetPosition(Vec2(sf::Mouse::GetPosition(window).x, sf::Mouse::GetPosition(window).y));
+		if (sf::Mouse::isButtonPressed(sf::Mouse::Left))
+				Mouse->SetPosition(Vec2(sf::Mouse::getPosition(window).x, sf::Mouse::getPosition(window).y));
 		//else if(MouseElastic != NULL) delete MouseElastic, MouseElastic = NULL;
 		else Mouse->SetFixe();
 
@@ -319,11 +338,9 @@ int main(int argc, char** argv)
 		glLoadIdentity(); //On charge l'identite pour dessiner normalement
 		glTranslatef(0.375, 0.375, 0.0); //petit trick qui assure le dessin à la  bonne place
 
-		if (vent.GetElapsedTime().AsSeconds()>=4.f)
-			forceVent=(forceVent>0 ? -1 : 1)*((rand()%400)/100.f+3.f), vent.Restart();
+		if (vent.getElapsedTime().asSeconds()>=4.f)
+			forceVent=(forceVent>0 ? -1 : 1)*((rand()%400)/100.f+3.f), vent.restart();
 
-		//i++;
-		//while(i%10 > 0)
 		for(int i = 0; i < 1; i++)
         {
             //Physics::ForceAll(Vec2(forceVent, 0.f)); // Vent
@@ -333,85 +350,11 @@ int main(int argc, char** argv)
 			prevdt = dt; // Permet de gérer des framerate inconstants
         }
 
-				//On affiche le rideau
-		glColor4f(1.f, 1.f, 1.f, 1.f);
-		glBegin(GL_QUADS);
 
-		for (int i=0; i<colums; i++) //On fait de 4 en quatre ??
-			for (int j=0; j<rows; j++)
-			{
-				if (i>=colums-1 || j>=rows-1) continue;
-
-				//left top
-				glTexCoord2f(static_cast<float>(i)/static_cast<float>(colums), static_cast<float>(j)/static_cast<float>(rows));
-				glVertex2f(pRideau[i+j*colums]->GetPosition().x, pRideau[i+j*colums]->GetPosition().y);
-
-				//right top
-				glTexCoord2f(static_cast<float>(i+1)/static_cast<float>(colums), static_cast<float>(j)/static_cast<float>(rows));
-				glVertex2f(pRideau[i+j*colums+1]->GetPosition().x, pRideau[i+j*colums+1]->GetPosition().y);
-
-				//right bottom
-				glTexCoord2f(static_cast<float>(i+1)/static_cast<float>(colums), static_cast<float>(j+1)/static_cast<float>(rows));
-				glVertex2f(pRideau[i+(j+1)*colums+1]->GetPosition().x, pRideau[i+(j+1)*colums+1]->GetPosition().y);
-
-				//Left bottom
-				glTexCoord2f(static_cast<float>(i)/static_cast<float>(colums), static_cast<float>(j+1)/static_cast<float>(rows));
-				glVertex2f(pRideau[i+(j+1)*colums]->GetPosition().x, pRideau[i+(j+1)*colums]->GetPosition().y);
-			}
-
-		glEnd();
-
-		//on affiche l'eau
-		glColor3f(0.f, 0.1f, 1.f);
-		glBegin(GL_QUADS);
-		for (int i=0; i<waterN-1; i++)
-		{
-			glVertex2f(pWaterFixed[i]->GetPosition().x, pWaterFixed[i]->GetPosition().y+200.f);
-			glVertex2f(pWater[i]->GetPosition().x, pWater[i]->GetPosition().y);
-			glVertex2f(pWater[i+1]->GetPosition().x, pWater[i+1]->GetPosition().y);
-			glVertex2f(pWaterFixed[i+1]->GetPosition().x, pWaterFixed[i+1]->GetPosition().y+200.f);
-
-		}
-		glEnd();
-
-
-
-		for (int i=0; i<10; i++)
-			glDrawCube(sf::Vector2f(i*20.f, 400.f), 20.f);
-
-		/*glBegin(GL_QUADS);
-		glColor4f(1.f, 1.f, 1.f, 1.f);
-		glTexCoord2f(0.f, 0.f); glVertex2f(pRideau[0]->GetPosition().x, pRideau[0]->GetPosition().y);
-		glTexCoord2f(1.f, 0.f); glVertex2f(pRideau[1]->GetPosition().x, pRideau[1]->GetPosition().y);
-		glTexCoord2f(1.f, 1.f); glVertex2f(pRideau[colums*1+1]->GetPosition().x, pRideau[colums*1+1]->GetPosition().y);
-		glTexCoord2f(0.f, 1.f); glVertex2f(pRideau[colums*1]->GetPosition().x, pRideau[colums*1]->GetPosition().y);
-
-		glEnd();
-		 */
-
-		/*
-		 glBegin(GL_QUADS);
-		 glColor4f(1.f, 1.f, 1.f, 1.f);
-		 glTexCoord2f(0.f, 0.f); glVertex2f(pRideau[0]->GetPosition().x, pRideau[0]->GetPosition().y);
-		 glTexCoord2f(1.f, 0.f); glVertex2f(pRideau[colums-1]->GetPosition().x, pRideau[colums-1]->GetPosition().y);
-		 glTexCoord2f(1.f, 1.f); glVertex2f(pRideau[colums*rows-1]->GetPosition().x, pRideau[colums*rows-1]->GetPosition().y);
-		 glTexCoord2f(0.f, 1.f); glVertex2f(pRideau[colums*(rows-1)]->GetPosition().x, pRideau[colums*(rows-1)]->GetPosition().y);
-
-		 glEnd();
-		 */
-
-		/*
-		glMatrixMode(GL_PROJECTION); //On va ainsi définir le viewport
-		glLoadIdentity();
-		glOrtho(0.0, 800.0, 600.0, 0.0, 0.0, 100.0);
-*/
-
-
-
-		Point::DrawAll();
+		Vertex::DrawAll();
 		Constraint::DrawAll();
 
-		window.Display();
+		window.display();
 	}
 
 	Physics::DeleteAll();

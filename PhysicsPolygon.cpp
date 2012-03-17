@@ -181,10 +181,18 @@ CollisionInfo Polygon::Collide(Polygon* P)
 
 		if (Gap > 0) return CollisionInfo(); // Pas de collision
 
-		if(std::abs(Gap) < Info.Depth)
-			Info.Depth = std::abs(Gap),
-			Info.Normal = Axis,
+		if(-Gap < Info.Depth)
+		{
+			Info.Depth = -Gap;
+			Info.Normal = Axis;
 			Info.Edge = Edge;
+			if(i < Edges.size())
+				Info.P1 = this,
+				Info.P2 = P;
+			else
+				Info.P1 = P,
+				Info.P2 = this;
+		}
 
         // Debug
 	    //if(Info.Edge == NULL)
@@ -216,7 +224,7 @@ Rigid& Polygon::operator[](const unsigned int i)
 
 void Polygon::ApplyForce(Vec2 V)
 {
-	for(int i = 0; i < Vertices.size(); i++)
+	for(unsigned int i = 0; i < Vertices.size(); i++)
 	{
 		Vertices[i]->ApplyForce(V);
 	}

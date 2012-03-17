@@ -65,7 +65,7 @@ void Elastic::Resolve()
 
 	// Si l'un des points est fixe, toute la force est appliquée à l'autre
 	P2->ApplyForce(-Vect*factor*(P1->IsFixe()?MassFactor*1:1)),
-	P1->ApplyForce(Vect*factor*(P1->IsFixe()?(1-MassFactor):1));
+	P1->ApplyForce(Vect*factor*(P2->IsFixe()?(1-MassFactor):1));
 }
 
 void Elastic::glDraw()

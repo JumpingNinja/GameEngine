@@ -344,7 +344,7 @@ int main(int argc, char** argv)
 		for(int i = 0; i < 1; i++)
         {
             //Physics::ForceAll(Vec2(forceVent, 0.f)); // Vent
-            Physics::ForceAll(Vec2(0.f, 9.f), true); // Gravité
+            Physics::ForceAll(Vec2(0.f, 12.f), true); // Gravité
 			//Physics::ForceAll(Vec2(0.f, 0.f));
 			Physics::Update(prevdt, dt), i++;
 			prevdt = dt; // Permet de gérer des framerate inconstants

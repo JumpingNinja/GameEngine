@@ -81,13 +81,13 @@ void Polygon::HandleCollisions()
 				Info = (*ite)->Collide((*ite2));
 				if(Info.P1 != 0) // Il y a collision
 				{
-					// On s'assure que la normal est dans le bon sens (pointe vers P1)
-					if(Info.Normal*(Info.P2->GetCenter() - Info.P1->GetCenter()) < 0)
+					Vec2 P1Center = Info.P1->GetCenter();
+					// On s'assure que la normal est dans le bon sens (pointe vers P2)
+					if(Info.Normal*(Info.P2->GetCenter() - P1Center) < 0)
 						Info.Normal *= -1;
 
 					// Recherche du point de collision (=le plus proche de P1)
 					float distP1Vertex = FORMINSEARCH; // On recherche un minimum
-					Vec2 P1Center = Info.P1->GetCenter();
 					float tmpDist;
 					for(unsigned int i = 0; i < Info.P2->Vertices.size(); i++)
 					{
@@ -179,7 +179,7 @@ CollisionInfo Polygon::Collide(Polygon* P)
 			Gap = MinP - Max;
 		else Gap = Min - MaxP;
 
-		if (Gap > 0) return CollisionInfo(); // Pas de collision
+		if (Gap >= 0) return CollisionInfo(); // Pas de collision
 
 		if(std::abs(Gap) < Info.Depth)
 			Info.Depth = std::abs(Gap),
@@ -216,7 +216,7 @@ Rigid& Polygon::operator[](const unsigned int i)
 
 void Polygon::ApplyForce(Vec2 V)
 {
-	for(int i = 0; i < Vertices.size(); i++)
+	for(unsigned int i = 0; i < Vertices.size(); i++)
 	{
 		Vertices[i]->ApplyForce(V);
 	}
